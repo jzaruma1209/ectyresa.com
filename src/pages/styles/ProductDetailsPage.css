@@ -1,0 +1,58 @@
+.product-details-page {
+  min-height: 100vh;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.product-details-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.product-details-gallery {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-details-info {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.product-details-specs {
+  margin-bottom: 2rem;
+}
+
+.product-details-reviews {
+  margin-bottom: 2rem;
+}
+
+.product-details-install {
+  margin-bottom: 2rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.25rem;
+  color: #666;
+}
+
+.error {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.25rem;
+  color: #ff4444;
+}
+
+@media (max-width: 768px) {
+  .product-details-main {
+    grid-template-columns: 1fr;
+  }
+}
+

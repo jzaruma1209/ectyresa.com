@@ -1,0 +1,24 @@
+.search-results-page {
+  min-height: 100vh;
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.search-results-page h1 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.search-results-info {
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.loading {
+  text-align: center;
+  padding: 4rem;
+  font-size: 1.25rem;
+  color: #666;
+}
+
