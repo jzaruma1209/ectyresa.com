@@ -26,7 +26,7 @@ const HomePage = () => {
         <div className="hero-left-column">
           <div className="hero-banner">
             <img
-              src="/1.png"
+              src="/baner.webp"
               alt="Banner promocional"
               className="hero-banner-image"
             />
@@ -102,13 +102,11 @@ const HomePage = () => {
         </div>
       </section>
 
-
-
-        {/* Filters Section, aqui estan los componenesque se  van a usar para mi card asi poder usarlo para filtrar por tipo de llanta */}
-            <div className="home-page-filters">
-              <FilterByCategory />
-              <FilterByTerrain />
-            </div>
+      {/* Filters Section, aqui estan los componenesque se  van a usar para mi card asi poder usarlo para filtrar por tipo de llanta */}
+      <div className="home-page-filters">
+        <FilterByCategory />
+        <FilterByTerrain />
+      </div>
       {/* Products Section esto es  mi card para poder generar o crear las card*/}
       <div className="home-page-products">
         <h2>Productos Destacados</h2>
