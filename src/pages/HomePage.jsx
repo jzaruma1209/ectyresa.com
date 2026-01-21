@@ -5,18 +5,15 @@ import SearchByVehicle from "../components/Home/SearchByVehicle";
 import FilterByCategory from "../components/Home/FilterByCategory";
 import FilterByTerrain from "../components/Home/FilterByTerrain";
 import ProductGrid from "../components/Home/ProductGrid";
+import HeroBanner from "../components/Home/HeroBanner";
 import "./styles/HomePage.css";
 
 const HomePage = () => {
-  const { products, loading, loadProducts } = useProducts();
+  const { products, loadProducts } = useProducts();
 
   useEffect(() => {
     loadProducts();
   }, [loadProducts]);
-
-  if (loading) {
-    return <div className="loading">Cargando productos...</div>;
-  }
 
   return (
     <div className="home-page">
@@ -25,11 +22,7 @@ const HomePage = () => {
       <section className="hero-section">
         <div className="hero-left-column">
           <div className="hero-banner">
-            <img
-              src="/baner.webp"
-              alt="Banner promocional"
-              className="hero-banner-image"
-            />
+            <HeroBanner />
           </div>
 
           <div className="hero-search-wrapper">
@@ -88,7 +81,7 @@ const HomePage = () => {
             </div>
           </div>
         </div>
-        <div className="zone-content">
+        <div className="hero-right-column">
           <div className="zone-right">
             <img src="/1.png" alt="Vehículo" className="zone-image" />
           </div>

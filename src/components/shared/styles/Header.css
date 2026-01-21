@@ -3,20 +3,25 @@
   top: 0;
   z-index: 1000;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.header.header--hidden {
+  transform: translateY(-100%);
 }
 
 /* Top Bar - Red */
 .top-bar {
   background-color: #e31e24;
   color: white;
-  font-size: 0.85rem;
-  padding: 0.5rem 0;
+  font-size: 0.8rem;
+  padding: 0.35rem 0;
 }
 
 .top-bar-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -28,13 +33,13 @@
 }
 
 .location-text {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 .top-bar-right {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .social-icons {
@@ -43,8 +48,8 @@
 }
 
 .social-icon {
-  width: 24px;
-  height: 24px;
+  width: 22px;
+  height: 22px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -83,7 +88,7 @@
 .cart-link-top {
   color: white;
   text-decoration: none;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   cursor: pointer;
   transition: opacity 0.2s;
 }
@@ -103,11 +108,11 @@
 .main-nav-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 60px;
+  height: 35px;
 }
 
 .logo {
@@ -117,7 +122,7 @@
 }
 
 .logo-image {
-  height: 70px;
+  height: 56px;
   width: auto;
   object-fit: contain;
   transition: transform 0.3s ease;
@@ -129,16 +134,16 @@
 
 .nav {
   display: flex;
-  gap: 2.5rem;
+  gap: 2rem;
 }
 
 .nav-link {
   color: #333;
   text-decoration: none;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: all 0.3s ease;
-  padding: 0.5rem 0;
+  padding: 0.35rem 0;
   position: relative;
 }
 
@@ -170,7 +175,7 @@
 .promo-banner {
   background-color: #000;
   color: white;
-  padding: 0.75rem 0;
+  padding: 0.3rem 0;
   text-align: center;
 }
 
@@ -178,17 +183,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 0.75rem;
   font-weight: 600;
   letter-spacing: 0.5px;
 }
 
 .promo-text {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .promo-icon {
-  font-size: 1.2rem;
+  font-size: 1rem;
 }
 
 .promo-link {

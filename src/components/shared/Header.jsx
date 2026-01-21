@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CartIcon from "./CartIcon";
@@ -5,9 +6,30 @@ import "./styles/Header.css";
 
 const Header = () => {
   const cartItemCount = useSelector((state) => state.cart.itemCount);
+  const [isHidden, setIsHidden] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentY = window.scrollY;
+      const scrollingDown = currentY > lastScrollY;
+
+      // Oculta si se baja y ya pasó cierto desplazamiento; muestra al subir
+      if (scrollingDown && currentY > 80) {
+        setIsHidden(true);
+      } else {
+        setIsHidden(false);
+      }
+
+      setLastScrollY(currentY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
 
   return (
-    <header className="header">
+    <header className={`header ${isHidden ? "header--hidden" : ""}`}>
       {/* Top Bar - Red */}
       <div className="top-bar">
         <div className="top-bar-container">

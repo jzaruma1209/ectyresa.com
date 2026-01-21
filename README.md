@@ -69,3 +69,9 @@ npm run dev
 - `1200px`: Ajustes de pantalla grande
 - `1024px`: Transición a tablet
 - `768px`: Transición a móvil
+
+## 🗒️ Registro de avances (21-01-2026)
+
+- Se creó el componente `HeroBanner` en `src/components/Home/` y se integra en `HomePage` manteniendo las clases existentes.
+- Se limpiaron clases CSS no usadas en `HomePage.css` para mantener estilos alineados con el JSX actual.
+- Se aclaró el uso opcional de `prop-types`; se removió del banner para evitar dependencias innecesarias.
