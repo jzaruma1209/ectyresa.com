@@ -1,12 +1,12 @@
-import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
-import { useProducts } from '../hooks/useProducts';
-import ProductGallery from '../components/ProductDetails/ProductGallery';
-import ProductInfo from '../components/ProductDetails/ProductInfo';
-import ProductSpecs from '../components/ProductDetails/ProductSpecs';
-import ProductReviews from '../components/ProductDetails/ProductReviews';
-import InstallInfo from '../components/ProductDetails/InstallInfo';
-import './styles/ProductDetailsPage.css';
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useProducts } from "../hooks/useProducts";
+import ProductGallery from "../features/product/ProductGallery";
+import ProductInfo from "../features/product/ProductInfo";
+import ProductSpecs from "../features/product/ProductSpecs";
+import ProductReviews from "../features/product/ProductReviews";
+import InstallInfo from "../features/product/InstallInfo";
+import "./styles/ProductDetailsPage.css";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
@@ -50,4 +50,3 @@ const ProductDetailsPage = () => {
 };
 
 export default ProductDetailsPage;
-

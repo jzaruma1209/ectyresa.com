@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useProducts } from "../hooks/useProducts";
-import SearchByMeasure from "../components/Home/SearchByMeasure";
-import SearchByVehicle from "../components/Home/SearchByVehicle";
-import FilterByCategory from "../components/Home/FilterByCategory";
-import FilterByTerrain from "../components/Home/FilterByTerrain";
-import ProductGrid from "../components/Home/ProductGrid";
-import HeroBanner from "../components/Home/HeroBanner";
+import SearchByMeasure from "../features/home/SearchByMeasure";
+import SearchByVehicle from "../features/home/SearchByVehicle";
+import FilterByCategory from "../features/home/FilterByCategory";
+import FilterByTerrain from "../features/home/FilterByTerrain";
+import ProductGrid from "../features/home/ProductGrid";
+import HeroBanner from "../features/home/HeroBanner";
 import "./styles/HomePage.css";
 
 const HomePage = () => {

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import CartIcon from "./CartIcon";
+import PromoBanner from "./PromoBanner";
 import "./styles/Header.css";
 
 const Header = () => {
@@ -101,17 +102,7 @@ const Header = () => {
       </div>
 
       {/* Promo Banner - Black */}
-      <div className="promo-banner">
-        <div className="promo-content">
-          <span className="promo-text">
-            SUMER TIRE SALE - UP TO 20% OFF ALL BRANDS
-          </span>
-          <span className="promo-icon">🎁</span>
-          <a href="#" className="promo-link">
-            mas informacion.
-          </a>
-        </div>
-      </div>
+      <PromoBanner />
     </header>
   );
 };

@@ -1,13 +1,14 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Provider } from 'react-redux';
-import store from './store';
-import Header from './components/shared/Header';
-import Footer from './components/shared/Footer';
-import HomePage from './pages/HomePage';
-import ProductDetailsPage from './pages/ProductDetailsPage';
-import CartPage from './pages/CartPage';
-import SearchResultsPage from './pages/SearchResultsPage';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from "./store";
+import Header from "./features/shared/Header";
+import Footer from "./features/shared/Footer";
+import HomePage from "./pages/HomePage";
+import ProductDetailsPage from "./pages/ProductDetailsPage";
+import CartPage from "./pages/CartPage";
+import SearchResultsPage from "./pages/SearchResultsPage";
+import NotFoundPage from "./pages/NotFoundPage";
+import "./App.css";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
               <Route path="/product/:id" element={<ProductDetailsPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/search" element={<SearchResultsPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </main>
           <Footer />

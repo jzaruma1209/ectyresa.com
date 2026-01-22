@@ -1,8 +1,8 @@
-import { useEffect, useMemo } from 'react';
-import { useSelector } from 'react-redux';
-import { useProducts } from '../hooks/useProducts';
-import ProductGrid from '../components/Home/ProductGrid';
-import './styles/SearchResultsPage.css';
+import { useEffect, useMemo } from "react";
+import { useSelector } from "react-redux";
+import { useProducts } from "../hooks/useProducts";
+import ProductGrid from "../features/home/ProductGrid";
+import "./styles/SearchResultsPage.css";
 
 const SearchResultsPage = () => {
   const filters = useSelector((state) => state.filters);
@@ -10,7 +10,7 @@ const SearchResultsPage = () => {
 
   const hasFilters = useMemo(() => {
     return Object.values(filters).some(
-      (value) => value !== null && value !== ''
+      (value) => value !== null && value !== "",
     );
   }, [filters]);
 
@@ -32,7 +32,7 @@ const SearchResultsPage = () => {
         <p>
           {products.length > 0
             ? `Se encontraron ${products.length} productos`
-            : 'No se encontraron productos'}
+            : "No se encontraron productos"}
         </p>
       </div>
       <ProductGrid products={products} />
@@ -41,4 +41,3 @@ const SearchResultsPage = () => {
 };
 
 export default SearchResultsPage;
-
