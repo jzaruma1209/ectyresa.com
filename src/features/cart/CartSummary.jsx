@@ -1,10 +1,11 @@
 import { useCart } from '../../hooks/useCart';
+import { IVA_RATE } from '../../constants';
 import './styles/CartSummary.css';
 
 const CartSummary = () => {
   const { total, totalWithIVA, itemCount } = useCart();
 
-  const iva = total * 0.16;
+  const iva = total * IVA_RATE;
 
   return (
     <div className="cart-summary">

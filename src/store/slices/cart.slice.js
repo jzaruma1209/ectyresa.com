@@ -6,6 +6,15 @@ const initialState = {
   itemCount: 0,
 };
 
+// Helper para recalcular totales del carrito
+const recalculateTotals = (state) => {
+  state.itemCount = state.items.reduce((sum, item) => sum + item.quantity, 0);
+  state.total = state.items.reduce((sum, item) => {
+    const price = item.product.finalPrice || item.product.price;
+    return sum + (price * item.quantity);
+  }, 0);
+};
+
 const cartSlice = createSlice({
   name: 'cart',
   initialState,
@@ -24,23 +33,13 @@ const cartSlice = createSlice({
         });
       }
 
-      // Recalcular totales
-      state.itemCount = state.items.reduce((sum, item) => sum + item.quantity, 0);
-      state.total = state.items.reduce((sum, item) => {
-        const price = item.product.finalPrice || item.product.price;
-        return sum + (price * item.quantity);
-      }, 0);
+      recalculateTotals(state);
     },
     removeFromCart: (state, action) => {
       const productId = action.payload;
       state.items = state.items.filter(item => item.productId !== productId);
 
-      // Recalcular totales
-      state.itemCount = state.items.reduce((sum, item) => sum + item.quantity, 0);
-      state.total = state.items.reduce((sum, item) => {
-        const price = item.product.finalPrice || item.product.price;
-        return sum + (price * item.quantity);
-      }, 0);
+      recalculateTotals(state);
     },
     updateQuantity: (state, action) => {
       const { productId, quantity } = action.payload;
@@ -54,12 +53,7 @@ const cartSlice = createSlice({
         }
       }
 
-      // Recalcular totales
-      state.itemCount = state.items.reduce((sum, item) => sum + item.quantity, 0);
-      state.total = state.items.reduce((sum, item) => {
-        const price = item.product.finalPrice || item.product.price;
-        return sum + (price * item.quantity);
-      }, 0);
+      recalculateTotals(state);
     },
     clearCart: (state) => {
       state.items = [];

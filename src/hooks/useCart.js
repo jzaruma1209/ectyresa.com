@@ -5,21 +5,13 @@ import {
   removeFromCart,
   updateQuantity,
   clearCart,
-  loadCartFromStorage,
 } from '../store/slices/cart.slice';
 import cartService from '../services/cart.service';
+import { IVA_RATE } from '../constants';
 
 export const useCart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
-
-  // Cargar carrito desde localStorage al montar
-  useEffect(() => {
-    const savedCart = cartService.loadCart();
-    if (savedCart) {
-      dispatch(loadCartFromStorage(savedCart));
-    }
-  }, [dispatch]);
 
   // Guardar carrito en localStorage cuando cambie
   useEffect(() => {
@@ -55,10 +47,9 @@ export const useCart = () => {
     cartService.clearCart();
   };
 
-  // Calcular total con IVA (16% en México)
+  // Calcular total con IVA
   const calculateTotalWithIVA = () => {
-    const iva = 0.16;
-    return cart.total * (1 + iva);
+    return cart.total * (1 + IVA_RATE);
   };
 
   return {

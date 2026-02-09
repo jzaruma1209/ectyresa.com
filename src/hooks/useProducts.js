@@ -22,6 +22,8 @@ export const useProducts = () => {
       dispatch(setProducts(data));
     } catch (err) {
       dispatch(setError(err.message));
+    } finally {
+      dispatch(setLoading(false));
     }
   }, [dispatch]);
 
@@ -33,6 +35,8 @@ export const useProducts = () => {
       dispatch(setSelectedProduct(data));
     } catch (err) {
       dispatch(setError(err.message));
+    } finally {
+      dispatch(setLoading(false));
     }
   }, [dispatch]);
 
@@ -44,6 +48,8 @@ export const useProducts = () => {
       dispatch(setProducts(data));
     } catch (err) {
       dispatch(setError(err.message));
+    } finally {
+      dispatch(setLoading(false));
     }
   }, [dispatch]);
 

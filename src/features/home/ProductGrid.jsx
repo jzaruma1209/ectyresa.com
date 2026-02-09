@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import ProductCard from './ProductCard';
 import './styles/ProductGrid.css';
 
@@ -17,6 +18,14 @@ const ProductGrid = ({ products = [] }) => {
       ))}
     </div>
   );
+};
+
+ProductGrid.propTypes = {
+  products: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    })
+  ),
 };
 
 export default ProductGrid;

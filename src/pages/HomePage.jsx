@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { useProducts } from "../hooks/useProducts";
-import SearchByMeasure from "../features/home/SearchByMeasure";
-import SearchByVehicle from "../features/home/SearchByVehicle";
 import FilterByCategory from "../features/home/FilterByCategory";
 import FilterByTerrain from "../features/home/FilterByTerrain";
 import ProductGrid from "../features/home/ProductGrid";
 import HeroBanner from "../features/home/HeroBanner";
+import HeroSearchOptions from "../features/home/HeroSearchOptions";
+import MainSearchBox from "../features/home/MainSearchBox";
+import HeroRightColumn from "../features/home/HeroRightColumn";
 import "./styles/HomePage.css";
 
 const HomePage = () => {
@@ -26,73 +27,15 @@ const HomePage = () => {
           </div>
 
           <div className="hero-search-wrapper">
-            <div className="hero-search-section">
-              <div className="search-cards-grid">
-                <div className="search-card-mini">
-                  <SearchByVehicle />
-                </div>
-                <div className="search-card-mini">
-                  <SearchByMeasure />
-                </div>
-                <div className="search-card-mini">
-                  <SearchByVehicle />
-                </div>
-                <div className="search-card-mini">
-                  <SearchByMeasure />
-                </div>
-              </div>
-            </div>
+            <HeroSearchOptions />
 
             {/* Main Search Box */}
-            <div className="main-search-box">
-              <h2 className="search-box-title">
-                Search The Ultimate Tire & Wheel Source
-              </h2>
-
-              <button className="search-option-btn primary">
-                🚗 Shop by Vehicle
-              </button>
-
-              <button className="search-option-btn primary">
-                📏 Search By Size
-              </button>
-
-              <div className="browse-category">
-                <h3>Browse By Category</h3>
-                <div className="category-grid">
-                  <div className="category-item">
-                    <div className="category-icon">⭕</div>
-                    <span>Tires</span>
-                  </div>
-                  <div className="category-item">
-                    <div className="category-icon">⚙️</div>
-                    <span>Wheels</span>
-                  </div>
-                  <div className="category-item">
-                    <div className="category-icon">📦</div>
-                    <span>Packages</span>
-                  </div>
-                  <div className="category-item">
-                    <div className="category-icon">🔧</div>
-                    <span>Accessories</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <MainSearchBox />
           </div>
+
+
         </div>
-        <div className="hero-right-column">
-          <div className="zone-right">
-            <img src="/1.png" alt="Vehículo" className="zone-image" />
-          </div>
-          <div className="zone-left">
-            <div className="zone-card">
-              <div className="zone-logo">ZONE B</div>
-              <p className="zone-text">¿Es tu primera vez?</p>
-              <button className="zone-btn">¡Te ayudaremos! →</button>
-            </div>
-          </div>
-        </div>
+        <HeroRightColumn />
       </section>
 
       {/* Filters Section, aqui estan los componenesque se  van a usar para mi card asi poder usarlo para filtrar por tipo de llanta */}

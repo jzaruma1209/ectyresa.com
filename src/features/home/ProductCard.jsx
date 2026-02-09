@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { useCart } from '../../hooks/useCart';
 import './styles/ProductCard.css';
 
@@ -53,6 +54,19 @@ const ProductCard = ({ product }) => {
       </div>
     </Link>
   );
+};
+
+ProductCard.propTypes = {
+  product: PropTypes.shape({
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    name: PropTypes.string.isRequired,
+    brand: PropTypes.string,
+    measure: PropTypes.string,
+    price: PropTypes.number.isRequired,
+    finalPrice: PropTypes.number,
+    discount: PropTypes.number,
+    image: PropTypes.string,
+  }).isRequired,
 };
 
 export default ProductCard;

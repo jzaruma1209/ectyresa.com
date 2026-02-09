@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { useCart } from '../../hooks/useCart';
 import './styles/CartItem.css';
 
@@ -58,6 +59,21 @@ const CartItem = ({ item }) => {
       </button>
     </div>
   );
+};
+
+CartItem.propTypes = {
+  item: PropTypes.shape({
+    productId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+    quantity: PropTypes.number.isRequired,
+    product: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      brand: PropTypes.string,
+      measure: PropTypes.string,
+      price: PropTypes.number.isRequired,
+      finalPrice: PropTypes.number,
+      image: PropTypes.string,
+    }).isRequired,
+  }).isRequired,
 };
 
 export default CartItem;

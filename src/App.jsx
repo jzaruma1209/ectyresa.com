@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
+import CartInitializer from "./components/CartInitializer";
 import Header from "./features/shared/Header";
 import Footer from "./features/shared/Footer";
 import HomePage from "./pages/HomePage";
@@ -13,6 +14,7 @@ import "./App.css";
 function App() {
   return (
     <Provider store={store}>
+      <CartInitializer />
       <Router>
         <div className="app">
           <Header />
