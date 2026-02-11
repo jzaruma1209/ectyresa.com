@@ -23,29 +23,40 @@ const MainSearchBox = () => {
       <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl shadow-2xl overflow-hidden">
         
         {/* Tabs de vehículos */}
-        <div className="flex flex-wrap gap-2 p-3 bg-white/10">
-          {vehicles.map((vehicle) => (
-            <button
-              key={vehicle.id}
-              onClick={() => setActiveVehicle(vehicle.id)}
-              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
-                activeVehicle === vehicle.id
-                  ? "bg-red-600 text-white shadow-lg"
-                  : "bg-white/10 text-gray-300 hover:bg-white/20"
-              }`}
-            >
-              {vehicle.label}
-            </button>
-          ))}
+        <div className="flex flex-wrap items-center gap-3 p-3 bg-white/10">
+          <span className="text-white/70 text-[10px] font-bold uppercase tracking-wider ml-2">
+            ESCOGE EL TIPO DE VEHÍCULO:
+          </span>
+          <div className="flex flex-wrap gap-2">
+            {vehicles.map((vehicle) => (
+              <button
+                key={vehicle.id}
+                onClick={() => setActiveVehicle(vehicle.id)}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all focus:outline-none ${
+                  activeVehicle === vehicle.id
+                    ? "bg-red-600 text-white shadow-lg"
+                    : "bg-white/10 text-gray-300 hover:bg-white/20"
+                }`}
+              >
+                {vehicle.label}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Contenido principal */}
         <div className="p-4">
+          {/* Label para modo de búsqueda */}
+          <div className="flex items-center mb-3">
+            <span className="text-white/60 text-[10px] font-bold uppercase tracking-widest ml-1">
+              BUSCA TU LLANTA IDEAL POR:
+            </span>
+          </div>
           {/* Botones de modo de búsqueda */}
           <div className="grid grid-cols-2 gap-3 mb-4">
             <button
               onClick={() => setSearchMode("dimension")}
-              className={`flex items-center justify-center p-3 rounded-xl transition-all border-2 ${
+              className={`flex items-center justify-center p-3 rounded-xl transition-all border-2 focus:outline-none ${
                 searchMode === "dimension"
                   ? "bg-red-600 border-red-600 shadow-lg scale-[1.02]"
                   : "bg-transparent border-white/20 hover:border-white/40"
@@ -58,7 +69,7 @@ const MainSearchBox = () => {
 
             <button
               onClick={() => setSearchMode("vehiculo")}
-              className={`flex items-center justify-center p-3 rounded-xl transition-all border-2 ${
+              className={`flex items-center justify-center p-3 rounded-xl transition-all border-2 focus:outline-none ${
                 searchMode === "vehiculo"
                   ? "bg-red-600 border-red-600 shadow-lg scale-[1.02]"
                   : "bg-transparent border-white/20 hover:border-white/40"
@@ -97,7 +108,7 @@ const MainSearchBox = () => {
                       <button
                         key={width}
                         onClick={() => setSelectedWidth(width)}
-                        className={`py-3 rounded-xl font-bold transition-all text-sm border-2 ${
+                        className={`py-3 rounded-xl font-bold transition-all text-sm border-2 focus:outline-none ${
                           selectedWidth === width
                             ? "bg-red-600 border-red-600 text-white shadow-md scale-105"
                             : "bg-white border-gray-200 text-gray-600 hover:border-red-400 hover:text-red-500"

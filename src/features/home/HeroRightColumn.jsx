@@ -1,12 +1,16 @@
+import ButtonCom from "../../components/ButtonCom";
+
 const HeroRightColumn = () => {
   return (
     <div className="hero-right-column">
       <div className="zone-right">
         <img src="/fondo_auto.png" alt="Vehículo" className="zone-image" />
       </div>
-      <div className="zone-overlay">
-        <p className="zone-text">¿Es tu primera vez?</p>
-        <button className="zone-btn">¡Te ayudaremos! →</button>
+      <div className="zone-info">
+        <p className="zone-text">¿Tu primera vez comprando aquí?</p>
+        <ButtonCom size="lg" variant="dark" fullWidth>
+          ¡DA CLICK AQUÍ!
+        </ButtonCom>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import ButtonCom from "./ButtonCom";
 
 const TyreCardCom = ({
   image,
@@ -17,78 +18,88 @@ const TyreCardCom = ({
 }) => {
   return (
     <div
-      className={`relative w-full overflow-hidden rounded-lg bg-white shadow-md cursor-pointer hover:shadow-lg transition-shadow ${className || 'max-w-xs'}`}
+      className={`relative w-full overflow-hidden rounded-lg bg-white shadow-md cursor-pointer hover:shadow-lg transition-shadow border border-gray-50 ${className || 'max-w-[240px]'}`}
       onClick={onClick}
     >
+      {/* Badge Compacto */}
+      {badge && (
+        <div className="absolute top-0 right-0 z-10">
+          <span className="bg-[#E32619] text-white text-[9px] font-bold px-2 py-1 rounded-bl-lg uppercase">
+            {badge}
+          </span>
+        </div>
+      )}
+
       {/* Imagen de la llanta */}
-      <div className="h-32 sm:h-40 w-full overflow-hidden bg-gray-50 p-2 flex items-center justify-center">
+      <div className="h-32 w-full overflow-hidden bg-[#F8F9FA] p-3 flex items-center justify-center">
         <img
-          className="max-h-full max-w-full object-contain"
+          className="max-h-full max-w-full object-contain hover:scale-105 transition-transform duration-300"
           src={image}
           alt={title}
         />
       </div>
 
-      {/* Badge */}
-      {badge && (
-        <span className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold px-3 py-1.5 rounded-bl-lg">
-          {badge}
-        </span>
-      )}
-
-      <div className="px-3 pb-3">
-        {/* Logo de la marca */}
-        <div className="flex items-center justify-center py-1.5 border-b border-gray-100">
+      <div className="px-3 pb-3 pt-1">
+        {/* Logo de la marca compactado */}
+        <div className="flex items-center justify-center py-1 border-b border-gray-100 mb-1">
           <img
-            className="h-7 object-contain"
+            className="h-5 sm:h-6 object-contain"
             src={brandImage || "/marca.svg"}
             alt={brandName || "Marca"}
           />
         </div>
 
-        {/* Modelo */}
-        {model && (
-          <h5 className="mt-1.5 text-center text-sm font-bold text-slate-900">
-            {model}
-          </h5>
-        )}
-
-        {/* Medida */}
-        {measure && (
-          <p className="mt-0.5 text-center text-xs text-gray-600">
-            <span className="font-semibold">Medida:</span> {measure}
-          </p>
-        )}
-
-        {/* Descripcion */}
-        {description && (
-          <p className="mt-1 text-center text-[11px] text-gray-500 line-clamp-2">
-            {description}
-          </p>
-        )}
-
-        {/* Precios */}
-        <div className="mt-2 flex flex-col items-center gap-0.5">
-          {originalPrice && (
-            <span className="text-xs text-gray-400 line-through">
-              P.V.P ${originalPrice}
-            </span>
+        {/* Info del producto con menos márgenes */}
+        <div className="text-center">
+          {model && (
+            <h5 className="text-[13px] font-bold text-slate-900 leading-tight">
+              .{model}
+            </h5>
           )}
-          <span className="text-xl font-bold text-red-600">${price}</span>
-          <span className="text-[10px] text-gray-400">+ IVA</span>
+
+          {measure && (
+            <p className="text-[11px] text-gray-600 mt-0.5">
+              <span className="font-semibold text-slate-700">Medida:</span> {measure}
+            </p>
+          )}
+
+          {description && (
+            <p className="mt-1 text-[10px] leading-tight text-gray-500 line-clamp-2 px-1">
+              {description}
+            </p>
+          )}
         </div>
 
-        {/* Boton comprar */}
-        <div className="mt-2 flex justify-center">
-          <button
+        {/* Línea de Precios Unificada y Ultra-Compacta */}
+        <div className="mt-1 flex items-baseline justify-center gap-1.5">
+          {originalPrice && (
+            <span className="text-[10px] text-gray-400 line-through decoration-gray-300">
+              ${originalPrice}
+            </span>
+          )}
+          <div className="flex items-baseline gap-1">
+            <span className="text-xl font-black text-[#E32619] leading-none">
+              ${price}
+            </span>
+            <span className="text-[9px] text-gray-400 font-bold uppercase tracking-tighter">
+              + IVA
+            </span>
+          </div>
+        </div>
+
+        {/* Boton comprar compacto */}
+        <div className="mt-2 text-center">
+          <ButtonCom
+            size="sm"
+            variant="primary"
+            fullWidth
             onClick={(e) => {
               e.stopPropagation();
               onAddToCart?.();
             }}
-            className="rounded-md bg-red-600 px-6 py-1.5 text-xs font-semibold uppercase text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 transition-colors"
           >
             Comprar
-          </button>
+          </ButtonCom>
         </div>
       </div>
     </div>
