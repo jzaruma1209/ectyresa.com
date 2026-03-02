@@ -40,7 +40,7 @@ const MainSearchBox = () => {
               >
                 {vehicle.label}
               </button>
-            ))}
+            ))}       
           </div>
         </div>
 

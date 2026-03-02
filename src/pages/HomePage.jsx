@@ -22,9 +22,11 @@ const HomePage = () => {
 
       <section className="hero-section">
         <div className="hero-left-column">
-          <div className="hero-banner">
+        {/* esta es la parte del banner que se va a usar para mostrar las imagenes de promocion y tambien se puede usar para mostrar promociones especiales o algo asi 
+        <div className="hero-banner">
             <HeroBanner />
           </div>
+        */}  
 
           <div className="hero-search-wrapper">
             <HeroSearchOptions />
