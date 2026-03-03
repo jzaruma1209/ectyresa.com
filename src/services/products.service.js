@@ -1,4 +1,4 @@
-import api from './api';
+import api from '../lib/api';
 import mockProductsService from './mock/products.mock.js';
 
 // Usar mock service si VITE_USE_MOCK está habilitado

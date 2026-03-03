@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import ProductCard from './ProductCard';
-import './styles/ProductGrid.css';
+import '../../features/home/styles/ProductGrid.css';
 
 const ProductGrid = ({ products = [] }) => {
   if (products.length === 0) {

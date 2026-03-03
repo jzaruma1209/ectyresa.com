@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { loadCartFromStorage } from '../store/slices/cart.slice';
-import cartService from '../services/cart.service';
+import { loadCartFromStorage } from '../../store/slices/cart.slice';
+import cartService from '../../services/cart.service';
 
 /**
  * Componente que inicializa el carrito desde localStorage.

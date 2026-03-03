@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setMeasureFilter } from '../../store/slices/filters.slice';
-import './styles/SearchByMeasure.css';
+import '../../features/home/styles/SearchByMeasure.css';
 
 const SearchByMeasure = () => {
   const dispatch = useDispatch();

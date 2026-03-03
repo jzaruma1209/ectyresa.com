@@ -1,9 +1,9 @@
-import { useCart } from "../hooks/useCart";
-import CartItem from "../features/cart/CartItem";
-import CartSummary from "../features/cart/CartSummary";
-import CheckoutForm from "../features/cart/CheckoutForm";
+import { useCart } from "../../hooks/useCart";
+import CartItem from "../../components/cart/CartItem";
+import CartSummary from "../../components/cart/CartSummary";
+import CheckoutForm from "../../components/cart/CheckoutForm";
 import { useNavigate } from "react-router-dom";
-import "./styles/CartPage.css";
+import "../styles/CartPage.css";
 
 const CartPage = () => {
   const { items, itemCount } = useCart();

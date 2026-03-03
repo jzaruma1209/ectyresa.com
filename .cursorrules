@@ -1,0 +1,5 @@
+# Reglas del Proyecto (Cursor/Agent Rules)
+- **Idioma**: Escribe todos los comentarios del código y la documentación en español.
+- **Framework**: Este es un proyecto de React usando Vite. Prioriza el uso de componentes funcionales y React Hooks.
+- **Estilos**: El proyecto utiliza Tailwind CSS. Prioriza el uso de clases de utilería de Tailwind en lugar de crear archivos CSS separados, a menos que sea estrictamente necesario.
+- **Estructura**: Mantén la estructura organizada. Los componentes reutilizables deben ir en `src/components`.

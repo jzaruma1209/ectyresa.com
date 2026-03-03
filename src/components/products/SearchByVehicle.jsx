@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setVehicleFilter } from '../../store/slices/filters.slice';
-import './styles/SearchByVehicle.css';
+import '../../features/home/styles/SearchByVehicle.css';
 
 const SearchByVehicle = () => {
   const dispatch = useDispatch();

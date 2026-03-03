@@ -1,8 +1,8 @@
 import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useProducts } from "../hooks/useProducts";
-import ProductGrid from "../features/home/ProductGrid";
-import "./styles/SearchResultsPage.css";
+import { useProducts } from "../../hooks/useProducts";
+import ProductGrid from "../../components/products/ProductGrid";
+import "../styles/SearchResultsPage.css";
 
 const SearchResultsPage = () => {
   const filters = useSelector((state) => state.filters);

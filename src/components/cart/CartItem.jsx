@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useCart } from '../../hooks/useCart';
-import './styles/CartItem.css';
+import '../../features/cart/styles/CartItem.css';
 
 const CartItem = ({ item }) => {
   const { updateQuantity, removeFromCart } = useCart();

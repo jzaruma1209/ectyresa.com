@@ -1,4 +1,4 @@
-import './styles/InstallInfo.css';
+import '../../features/product/styles/InstallInfo.css';
 
 const InstallInfo = () => {
   return (

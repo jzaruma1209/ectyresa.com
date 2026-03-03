@@ -1,5 +1,5 @@
 import { useCart } from '../../hooks/useCart';
-import './styles/ProductInfo.css';
+import '../../features/product/styles/ProductInfo.css';
 
 const ProductInfo = ({ product }) => {
   const { addToCart } = useCart();
@@ -20,7 +20,7 @@ const ProductInfo = ({ product }) => {
       <h1 className="product-info-name">{product.name}</h1>
       <p className="product-info-brand">{product.brand}</p>
       <p className="product-info-measure">{product.measure}</p>
-      
+
       <div className="product-info-price">
         {hasDiscount && (
           <span className="product-info-original-price">

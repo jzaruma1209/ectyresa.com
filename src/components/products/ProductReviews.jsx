@@ -1,4 +1,4 @@
-import './styles/ProductReviews.css';
+import '../../features/product/styles/ProductReviews.css';
 
 const ProductReviews = ({ product }) => {
   // Datos de ejemplo - estos deberían venir de una API

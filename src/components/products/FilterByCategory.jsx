@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setCategoryFilter } from '../../store/slices/filters.slice';
-import './styles/FilterByCategory.css';
+import '../../features/home/styles/FilterByCategory.css';
 
 const FilterByCategory = () => {
   const dispatch = useDispatch();
@@ -27,9 +27,8 @@ const FilterByCategory = () => {
         {categories.map((category) => (
           <button
             key={category.value}
-            className={`category-btn ${
-              selectedCategory === category.value ? 'active' : ''
-            }`}
+            className={`category-btn ${selectedCategory === category.value ? 'active' : ''
+              }`}
             onClick={() => handleCategoryChange(category.value)}
           >
             {category.label}

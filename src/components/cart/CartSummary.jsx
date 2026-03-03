@@ -1,6 +1,6 @@
 import { useCart } from '../../hooks/useCart';
 import { IVA_RATE } from '../../constants';
-import './styles/CartSummary.css';
+import '../../features/cart/styles/CartSummary.css';
 
 const CartSummary = () => {
   const { total, totalWithIVA, itemCount } = useCart();

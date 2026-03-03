@@ -1,12 +1,12 @@
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useProducts } from "../hooks/useProducts";
-import ProductGallery from "../features/product/ProductGallery";
-import ProductInfo from "../features/product/ProductInfo";
-import ProductSpecs from "../features/product/ProductSpecs";
-import ProductReviews from "../features/product/ProductReviews";
-import InstallInfo from "../features/product/InstallInfo";
-import "./styles/ProductDetailsPage.css";
+import { useProducts } from "../../hooks/useProducts";
+import ProductGallery from "../../components/products/ProductGallery";
+import ProductInfo from "../../components/products/ProductInfo";
+import ProductSpecs from "../../components/products/ProductSpecs";
+import ProductReviews from "../../components/products/ProductReviews";
+import InstallInfo from "../../components/products/InstallInfo";
+import "../styles/ProductDetailsPage.css";
 
 const ProductDetailsPage = () => {
   const { id } = useParams();

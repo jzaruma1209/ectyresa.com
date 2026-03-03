@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import ButtonCom from "./ButtonCom";
+import ButtonCom from "../ui/ButtonCom";
 
 const TyreCardCom = ({
   image,

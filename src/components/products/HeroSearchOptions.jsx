@@ -1,4 +1,4 @@
-import TyreCardCom from "../../components/TyreCardCom";
+import TyreCardCom from "./TyreCardCom";
 
 const HeroSearchOptions = () => {
   return (

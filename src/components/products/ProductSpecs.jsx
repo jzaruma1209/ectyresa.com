@@ -1,4 +1,4 @@
-import './styles/ProductSpecs.css';
+import '../../features/product/styles/ProductSpecs.css';
 
 const ProductSpecs = ({ product }) => {
   if (!product || !product.specs) {

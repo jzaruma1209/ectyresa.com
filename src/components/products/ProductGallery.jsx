@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import './styles/ProductGallery.css';
+import '../../features/product/styles/ProductGallery.css';
 
 const ProductGallery = ({ product }) => {
   const [selectedImage, setSelectedImage] = useState(0);
@@ -11,8 +11,8 @@ const ProductGallery = ({ product }) => {
   const images = product.images && product.images.length > 0
     ? product.images
     : product.image
-    ? [product.image]
-    : ['/placeholder-tire.png'];
+      ? [product.image]
+      : ['/placeholder-tire.png'];
 
   return (
     <div className="product-gallery">

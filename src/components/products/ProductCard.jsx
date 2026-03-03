@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useCart } from '../../hooks/useCart';
-import './styles/ProductCard.css';
+import '../../features/home/styles/ProductCard.css';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();

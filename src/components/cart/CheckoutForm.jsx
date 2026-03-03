@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import './styles/CheckoutForm.css';
+import '../../features/cart/styles/CheckoutForm.css';
 
 const CheckoutForm = ({ onSubmit }) => {
   const {

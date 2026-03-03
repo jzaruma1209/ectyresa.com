@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { setTerrainFilter } from '../../store/slices/filters.slice';
-import './styles/FilterByTerrain.css';
+import '../../features/home/styles/FilterByTerrain.css';
 
 const FilterByTerrain = () => {
   const dispatch = useDispatch();
@@ -27,9 +27,8 @@ const FilterByTerrain = () => {
         {terrains.map((terrain) => (
           <button
             key={terrain.value}
-            className={`terrain-btn ${
-              selectedTerrain === terrain.value ? 'active' : ''
-            }`}
+            className={`terrain-btn ${selectedTerrain === terrain.value ? 'active' : ''
+              }`}
             onClick={() => handleTerrainChange(terrain.value)}
           >
             {terrain.label}

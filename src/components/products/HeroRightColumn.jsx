@@ -1,4 +1,4 @@
-import ButtonCom from "../../components/ButtonCom";
+import ButtonCom from "../ui/ButtonCom";
 
 const HeroRightColumn = () => {
   return (
