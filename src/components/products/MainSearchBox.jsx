@@ -20,7 +20,7 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
   return (
     <div className="w-full max-w-6xl mx-auto px-4 py-4">
       {/* Contenedor principal con fondo degradado */}
-      <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl shadow-2xl overflow-hidden">
+      <div className="bg-gradient-to-br from-black/40 via-black/20 to-black/40 rounded-2xl overflow-hidden backdrop-blur-sm">
 
         {/* Tabs de vehículos */}
         <div className="p-4 pb-0">
@@ -79,7 +79,7 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
           </div>
 
           {/* Área de contenido principal */}
-          <div className="bg-white rounded-xl p-6 shadow-inner">
+          <div className="bg-white/90 rounded-xl p-6 shadow-inner">
 
             {/* Selector */}
             <div>

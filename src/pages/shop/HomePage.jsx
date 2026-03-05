@@ -9,6 +9,13 @@ import MainSearchBox from "../../components/products/MainSearchBox";
 import HeroRightColumn from "../../components/products/HeroRightColumn";
 import "../styles/HomePage.css";
 
+const heroBgColors = {
+  auto: "#FFFFFF",
+  agricola: "#67F876",
+  camion: "#4A77FF",
+  maquinaria: "#FFD33F",
+};
+
 const HomePage = () => {
   const { products, loadProducts } = useProducts();
   const [activeVehicle, setActiveVehicle] = useState("auto");
@@ -17,11 +24,16 @@ const HomePage = () => {
     loadProducts();
   }, [loadProducts]);
 
+  const heroBg = heroBgColors[activeVehicle] ?? "#FFFFFF";
+
   return (
     <div className="home-page">
       {/* Hero Section with Banner */}
 
-      <section className="hero-section">
+      <section
+        className="hero-section"
+        style={{ backgroundColor: heroBg, transition: "background-color 0.4s ease" }}
+      >
         <div className="hero-left-column">
           {/* esta es la parte del banner que se va a usar para mostrar las imagenes de promocion y tambien se puede usar para mostrar promociones especiales o algo asi 
         <div className="hero-banner">

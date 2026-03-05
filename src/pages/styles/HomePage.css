@@ -34,16 +34,25 @@
   gap: 1rem;
   width: 100%;
   border-radius: 8px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  box-shadow: none;
 }
 
 .hero-search-options {
-  background: white;
+  background: transparent;
   padding: 1.5rem 2rem;
   border-radius: 0;
   box-shadow: none;
   margin: 0;
   width: 100%;
+  border: none;
+}
+
+/* Limpieza de las tarjetas de llantas dentro del hero */
+.hero-search-options .rounded-lg {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(8px);
+  border: none !important;
+  box-shadow: none !important;
 }
 
 .search-cards-grid {
@@ -69,7 +78,7 @@
   width: 100%;
   border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: none;
 }
 
 .msb-content {
@@ -104,9 +113,9 @@
 
 .msb-value-btn {
   padding: 0.65rem 0.5rem;
-  border: 1.5px solid #e0e0e0;
+  border: 1.5px solid rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  background: #fff;
+  background: rgba(255, 255, 255, 0.8);
   color: #333;
   font-size: 0.9rem;
   font-weight: 600;
@@ -184,9 +193,10 @@
   flex-direction: column;
   justify-content: flex-start;
   padding: 1rem;
-  background: #fdfdfd;
+  background: transparent;
   border-radius: 16px;
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.05);
+  box-shadow: none;
+  border: none;
   margin: 1rem 1rem 1rem 0;
   height: fit-content;
 }
@@ -198,7 +208,7 @@
 .zone-info {
   text-align: center;
   padding: 1.5rem;
-  background: white;
+  background: transparent;
   border-bottom-left-radius: 12px;
   border-bottom-right-radius: 12px;
   z-index: 1;
@@ -209,10 +219,12 @@
   font-weight: 700;
   color: #1a1a1a;
   margin: 0 0 1rem 0;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
 }
 
 .zone-btn {
-  background: #E32619; /* Rojo corporativo */
+  background: #E32619;
+  /* Rojo corporativo */
   color: white;
   border: none;
   border-radius: 8px;
@@ -224,16 +236,19 @@
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 0 4px 14px rgba(227, 38, 25, 0.3);
-  outline: none; /* Elimina el contorno por defecto */
+  outline: none;
+  /* Elimina el contorno por defecto */
 }
 
 .zone-btn:focus {
   outline: none;
-  box-shadow: 0 4px 14px rgba(227, 38, 25, 0.5); /* Brillo sutil en vez de línea */
+  box-shadow: 0 4px 14px rgba(227, 38, 25, 0.5);
+  /* Brillo sutil en vez de línea */
 }
 
 .zone-btn:hover {
-  background: #1a1a1a; /* Negro al pasar el mouse */
+  background: #1a1a1a;
+  /* Negro al pasar el mouse */
   transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
@@ -241,9 +256,11 @@
 .zone-image {
   width: 100%;
   height: auto;
-  border-top-left-radius: 12px;
-  border-top-right-radius: 12px;
+  border-radius: 0;
   object-fit: contain;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 /* Filters Section */
