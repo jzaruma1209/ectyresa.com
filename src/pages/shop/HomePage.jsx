@@ -16,6 +16,13 @@ const heroBgColors = {
   maquinaria: "#FFD33F",
 };
 
+const heroAccentColors = {
+  auto: "#E60000", // Rojo Ectyre original
+  agricola: "#1B5E20", // Verde oscuro
+  camion: "#0D47A1", // Azul oscuro
+  maquinaria: "#E60000", // Regresamos al rojo original para maquinaria
+};
+
 const HomePage = () => {
   const { products, loadProducts } = useProducts();
   const [activeVehicle, setActiveVehicle] = useState("auto");
@@ -25,6 +32,7 @@ const HomePage = () => {
   }, [loadProducts]);
 
   const heroBg = heroBgColors[activeVehicle] ?? "#FFFFFF";
+  const heroAccent = heroAccentColors[activeVehicle] ?? "#E60000";
 
   return (
     <div className="home-page">
@@ -32,7 +40,11 @@ const HomePage = () => {
 
       <section
         className="hero-section"
-        style={{ backgroundColor: heroBg, transition: "background-color 0.4s ease" }}
+        style={{
+          backgroundColor: heroBg,
+          "--hero-accent": heroAccent,
+          transition: "background-color 0.4s ease"
+        }}
       >
         <div className="hero-left-column">
           {/* esta es la parte del banner que se va a usar para mostrar las imagenes de promocion y tambien se puede usar para mostrar promociones especiales o algo asi 

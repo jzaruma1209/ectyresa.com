@@ -55,6 +55,17 @@
   box-shadow: none !important;
 }
 
+/* Forzar el color de acento dinámico en botones y badges dentro de las tarjetas del hero */
+.hero-search-options .rounded-lg span[class*="bg-[#E32619]"],
+.hero-search-options .rounded-lg button {
+  background-color: var(--hero-accent) !important;
+  border-color: var(--hero-accent) !important;
+}
+
+.hero-search-options .rounded-lg span[class*="text-[#E32619]"] {
+  color: var(--hero-accent) !important;
+}
+
 .search-cards-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

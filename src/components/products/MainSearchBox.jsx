@@ -35,9 +35,13 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
                 key={vehicle.id}
                 onClick={() => onVehicleChange(vehicle.id)}
                 className={`flex items-center justify-center p-2.5 rounded-xl transition-all border-2 focus:outline-none ${activeVehicle === vehicle.id
-                  ? "bg-red-600 border-red-600 shadow-lg scale-[1.02]"
+                  ? "shadow-lg scale-[1.02]"
                   : "bg-transparent border-white/20 hover:border-white/40"
                   }`}
+                style={{
+                  backgroundColor: activeVehicle === vehicle.id ? 'var(--hero-accent)' : 'transparent',
+                  borderColor: activeVehicle === vehicle.id ? 'var(--hero-accent)' : 'rgba(255, 255, 255, 0.2)'
+                }}
               >
                 <span className={`font-bold text-sm tracking-wider text-center leading-tight ${activeVehicle === vehicle.id ? "text-white" : "text-white/70"}`}>
                   {vehicle.label}
@@ -59,9 +63,12 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
               <button
                 onClick={() => setSearchMode("dimension")}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all focus:outline-none ${searchMode === "dimension"
-                  ? "bg-red-600 text-white shadow-lg"
+                  ? "text-white shadow-lg"
                   : "bg-white/10 text-gray-300 hover:bg-white/20"
                   }`}
+                style={{
+                  backgroundColor: searchMode === "dimension" ? 'var(--hero-accent)' : 'rgba(255,255,255,0.1)'
+                }}
               >
                 POR DIMENSIÓN
               </button>
@@ -69,9 +76,12 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
               <button
                 onClick={() => setSearchMode("vehiculo")}
                 className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all focus:outline-none ${searchMode === "vehiculo"
-                  ? "bg-red-600 text-white shadow-lg"
+                  ? "text-white shadow-lg"
                   : "bg-white/10 text-gray-300 hover:bg-white/20"
                   }`}
+                style={{
+                  backgroundColor: searchMode === "vehiculo" ? 'var(--hero-accent)' : 'rgba(255,255,255,0.1)'
+                }}
               >
                 EN VEHÍCULO
               </button>
