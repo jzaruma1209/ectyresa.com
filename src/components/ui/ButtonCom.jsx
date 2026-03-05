@@ -38,6 +38,8 @@ const ButtonCom = ({
   type = "button",
   disabled = false,
 }) => {
+  const isDark = variant === "dark";
+
   return (
     <button
       type={type}
@@ -49,6 +51,7 @@ const ButtonCom = ({
         transition-all duration-200 ease-in-out
         focus:outline-none focus:ring-0
         disabled:opacity-50 disabled:cursor-not-allowed
+        relative overflow-hidden
         ${uppercase ? "uppercase" : ""}
         ${fullWidth ? "w-full" : ""}
         ${sizeClasses[size] || sizeClasses.md}
@@ -56,7 +59,22 @@ const ButtonCom = ({
         ${className}
       `.trim()}
     >
-      {children}
+      {/* Blobs de color glassmorphism — solo en variante dark */}
+      {isDark && (
+        <>
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -left-4 top-1/2 -translate-y-1/2 w-24 h-24 rounded-full blur-2xl opacity-50"
+            style={{ background: "linear-gradient(135deg, #ff80b5, #9089fc)" }}
+          />
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute -right-4 top-1/2 -translate-y-1/2 w-24 h-24 rounded-full blur-2xl opacity-50"
+            style={{ background: "linear-gradient(135deg, #9089fc, #ff80b5)" }}
+          />
+        </>
+      )}
+      <span className="relative z-10">{children}</span>
     </button>
   );
 };
