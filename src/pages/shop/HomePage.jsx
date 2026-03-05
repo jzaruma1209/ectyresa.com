@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useProducts } from "../../hooks/useProducts";
 import FilterByCategory from "../../components/products/FilterByCategory";
 import FilterByTerrain from "../../components/products/FilterByTerrain";
@@ -11,6 +11,7 @@ import "../styles/HomePage.css";
 
 const HomePage = () => {
   const { products, loadProducts } = useProducts();
+  const [activeVehicle, setActiveVehicle] = useState("auto");
 
   useEffect(() => {
     loadProducts();
@@ -32,12 +33,12 @@ const HomePage = () => {
             <HeroSearchOptions />
 
             {/* Main Search Box */}
-            <MainSearchBox />
+            <MainSearchBox activeVehicle={activeVehicle} onVehicleChange={setActiveVehicle} />
           </div>
 
 
         </div>
-        <HeroRightColumn />
+        <HeroRightColumn activeVehicle={activeVehicle} />
       </section>
 
       {/* Filters Section, aqui estan los componenesque se  van a usar para mi card asi poder usarlo para filtrar por tipo de llanta */}

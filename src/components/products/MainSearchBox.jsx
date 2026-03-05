@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-const MainSearchBox = () => {
-  const [activeVehicle, setActiveVehicle] = useState("auto");
+const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
   const [searchMode, setSearchMode] = useState("dimension");
   const [selectedWidth, setSelectedWidth] = useState(null);
   const [showMore, setShowMore] = useState(false);
@@ -10,6 +9,7 @@ const MainSearchBox = () => {
     { id: "auto", label: "AUTO" },
     { id: "agricola", label: "AGRÍCOLA" },
     { id: "camion", label: "CAMIÓN" },
+    { id: "maquinaria", label: "MAQUINARIA PESADA / CONSTRUCCIÓN" },
   ];
 
   const widthValues = [16, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30];
@@ -21,7 +21,7 @@ const MainSearchBox = () => {
     <div className="w-full max-w-6xl mx-auto px-4 py-4">
       {/* Contenedor principal con fondo degradado */}
       <div className="bg-gradient-to-br from-gray-800 via-gray-900 to-black rounded-2xl shadow-2xl overflow-hidden">
-        
+
         {/* Tabs de vehículos */}
         <div className="p-4 pb-0">
           <div className="flex items-center mb-3">
@@ -29,25 +29,25 @@ const MainSearchBox = () => {
               ESCOGE EL TIPO DE VEHÍCULO:
             </span>
           </div>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             {vehicles.map((vehicle) => (
               <button
                 key={vehicle.id}
-                onClick={() => setActiveVehicle(vehicle.id)}
-                className={`flex items-center justify-center p-3 rounded-xl transition-all border-2 focus:outline-none ${
-                  activeVehicle === vehicle.id
-                    ? "bg-red-600 border-red-600 shadow-lg scale-[1.02]"
-                    : "bg-transparent border-white/20 hover:border-white/40"
-                }`}
+                onClick={() => onVehicleChange(vehicle.id)}
+                className={`flex items-center justify-center p-2.5 rounded-xl transition-all border-2 focus:outline-none ${activeVehicle === vehicle.id
+                  ? "bg-red-600 border-red-600 shadow-lg scale-[1.02]"
+                  : "bg-transparent border-white/20 hover:border-white/40"
+                  }`}
               >
-                <span className={`font-bold text-sm tracking-wider ${activeVehicle === vehicle.id ? "text-white" : "text-white/70"}`}>
+                <span className={`font-bold text-sm tracking-wider text-center leading-tight ${activeVehicle === vehicle.id ? "text-white" : "text-white/70"}`}>
                   {vehicle.label}
                 </span>
               </button>
-            ))}       
+            ))}
           </div>
         </div>
 
+        {/* Contenido principal */}
         {/* Contenido principal */}
         <div className="p-4">
           {/* Botones de modo de búsqueda */}
@@ -58,22 +58,20 @@ const MainSearchBox = () => {
             <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setSearchMode("dimension")}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all focus:outline-none ${
-                  searchMode === "dimension"
-                    ? "bg-red-600 text-white shadow-lg"
-                    : "bg-white/10 text-gray-300 hover:bg-white/20"
-                }`}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all focus:outline-none ${searchMode === "dimension"
+                  ? "bg-red-600 text-white shadow-lg"
+                  : "bg-white/10 text-gray-300 hover:bg-white/20"
+                  }`}
               >
                 POR DIMENSIÓN
               </button>
 
               <button
                 onClick={() => setSearchMode("vehiculo")}
-                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all focus:outline-none ${
-                  searchMode === "vehiculo"
-                    ? "bg-red-600 text-white shadow-lg"
-                    : "bg-white/10 text-gray-300 hover:bg-white/20"
-                }`}
+                className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all focus:outline-none ${searchMode === "vehiculo"
+                  ? "bg-red-600 text-white shadow-lg"
+                  : "bg-white/10 text-gray-300 hover:bg-white/20"
+                  }`}
               >
                 EN VEHÍCULO
               </button>
@@ -82,7 +80,7 @@ const MainSearchBox = () => {
 
           {/* Área de contenido principal */}
           <div className="bg-white rounded-xl p-6 shadow-inner">
-            
+
             {/* Selector */}
             <div>
               {searchMode === "dimension" ? (
@@ -94,24 +92,23 @@ const MainSearchBox = () => {
 
                   {/* Imagen de llanta con indicadores */}
                   <div className="relative mb-8 flex justify-center">
-                    <img 
-                      src="/infollanta.svg" 
-                      alt="Información de llanta" 
+                    <img
+                      src="/infollanta.svg"
+                      alt="Información de llanta"
                       className="h-32 w-auto object-contain"
                     />
                   </div>
 
                   {/* Grid de valores */}
-                  <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-3 mb-6">
+                  <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-3 mb-4">
                     {displayedWidths.map((width) => (
                       <button
                         key={width}
                         onClick={() => setSelectedWidth(width)}
-                        className={`py-3 rounded-xl font-bold transition-all text-sm border-2 focus:outline-none ${
-                          selectedWidth === width
-                            ? "bg-red-600 border-red-600 text-white shadow-md scale-105"
-                            : "bg-white border-gray-200 text-gray-600 hover:border-red-400 hover:text-red-500"
-                        }`}
+                        className={`py-3 rounded-xl font-bold transition-all text-sm border-2 focus:outline-none ${selectedWidth === width
+                          ? "bg-red-600 border-red-600 text-white shadow-md scale-105"
+                          : "bg-white border-gray-200 text-gray-600 hover:border-red-400 hover:text-red-500"
+                          }`}
                       >
                         {width}
                       </button>
