@@ -206,14 +206,17 @@
   padding: 1rem;
   background: transparent;
   border-radius: 16px;
-  box-shadow: none;
-  border: none;
+  box-shadow: none !important;
+  border: none !important;
+  outline: none !important;
   margin: 1rem 1rem 1rem 0;
   height: fit-content;
 }
 
 .zone-right {
   width: 100%;
+  border: none !important;
+  outline: none !important;
 }
 
 .zone-info {
@@ -230,7 +233,8 @@
   font-weight: 700;
   color: #1a1a1a;
   margin: 0 0 1rem 0;
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.4);
+  text-shadow: none;
+  /* Quitamos la sombra blanca para que no ensucie */
 }
 
 .zone-btn {
@@ -252,9 +256,8 @@
 }
 
 .zone-btn:focus {
-  outline: none;
-  box-shadow: 0 4px 14px rgba(227, 38, 25, 0.5);
-  /* Brillo sutil en vez de línea */
+  outline: none !important;
+  box-shadow: none !important;
 }
 
 .zone-btn:hover {
@@ -270,8 +273,12 @@
   border-radius: 0;
   object-fit: contain;
   background: transparent;
-  border: none;
-  box-shadow: none;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  /* Recorte para eliminar la línea blanca inferior y padding para el margen del color del fondo */
+  clip-path: inset(0 0 20px 0);
+  padding: 25px;
 }
 
 /* Filters Section */

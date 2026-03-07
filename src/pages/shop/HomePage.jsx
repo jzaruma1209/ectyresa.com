@@ -42,6 +42,7 @@ const HomePage = () => {
         className="hero-section"
         style={{
           backgroundColor: heroBg,
+          "--hero-bg": heroBg,
           "--hero-accent": heroAccent,
           transition: "background-color 0.4s ease"
         }}

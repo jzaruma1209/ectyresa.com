@@ -2,9 +2,9 @@ import ButtonCom from "../ui/ButtonCom";
 
 const vehicleImages = {
   auto: { src: "/fondo_auto.png", alt: "Auto - Llanta para turismo y SUV" },
-  agricola: { src: "/agricola.svg", alt: "Agrícola - Llanta para uso agrícola" },
-  camion: { src: "/camiones.svg", alt: "Camión - Llanta para transporte pesado" },
-  maquinaria: { src: "/maquinaria pesada.svg", alt: "Maquinaria Pesada - Llanta para construcción" },
+  agricola: { src: "/agricola.webp", alt: "Agrícola - Llanta para uso agrícola" },
+  camion: { src: "/camiones.webp", alt: "Camión - Llanta para transporte pesado" },
+  maquinaria: { src: "/maquinaria pesada.webp", alt: "Maquinaria Pesada - Llanta para construcción" },
 };
 
 const HeroRightColumn = ({ activeVehicle = "auto" }) => {
