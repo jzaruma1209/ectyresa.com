@@ -7,12 +7,18 @@
 .hero-section {
   position: relative;
   background: transparent;
+  width: 100%;
+}
+
+.hero-container {
   display: grid;
   grid-template-columns: 1.5fr 1fr;
   align-items: stretch;
   gap: 1rem;
   min-height: 420px;
-  margin-top: 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
 }
 
 .hero-left-column {
@@ -310,14 +316,14 @@
 
 /* Responsive Design */
 @media (max-width: 1200px) {
-  .hero-section {
+  .hero-container {
     grid-template-columns: 1.2fr 1fr;
     min-height: 380px;
   }
 }
 
 @media (max-width: 1024px) {
-  .hero-section {
+  .hero-container {
     grid-template-columns: 1fr;
     min-height: auto;
   }

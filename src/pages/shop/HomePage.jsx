@@ -34,6 +34,15 @@ const HomePage = () => {
   const heroBg = heroBgColors[activeVehicle] ?? "#FFFFFF";
   const heroAccent = heroAccentColors[activeVehicle] ?? "#E60000";
 
+  // Sync hero background color to body so it extends behind the header
+  useEffect(() => {
+    document.body.style.transition = "background-color 0.4s ease";
+    document.body.style.backgroundColor = heroBg;
+    return () => {
+      document.body.style.backgroundColor = "#FFFFFF";
+    };
+  }, [heroBg]);
+
   return (
     <div className="home-page">
       {/* Hero Section with Banner */}
@@ -47,23 +56,25 @@ const HomePage = () => {
           transition: "background-color 0.4s ease"
         }}
       >
-        <div className="hero-left-column">
-          {/* esta es la parte del banner que se va a usar para mostrar las imagenes de promocion y tambien se puede usar para mostrar promociones especiales o algo asi 
-        <div className="hero-banner">
-            <HeroBanner />
+        <div className="hero-container">
+          <div className="hero-left-column">
+            {/* esta es la parte del banner que se va a usar para mostrar las imagenes de promocion y tambien se puede usar para mostrar promociones especiales o algo asi 
+          <div className="hero-banner">
+              <HeroBanner />
+            </div>
+          */}
+
+            <div className="hero-search-wrapper">
+              <HeroSearchOptions />
+
+              {/* Main Search Box */}
+              <MainSearchBox activeVehicle={activeVehicle} onVehicleChange={setActiveVehicle} />
+            </div>
+
+
           </div>
-        */}
-
-          <div className="hero-search-wrapper">
-            <HeroSearchOptions />
-
-            {/* Main Search Box */}
-            <MainSearchBox activeVehicle={activeVehicle} onVehicleChange={setActiveVehicle} />
-          </div>
-
-
+          <HeroRightColumn activeVehicle={activeVehicle} />
         </div>
-        <HeroRightColumn activeVehicle={activeVehicle} />
       </section>
 
       {/* Filters Section, aqui estan los componenesque se  van a usar para mi card asi poder usarlo para filtrar por tipo de llanta */}
