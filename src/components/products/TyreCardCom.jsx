@@ -18,7 +18,7 @@ const TyreCardCom = ({
 }) => {
   return (
     <div
-      className={`relative w-full overflow-hidden rounded-lg cursor-pointer transition-shadow border border-white/10 hover:shadow-lg ${className || 'max-w-[240px]'}`}
+      className={`relative w-full overflow-hidden rounded-lg cursor-pointer transition-shadow border border-white/10 hover:shadow-lg flex flex-col ${className || 'max-w-[240px]'}`}
       style={{ background: "rgba(17, 24, 39, 0.80)" }}
       onClick={onClick}
     >
@@ -48,7 +48,7 @@ const TyreCardCom = ({
       )}
 
       {/* Imagen de la llanta */}
-      <div className="h-32 w-full overflow-hidden bg-white/10 p-3 flex items-center justify-center relative z-10">
+      <div className="h-24 w-full overflow-hidden bg-white/10 p-2 flex items-center justify-center relative z-10">
         <img
           className="max-h-full max-w-full object-contain hover:scale-105 transition-transform duration-300"
           src={image}
@@ -56,7 +56,7 @@ const TyreCardCom = ({
         />
       </div>
 
-      <div className="px-3 pb-3 pt-1 relative z-10">
+      <div className="px-2 pb-2 pt-1 relative z-10 flex-grow flex flex-col">
         {/* Logo de la marca compactado */}
         <div className="flex items-center justify-center py-1 border-b border-white/10 mb-1">
           <img
@@ -67,7 +67,7 @@ const TyreCardCom = ({
         </div>
 
         {/* Info del producto con menos márgenes */}
-        <div className="text-center">
+        <div className="text-center flex-grow">
           {model && (
             <h5 className="text-[13px] font-bold text-white leading-tight">
               .{model}
@@ -105,7 +105,7 @@ const TyreCardCom = ({
         </div>
 
         {/* Boton comprar compacto */}
-        <div className="mt-2 text-center">
+        <div className="mt-1 text-center">
           <ButtonCom
             size="sm"
             variant="primary"

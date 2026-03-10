@@ -1,6 +1,6 @@
 const PromoBanner = () => {
   return (
-    <div className="hidden sm:flex relative isolate items-center gap-x-6 overflow-hidden bg-gray-900/70 px-6 py-[5px] after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10 sm:px-3.5 sm:before:flex-1">
+    <div className="hidden sm:flex relative isolate items-center gap-x-6 overflow-hidden bg-gray-900/70 px-6 py-[2px] after:pointer-events-none after:absolute after:inset-x-0 after:bottom-0 after:h-px after:bg-white/10 sm:px-3.5 sm:before:flex-1">
       <style>{`
         @keyframes marquee {
           0% { transform: translateX(-50%); }

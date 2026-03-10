@@ -18,9 +18,7 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
   const displayedWidths = showMore ? [...widthValues, ...moreWidthValues] : widthValues;
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 py-4">
-      {/* Contenedor con efecto glassmorphism estilo PromoBanner */}
-      <div className="relative rounded-2xl overflow-hidden" style={{ background: "rgba(17, 24, 39, 0.70)" }}>
+    <div className="relative rounded-2xl overflow-hidden h-full" style={{ background: "rgba(17, 24, 39, 0.70)" }}>
 
         {/* Blob izquierdo de color */}
         <div
@@ -44,13 +42,13 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-px bg-white/10" />
 
         {/* Tabs de vehículos */}
-        <div className="p-4 pb-0">
+        <div className="p-3 pb-0">
           <div className="flex items-center mb-3">
             <span className="text-white/70 text-[10px] font-bold uppercase tracking-wider ml-1">
               ESCOGE EL TIPO DE VEHÍCULO:
             </span>
           </div>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-2">
             {vehicles.map((vehicle) => (
               <button
                 key={vehicle.id}
@@ -76,7 +74,7 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
         {/* Contenido principal */}
         <div className="p-4">
           {/* Botones de modo de búsqueda */}
-          <div className="flex flex-wrap items-center gap-3 p-3 bg-white/10 rounded-xl mb-4">
+          <div className="flex flex-wrap items-center gap-3 p-3 bg-white/10 rounded-xl mb-3">
             <span className="text-white/60 text-[10px] font-bold uppercase tracking-widest ml-2">
               BUSCA TU LLANTA IDEAL POR:
             </span>
@@ -110,33 +108,33 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
           </div>
 
           {/* Área de contenido principal */}
-          <div className="bg-white/90 rounded-xl p-6 shadow-inner">
+          <div className="bg-white/90 rounded-xl p-4 shadow-inner">
 
             {/* Selector */}
             <div>
               {searchMode === "dimension" ? (
                 <>
                   {/* Título */}
-                  <h3 className="text-lg font-black text-gray-900 mb-6 text-center">
+                  <h3 className="text-lg font-black text-gray-900 mb-3 text-center">
                     SELECCIONE EL <span className="text-red-600">ANCHO</span>
                   </h3>
 
                   {/* Imagen de llanta con indicadores */}
-                  <div className="relative mb-8 flex justify-center">
+                  <div className="relative mb-4 flex justify-center">
                     <img
                       src="/infollanta.svg"
                       alt="Información de llanta"
-                      className="h-32 w-auto object-contain"
+                      className="h-20 w-auto object-contain"
                     />
                   </div>
 
                   {/* Grid de valores */}
-                  <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-3 mb-4">
+                  <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-7 gap-2 mb-3">
                     {displayedWidths.map((width) => (
                       <button
                         key={width}
                         onClick={() => setSelectedWidth(width)}
-                        className={`py-3 rounded-xl font-bold transition-all text-sm border-2 focus:outline-none ${selectedWidth === width
+                        className={`py-2 rounded-xl font-bold transition-all text-sm border-2 focus:outline-none ${selectedWidth === width
                           ? "bg-red-600 border-red-600 text-white shadow-md scale-105"
                           : "bg-white border-gray-200 text-gray-600 hover:border-red-400 hover:text-red-500"
                           }`}
@@ -147,7 +145,7 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
                   </div>
 
                   {/* Botón mostrar más */}
-                  <div className="flex justify-center mt-4">
+                  <div className="flex justify-center mt-2">
                     <button
                       onClick={() => setShowMore(!showMore)}
                       className="group flex items-center gap-2 px-6 py-2.5 bg-gray-900 text-white rounded-full font-bold hover:bg-red-600 transition-all text-sm shadow-lg"
@@ -176,7 +174,6 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
             </div>
           </div>
         </div>
-      </div>
     </div>
   );
 };
