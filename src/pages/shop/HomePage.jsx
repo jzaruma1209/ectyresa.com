@@ -7,6 +7,8 @@ import HeroBanner from "../../components/products/HeroBanner";
 import HeroSearchOptions from "../../components/products/HeroSearchOptions";
 import MainSearchBox from "../../components/products/MainSearchBox";
 import HeroRightColumn from "../../components/products/HeroRightColumn";
+import BrandSection from "../../components/products/BrandSection";
+import { BRAND_SECTIONS } from "../../data/brandsMockData";
 import "../styles/HomePage.css";
 
 const heroBgColors = {
@@ -74,6 +76,17 @@ const HomePage = () => {
           <HeroRightColumn activeVehicle={activeVehicle} />
         </div>
       </section>
+
+      {/* ── SECCIONES POR MARCA ── */}
+      <div className="brands-sections-wrapper">
+        {BRAND_SECTIONS.map((section, idx) => (
+          <BrandSection
+            key={idx}
+            brand={section.brand}
+            products={section.products}
+          />
+        ))}
+      </div>
 
       {/* Filters Section, aqui estan los componenesque se  van a usar para mi card asi poder usarlo para filtrar por tipo de llanta */}
       <div className="home-page-filters">

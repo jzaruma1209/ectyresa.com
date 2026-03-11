@@ -292,6 +292,169 @@
   padding: 15px;
 }
 
+/* ======================================================
+   BRAND SECTIONS — Secciones por Marca
+   ====================================================== */
+
+.brands-sections-wrapper {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* Cada sección de marca */
+.brand-section {
+  padding: 2.5rem 0;
+  border-bottom: 1px solid #ebebeb;
+}
+
+.brand-section:last-child {
+  border-bottom: none;
+}
+
+/* Layout: header izquierdo + cards a la derecha */
+.brand-section-inner {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+/* ── HEADER IZQUIERDO ── */
+.brand-section-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding-right: 1.5rem;
+  border-right: 2px solid #ebebeb;
+  min-height: 180px;
+  justify-content: center;
+}
+
+.brand-logo-wrapper {
+  background: #f5f5f5;
+  border-radius: 10px;
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.brand-logo-img {
+  max-height: 42px;
+  max-width: 160px;
+  object-fit: contain;
+}
+
+.brand-section-title {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1a1a1a;
+  margin: 0;
+  letter-spacing: -0.3px;
+  line-height: 1.2;
+}
+
+.brand-section-tagline {
+  font-size: 0.78rem;
+  color: #808080;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.brand-see-all-btn {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.4rem 1rem;
+  background: #E60000;
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 6px;
+  letter-spacing: 0.3px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.brand-see-all-btn:hover {
+  background: #1a1a1a;
+  transform: translateY(-1px);
+}
+
+/* ── SCROLL HORIZONTAL DE CARDS ── */
+.brand-cards-scroll {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 0.5rem;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: #cccccc transparent;
+}
+
+.brand-cards-scroll::-webkit-scrollbar {
+  height: 4px;
+}
+
+.brand-cards-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.brand-cards-scroll::-webkit-scrollbar-thumb {
+  background-color: #cccccc;
+  border-radius: 4px;
+}
+
+/* Card dentro de la sección de marca */
+.brand-section-card {
+  flex: 0 0 190px !important;
+  max-width: 190px !important;
+  min-width: 190px !important;
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .brand-section-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .brand-section-header {
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 1px solid #ebebeb;
+    padding-right: 0;
+    padding-bottom: 1rem;
+    min-height: auto;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .brand-logo-wrapper {
+    width: auto;
+    min-width: 120px;
+  }
+
+  .brand-meta {
+    flex: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .brands-sections-wrapper {
+    padding: 0 1rem;
+  }
+
+  .brand-section {
+    padding: 1.5rem 0;
+  }
+}
+
 /* Filters Section */
 .home-page-filters {
   max-width: 1400px;
