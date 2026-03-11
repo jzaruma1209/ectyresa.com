@@ -19,7 +19,7 @@ const TyreCardCom = ({
   return (
     <div
       className={`relative w-full overflow-hidden rounded-lg cursor-pointer transition-shadow border border-white/10 hover:shadow-lg flex flex-col ${className || 'max-w-[240px]'}`}
-      style={{ background: "rgba(17, 24, 39, 0.80)" }}
+      style={{ background: "rgba(17, 24, 39, 0.20)" }}
       onClick={onClick}
     >
       {/* Blob izquierdo glassmorphism */}

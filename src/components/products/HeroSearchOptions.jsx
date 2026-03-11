@@ -2,7 +2,7 @@ import TyreCardCom from "./TyreCardCom";
 
 const HeroSearchOptions = () => {
   return (
-    <div className="hero-search-options relative rounded-2xl overflow-hidden h-full flex flex-col p-3" style={{ background: "rgba(17, 24, 39, 0.70)" }}>
+    <div className="hero-search-options relative rounded-2xl overflow-hidden h-full flex flex-col p-3" style={{ background: "rgba(17, 24, 39, 0.40)" }}>
       {/* Blob izquierdo de color */}
       <div
         aria-hidden="true"

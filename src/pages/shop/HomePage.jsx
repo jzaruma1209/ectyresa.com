@@ -64,12 +64,10 @@ const HomePage = () => {
             </div>
           */}
 
-            <div className="hero-search-wrapper">
-              <HeroSearchOptions />
+            <HeroSearchOptions />
 
-              {/* Main Search Box */}
-              <MainSearchBox activeVehicle={activeVehicle} onVehicleChange={setActiveVehicle} />
-            </div>
+            {/* Main Search Box */}
+            <MainSearchBox activeVehicle={activeVehicle} onVehicleChange={setActiveVehicle} />
 
 
           </div>
