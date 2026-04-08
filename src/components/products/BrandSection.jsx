@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import TyreCardCom from "./TyreCardCom";
+import TireCard from "./TireCard";
 
 /**
  * BrandSection — Sección de marca con header a la izquierda (logo + nombre)
@@ -30,19 +30,18 @@ const BrandSection = ({ brand, products }) => {
         {/* ── GRID DE CARDS ── */}
         <div className="brand-cards-scroll">
           {products.map((product, i) => (
-            <TyreCardCom
+            <TireCard
               key={i}
-              image={product.image}
-              title={product.title}
-              brandImage={brand.logo}
-              brandName={brand.name}
-              model={product.model}
-              measure={product.measure}
-              description={product.description}
-              price={product.price}
-              originalPrice={product.originalPrice}
-              badge={product.badge}
-              className="brand-section-card"
+              product={{
+                ...product,
+                name: product.title, // Mapping title to name
+                // ensure price is there
+                price: product.price,
+                image: product.image
+              }}
+              brandLogoSrc={brand.logo}
+              sashSrc={null}
+              pvp={product.originalPrice || undefined}
             />
           ))}
         </div>

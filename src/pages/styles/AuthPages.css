@@ -1,0 +1,8 @@
+/* ═══════════════════════════════════
+   AuthPages.css — Login & Register
+   ═══════════════════════════════════ */
+
+.auth-page {
+  min-height: calc(100vh - 200px);
+  background: #F5F5F5;
+}

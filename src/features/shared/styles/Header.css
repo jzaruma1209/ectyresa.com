@@ -310,6 +310,53 @@
   color: #E60000;
 }
 
+/* ── Auth states in header ── */
+.action-account--logged {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.action-account-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #1A1A1A;
+  transition: color 0.2s;
+}
+
+.action-account-link:hover {
+  color: #E60000;
+}
+
+.header-logout-btn {
+  background: none;
+  border: 1px solid #E0E0E0;
+  border-radius: 6px;
+  padding: 5px 6px;
+  cursor: pointer;
+  color: #808080;
+  display: flex;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.header-logout-btn:hover {
+  color: #E60000;
+  border-color: #E60000;
+  background: #FFF5F5;
+}
+
+.mobile-nav-btn {
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  font-family: inherit;
+  color: #E60000;
+}
+
 /* ──────────────────────────────────────
    RESPONSIVE HELPERS
 ────────────────────────────────────── */

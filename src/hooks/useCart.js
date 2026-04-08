@@ -1,69 +1,93 @@
-import { useEffect } from 'react';
+// Fase 4 — useCart actualizado para usar el backend
+// Expone la misma API pública que antes para no romper los componentes existentes.
+
 import { useSelector, useDispatch } from 'react-redux';
 import {
-  addToCart,
-  removeFromCart,
-  updateQuantity,
-  clearCart,
+  addToCartAsync,
+  removeFromCartAsync,
+  updateQuantityAsync,
+  clearCartAsync,
+  clearCartLocal,
+  clearCartError,
 } from '../store/slices/cart.slice';
-import cartService from '../services/cart.service';
-import { IVA_RATE } from '../constants';
 
 export const useCart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart);
 
-  // Guardar carrito en localStorage cuando cambie
-  useEffect(() => {
-    if (cart.items.length > 0 || cart.total > 0) {
-      cartService.saveCart({
-        items: cart.items,
-        total: cart.total,
-        itemCount: cart.itemCount,
-      });
+  /**
+   * Agrega un producto al carrito.
+   * Internamente llama al backend con { idLlanta, cantidad }.
+   * product.id ES el idLlanta del backend (Regla RG-6).
+   */
+  const handleAddToCart = async (product, quantity = 1) => {
+    await dispatch(addToCartAsync({ idLlanta: product.id, cantidad: quantity }));
+  };
+
+  /**
+   * Elimina un item del carrito.
+   * Recibe el cartItemId (idItem del backend), no el productId.
+   * CartItem.jsx usa item.cartItemId para llamar a esta función.
+   */
+  const handleRemoveFromCart = async (cartItemId) => {
+    await dispatch(removeFromCartAsync(cartItemId));
+  };
+
+  /**
+   * Actualiza la cantidad de un item.
+   * Si la nueva cantidad es 0, elimina el item directamente.
+   */
+  const handleUpdateQuantity = async (cartItemId, cantidad) => {
+    if (cantidad <= 0) {
+      await dispatch(removeFromCartAsync(cartItemId));
     } else {
-      cartService.clearCart();
+      await dispatch(updateQuantityAsync({ cartItemId, cantidad }));
     }
-  }, [cart.items, cart.total, cart.itemCount]);
-
-  const handleAddToCart = (product, quantity = 1) => {
-    dispatch(addToCart({
-      productId: product.id,
-      product,
-      quantity,
-    }));
   };
 
-  const handleRemoveFromCart = (productId) => {
-    dispatch(removeFromCart(productId));
+  /**
+   * Vacía el carrito completo en el backend.
+   */
+  const handleClearCart = async () => {
+    await dispatch(clearCartAsync());
   };
 
-  const handleUpdateQuantity = (productId, quantity) => {
-    dispatch(updateQuantity({ productId, quantity }));
+  /**
+   * Limpia el carrito localmente en Redux (sin llamar al backend).
+   * Usar solo tras un checkout exitoso (el backend ya lo marcó como CONVERTIDO).
+   */
+  const handleClearCartLocal = () => {
+    dispatch(clearCartLocal());
   };
 
-  const handleClearCart = () => {
-    dispatch(clearCart());
-    cartService.clearCart();
-  };
-
-  // Calcular total con IVA
-  const calculateTotalWithIVA = () => {
-    return cart.total * (1 + IVA_RATE);
+  const handleClearError = () => {
+    dispatch(clearCartError());
   };
 
   return {
+    // Estado
     cart,
     items: cart.items,
-    total: cart.total,
     itemCount: cart.itemCount,
-    totalWithIVA: calculateTotalWithIVA(),
+    loading: cart.loading,
+    error: cart.error,
+
+    // Totales del backend (Regla 4.6) — NO se calculan en frontend
+    subtotal: cart.subtotal,
+    iva: cart.iva,
+    total: cart.total,
+
+    // Compatibilidad con componentes que usaban 'totalWithIVA'
+    totalWithIVA: cart.total,
+
+    // Acciones
     addToCart: handleAddToCart,
     removeFromCart: handleRemoveFromCart,
     updateQuantity: handleUpdateQuantity,
     clearCart: handleClearCart,
+    clearCartLocal: handleClearCartLocal,
+    clearError: handleClearError,
   };
 };
 
 export default useCart;
-

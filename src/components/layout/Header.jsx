@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useAuth } from "../../hooks/useAuth";
 import PromoBanner from "../../features/shared/PromoBanner";
 import "../../features/shared/styles/Header.css";
 
 const Header = () => {
   const cartItemCount = useSelector((state) => state.cart.itemCount);
+  const { user, isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
   const [isHidden, setIsHidden] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -32,6 +35,16 @@ const Header = () => {
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
+
+  // Nombre a mostrar en el Header
+  const displayName = user?.nombres
+    ? user.nombres.split(' ')[0]
+    : 'Mi Cuenta';
 
   return (
     <header className={`header ${isHidden ? "header--hidden" : ""}`}>
@@ -100,17 +113,38 @@ const Header = () => {
               </div>
             </div>
 
-            {/* Mi Cuenta */}
-            <Link to="/account" className="action-account desktop-only">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="action-svg">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              <div className="account-text-block">
-                <span className="account-label">MI CUENTA</span>
-                <span className="account-sub">Ingresar</span>
+            {/* Mi Cuenta — cambia según estado de autenticación */}
+            {isAuthenticated ? (
+                <div className="action-account desktop-only action-account--logged">
+                  <div style={{ display: 'flex', flexDirection: 'column', marginRight: '1rem', alignItems: 'flex-start' }}>
+                    <Link to="/perfil" className="account-text-block" style={{ color: 'white', textDecoration: 'none', marginBottom: '4px', fontSize: '0.9rem' }}>
+                      <span className="account-label">HOLA, {displayName}</span>
+                      <span className="account-sub" style={{ textDecoration: 'underline' }}>Mi Perfil</span>
+                    </Link>
+                    <Link to="/mis-pedidos" className="account-text-block" style={{ color: 'white', textDecoration: 'none', fontSize: '0.9rem' }}>
+                      <span className="account-sub" style={{ color: '#E60000', fontWeight: 'bold' }}>Mis Pedidos</span>
+                    </Link>
+                  </div>
+                  <button className="header-logout-btn" onClick={handleLogout} title="Cerrar sesión">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
+                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                    <polyline points="16 17 21 12 16 7" />
+                    <line x1="21" y1="12" x2="9" y2="12" />
+                  </svg>
+                </button>
               </div>
-            </Link>
+            ) : (
+              <Link to="/login" className="action-account desktop-only">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="action-svg">
+                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg>
+                <div className="account-text-block">
+                  <span className="account-label">MI CUENTA</span>
+                  <span className="account-sub">Ingresar</span>
+                </div>
+              </Link>
+            )}
 
             {/* Carrito */}
             <Link to="/cart" className="action-cart">
@@ -152,7 +186,21 @@ const Header = () => {
       {menuOpen && (
         <nav className="mobile-nav">
           <Link to="/" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Inicio</Link>
-          <Link to="/account" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Mi Cuenta</Link>
+          {isAuthenticated ? (
+            <>
+              <Link to="/perfil" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>
+                Mi Perfil ({displayName})
+              </Link>
+              <Link to="/mis-pedidos" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>
+                Mis Pedidos
+              </Link>
+              <button className="mobile-nav-link mobile-nav-btn" onClick={() => { handleLogout(); setMenuOpen(false); }}>
+                Cerrar Sesión
+              </button>
+            </>
+          ) : (
+            <Link to="/login" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Iniciar Sesión</Link>
+          )}
           <Link to="/cart" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>
             Carrito {cartItemCount > 0 && `(${cartItemCount})`}
           </Link>

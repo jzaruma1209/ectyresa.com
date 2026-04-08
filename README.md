@@ -22,6 +22,27 @@
 - 💳 Flujo de checkout
 - 🚗 Catálogo de servicios automotrices
 
+## 🔌 Integraciones Actuales Disponibles
+
+Actualmente, el frontend de Ectyre se encuentra **completamente integrado con el backend**, lo que te permite interactuar en tiempo real con las siguientes funcionalidades ya operativas y listas para usarse:
+
+### 1. 🔐 Autenticación y Cuentas
+- **Login con Google:** Integración activa con Google OAuth2 para acceso rápido.
+- **Login / Registro Tradicional:** Creación y acceso a cuentas mediante correo y contraseña.
+- **Sesión Global:** Manejo seguro de la sesión de usuario y control de accesos a rutas privadas.
+
+### 2. 🛒 Carrito de Compras Avanzado
+- **Sincronización con el Backend:** El estado del carrito se preserva en la sesión del servidor (se eliminó la dependencia exclusiva de localStorage).
+- **Control de Inventario:** Validación de stock en tiempo real al agregar productos y durante el pago.
+
+### 3. 💳 Pedidos (Orders) y Checkout
+- **Proceso de Checkout Integral:** Recolección de información de envío, validación de la compra y creación de nuevas órdenes contra la API.
+- **Historial de Órdenes:** Visualización de los pedidos realizados por el usuario en su perfil.
+
+### 4. 🔍 Catálogo y Búsqueda Dinámica
+- **Listado de Llantas:** Consumo dinámico de productos (paginación, detalles y más) en tiempo real desde la API central.
+- **Búsqueda Inteligente por Vehículo:** Los filtros (Marca, Modelo, Año) obtienen metadatos reales y filtran compatibilidades directamente desde el backend.
+
 ## 🏗️ Estructura del proyecto
 
 ```

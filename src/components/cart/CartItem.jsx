@@ -3,21 +3,26 @@ import { useCart } from '../../hooks/useCart';
 import '../../features/cart/styles/CartItem.css';
 
 const CartItem = ({ item }) => {
-  const { updateQuantity, removeFromCart } = useCart();
+  const { updateQuantity, removeFromCart, loading } = useCart();
 
   const handleQuantityChange = (newQuantity) => {
     if (newQuantity <= 0) {
-      removeFromCart(item.productId);
+      // Usar cartItemId (idItem del backend) para identificar en el servidor
+      removeFromCart(item.cartItemId);
     } else {
-      updateQuantity(item.productId, newQuantity);
+      updateQuantity(item.cartItemId, newQuantity);
     }
+  };
+
+  const handeRemove = () => {
+    removeFromCart(item.cartItemId);
   };
 
   const price = item.product.finalPrice || item.product.price;
   const subtotal = price * item.quantity;
 
   return (
-    <div className="cart-item">
+    <div className={`cart-item ${loading ? 'loading' : ''}`}>
       <div className="cart-item-image">
         <img
           src={item.product.image || '/placeholder-tire.png'}
@@ -36,6 +41,7 @@ const CartItem = ({ item }) => {
         <button
           onClick={() => handleQuantityChange(item.quantity - 1)}
           className="quantity-btn"
+          disabled={loading}
         >
           -
         </button>
@@ -43,6 +49,7 @@ const CartItem = ({ item }) => {
         <button
           onClick={() => handleQuantityChange(item.quantity + 1)}
           className="quantity-btn"
+          disabled={loading}
         >
           +
         </button>
@@ -53,7 +60,8 @@ const CartItem = ({ item }) => {
       </div>
       <button
         className="cart-item-remove"
-        onClick={() => removeFromCart(item.productId)}
+        onClick={handeRemove}
+        disabled={loading}
       >
         ✕
       </button>
@@ -63,6 +71,7 @@ const CartItem = ({ item }) => {
 
 CartItem.propTypes = {
   item: PropTypes.shape({
+    cartItemId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     productId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
     quantity: PropTypes.number.isRequired,
     product: PropTypes.shape({
@@ -77,4 +86,3 @@ CartItem.propTypes = {
 };
 
 export default CartItem;
-

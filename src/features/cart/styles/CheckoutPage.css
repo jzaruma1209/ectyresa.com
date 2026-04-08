@@ -1,0 +1,23 @@
+.checkout-page {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.checkout-page h1 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #1A1A1A; /* Color secundario según las reglas Ectyre */
+}
+
+/* Manejo en dispositivos móviles */
+@media (max-width: 768px) {
+  .checkout-page {
+    padding: 1rem;
+  }
+  
+  .checkout-page > div {
+    grid-template-columns: 1fr !important; /* Stack vertically on small screens */
+    gap: 1.5rem !important;
+  }
+}

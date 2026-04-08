@@ -1,0 +1,234 @@
+/* ═══════════════════════════════════════════════
+   AuthForms.css — Login & Register styles  
+   Paleta Ectyre: #FFF 60% | #1A1A1A 30% | #E60000 10%
+   ═══════════════════════════════════════════════ */
+
+.auth-form-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: calc(100vh - 200px);
+  padding: 40px 16px;
+  background-color: #F5F5F5;
+}
+
+.auth-form-card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 40px;
+  width: 100%;
+  max-width: 440px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+}
+
+.auth-form-card--register {
+  max-width: 540px;
+}
+
+/* Header */
+.auth-form-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.auth-form-header h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin: 0 0 6px;
+}
+
+.auth-form-header p {
+  font-size: 0.95rem;
+  color: #808080;
+  margin: 0;
+}
+
+/* Error message */
+.auth-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #FFF0F0;
+  border: 1px solid #E60000;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+  color: #E60000;
+  font-size: 0.9rem;
+}
+
+.auth-error svg {
+  flex-shrink: 0;
+}
+
+/* Form */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.auth-field-row {
+  display: flex;
+  gap: 14px;
+}
+
+.auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.auth-field--small {
+  flex: 0 0 130px;
+}
+
+.auth-field label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #1A1A1A;
+}
+
+.auth-field input,
+.auth-field select {
+  padding: 12px 14px;
+  border: 1.5px solid #E0E0E0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1A1A1A;
+  background: #FAFAFA;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.auth-field input:focus,
+.auth-field select:focus {
+  border-color: #1A1A1A;
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.08);
+  background: #FFFFFF;
+}
+
+.auth-field input::placeholder {
+  color: #BCBCBC;
+}
+
+/* Password toggle */
+.password-input-wrap {
+  position: relative;
+  display: flex;
+}
+
+.password-input-wrap input {
+  flex: 1;
+  padding-right: 48px;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #808080;
+  display: flex;
+  align-items: center;
+}
+
+.password-toggle:hover {
+  color: #1A1A1A;
+}
+
+/* Submit button */
+.auth-submit-btn {
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: #E60000;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 50px;
+}
+
+.auth-submit-btn:hover:not(:disabled) {
+  background: #CC0000;
+  transform: translateY(-1px);
+}
+
+.auth-submit-btn:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Spinner */
+.auth-spinner {
+  width: 22px;
+  height: 22px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: authSpin 0.7s linear infinite;
+}
+
+@keyframes authSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Footer link */
+.auth-footer {
+  text-align: center;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid #F0F0F0;
+}
+
+.auth-footer p {
+  font-size: 0.9rem;
+  color: #808080;
+  margin: 0;
+}
+
+.auth-link {
+  color: #E60000;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Responsive ── */
+@media (max-width: 600px) {
+  .auth-form-container {
+    padding: 20px 12px;
+  }
+
+  .auth-form-card {
+    padding: 28px 20px;
+  }
+
+  .auth-field-row {
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .auth-field--small {
+    flex: 1;
+  }
+}

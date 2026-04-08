@@ -1,10 +1,14 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setMeasureFilter } from '../../store/slices/filters.slice';
+import { useProducts } from '../../hooks/useProducts';
 import '../../features/home/styles/SearchByMeasure.css';
 
 const SearchByMeasure = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { searchByMeasure, loading } = useProducts();
   const [width, setWidth] = useState('');
   const [height, setHeight] = useState('');
   const [rim, setRim] = useState('');
@@ -14,9 +18,18 @@ const SearchByMeasure = () => {
   const heights = Array.from({ length: 46 }, (_, i) => 30 + i); // 30-75
   const rims = Array.from({ length: 10 }, (_, i) => 13 + i); // 13-22
 
-  const handleSearch = (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
+    if (!width && !height && !rim) return;
+
+    // Guardar filtros en Redux para la página de resultados
     dispatch(setMeasureFilter({ width, height, rim }));
+
+    // Buscar en el backend
+    await searchByMeasure({ width, height, rim });
+
+    // Navegar a la página de resultados
+    navigate('/search');
   };
 
   const handleClear = () => {
@@ -76,8 +89,8 @@ const SearchByMeasure = () => {
           </select>
         </div>
         <div className="measure-actions">
-          <button type="submit" className="btn-primary">
-            Buscar
+          <button type="submit" className="btn-primary" disabled={loading}>
+            {loading ? 'Buscando...' : 'Buscar'}
           </button>
           <button type="button" onClick={handleClear} className="btn-secondary">
             Limpiar
@@ -89,4 +102,3 @@ const SearchByMeasure = () => {
 };
 
 export default SearchByMeasure;
-

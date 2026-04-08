@@ -1,10 +1,12 @@
 # 🛞 GUÍA DE INTEGRACIÓN — ECTYRE Frontend + Backend
 
 > **Propósito:** Unir el frontend React (Vite + Redux) con el backend Node.js (Express + PostgreSQL)
-> que ya está desplegado en `http://localhost:8080/api/v1`
+> que ya está desplegado en `https://ectyre-backend.vercel.app/api/v1`
 >
 > Este documento NO es código. Es el mapa completo de qué construir, en qué orden,
 > por qué razón y bajo qué reglas. Léelo de arriba a abajo antes de tocar una sola línea.
+>
+> **Última actualización:** 2026-04-04 — Fases 0, 1 y 2 completadas ✅
 
 ---
 
@@ -51,14 +53,14 @@
 ### La brecha (qué falta conectar)
 
 ```
-FRONTEND actual          BACKEND real
-/products           ≠    /llantas
-datos hardcoded     ≠    /vehiculos/marcas
-localStorage solo   ≠    /carrito (backend sincronizado)
-console.log         ≠    /pedidos/checkout
-no existe           ≠    /clientes/login y /registro
-no existe           ≠    /direcciones
-no existe           ≠    /pedidos (historial)
+FRONTEND actual          BACKEND real                    ESTADO
+/products           ≠    /llantas                        ✅ CONECTADO (Fase 1)
+datos hardcoded     ≠    /vehiculos/marcas               ❌ Pendiente (Fase 3)
+localStorage solo   ≠    /carrito (backend sincronizado)  ❌ Pendiente (Fase 4)
+console.log         ≠    /pedidos/checkout                ❌ Pendiente (Fase 5)
+no existe           ≠    /clientes/login y /registro      ✅ CONECTADO (Fase 2)
+no existe           ≠    /direcciones                     ❌ Pendiente (Fase 5)
+no existe           ≠    /pedidos (historial)             ❌ Pendiente (Fase 5)
 ```
 
 ---
@@ -69,13 +71,14 @@ no existe           ≠    /pedidos (historial)
 FASE 0  →  FASE 1  →  FASE 2  →  FASE 3  →  FASE 4  →  FASE 5
 Config      Llantas    Auth       Vehículos  Carrito    Pedidos y
 base        reales                reales     backend    Direcciones
+  ✅          ✅         ✅         ❌          ❌          ❌
 ```
 
 Cada fase **depende de la anterior**. No saltar fases.
 
 ---
 
-## FASE 0 — Configuración base de conexión
+## ✅ FASE 0 — Configuración base de conexión (COMPLETADA 2026-04-04)
 
 **Qué es:** Establecer el canal de comunicación entre el frontend y el backend.
 Sin esto, ninguna petición llegará al servidor correcto.
@@ -109,9 +112,11 @@ Axios debe tener un timeout de 10 segundos para no dejar peticiones colgadas ind
 El archivo `api.js` está conectado al backend real. Las peticiones llevan el token
 cuando existe. Los errores de autenticación se manejan globalmente.
 
+**✅ COMPLETADO:** `api.js` actualizado con interceptor de token (`ectyre_token`), manejo de 401 con limpieza automática y redirección, fallback URL corregido a `http://localhost:8080/api/v1`. IVA corregido a 15% (Ecuador).
+
 ---
 
-## FASE 1 — Productos reales (Llantas)
+## ✅ FASE 1 — Productos reales (Llantas) (COMPLETADA 2026-04-04)
 
 **Qué es:** Reemplazar los endpoints incorrectos de `products.service.js` con las
 rutas reales del backend. El catálogo de llantas es lo más visible del sitio.
@@ -159,9 +164,11 @@ La UI debe mostrar un indicador de carga y un mensaje de error cuando correspond
 El catálogo muestra llantas reales de la base de datos. La búsqueda por medida
 consulta el backend real. El detalle de producto muestra datos reales.
 
+**✅ COMPLETADO:** `products.service.js` reescrito con rutas `/llantas`, función `mapLlantaToProduct()` que traduce campos del backend (español) al formato UI (inglés). Se eliminó toda la lógica de mock data. `useProducts.js` actualizado con `searchByMeasure()` y `searchByVehicle()`. `SearchByMeasure.jsx` conectado al backend real.
+
 ---
 
-## FASE 2 — Autenticación (Login y Registro)
+## ✅ FASE 2 — Autenticación (Login y Registro) (COMPLETADA 2026-04-04)
 
 **Qué es:** Crear todo el flujo de identidad del usuario. Es necesario antes del
 carrito sincronizado y del checkout porque ambos pueden requerir token.
@@ -216,6 +223,8 @@ El usuario puede editar su nombre y teléfono (llamando a `PUT /clientes/perfil`
 **Resultado esperado de esta fase:**
 El usuario puede registrarse, iniciar sesión, ver su perfil y cerrar sesión.
 El token se mantiene entre recargas de página.
+
+**✅ COMPLETADO:** Archivos creados: `auth.service.js`, `auth.slice.js`, `useAuth.js`, `LoginForm.jsx`, `RegisterForm.jsx`, `LoginPage.jsx`, `RegisterPage.jsx`, `ProfilePage.jsx`, `ProtectedRoute.jsx`, `AuthForms.css`, `ProfilePage.css`, `AuthPages.css`. Archivos modificados: `store/index.js` (authReducer), `Header.jsx` (estado de auth dinámico), `router/index.jsx` (rutas /login, /registro, /perfil), `App.jsx` (AuthInitializer para manejo de 401).
 
 ---
 
@@ -424,10 +433,11 @@ Ambos deben estar corriendo al mismo tiempo para que la integración funcione.
 
 | Componente/Hook Frontend | Endpoint Backend | Estado actual |
 |--------------------------|------------------|---------------|
-| `useProducts.loadProducts()` | `GET /llantas` | ❌ Ruta incorrecta |
-| `useProducts.loadProductById()` | `GET /llantas/:id` | ❌ Ruta incorrecta |
-| `useProducts.searchProducts()` | `GET /llantas/buscar-medida` | ❌ Ruta incorrecta |
-| `SearchByMeasure` submit | `GET /llantas/buscar-medida` | ❌ Params incorrectos |
+| `useProducts.loadProducts()` | `GET /llantas` | ✅ Conectado |
+| `useProducts.loadProductById()` | `GET /llantas/:id` | ✅ Conectado |
+| `useProducts.searchByMeasure()` | `GET /llantas/buscar-medida` | ✅ Conectado |
+| `useProducts.searchByVehicle()` | `GET /llantas/buscar-vehiculo` | ✅ Conectado |
+| `SearchByMeasure` submit | `GET /llantas/buscar-medida` | ✅ Conectado |
 | `SearchByVehicle` marcas | `GET /vehiculos/marcas/completo` | ❌ Datos hardcodeados |
 | `SearchByVehicle` submit | `GET /llantas/buscar-vehiculo` | ❌ No llama al backend |
 | `useCart.addToCart()` | `POST /carrito/agregar` | ❌ Solo localStorage |
@@ -436,13 +446,15 @@ Ambos deben estar corriendo al mismo tiempo para que la integración funcione.
 | `useCart.clearCart()` | `DELETE /carrito/vaciar` | ❌ Solo localStorage |
 | `CartSummary` totales | Respuesta de `GET /carrito` | ❌ Calculado en frontend |
 | `CheckoutForm` submit | `POST /pedidos/checkout` | ❌ Solo console.log |
-| Header "Ingresar" | `POST /clientes/login` | ❌ No existe |
-| Header "registrarse" | `POST /clientes/registro` | ❌ No existe |
-| — (no existe) | `GET /clientes/perfil` | ❌ No existe página |
+| `LoginForm` → `useAuth.login()` | `POST /clientes/login` | ✅ Conectado |
+| `RegisterForm` → `useAuth.register()` | `POST /clientes/registro` | ✅ Conectado |
+| `ProfilePage` → `useAuth.loadProfile()` | `GET /clientes/perfil` | ✅ Conectado |
+| `ProfilePage` → `useAuth.updateProfile()` | `PUT /clientes/perfil` | ✅ Conectado |
+| `useAuth.logout()` | `POST /clientes/logout` | ✅ Conectado |
 | — (no existe) | `GET /pedidos` | ❌ No existe página |
 | — (no existe) | `GET /pedidos/:id` | ❌ No existe página |
 | — (no existe) | `GET /direcciones` | ❌ No existe gestión |
-| `api.js` baseURL | `http://localhost:8080/api/v1` | ❌ URL incorrecta |
+| `api.js` baseURL | `VITE_API_URL` o fallback | ✅ Configurado |
 
 ---
 
@@ -522,4 +534,17 @@ Al terminar todas las fases, un usuario real debe poder hacer esto sin errores:
 
 ---
 
-*Guía creada para el proyecto Ectyre · Versión 1.0 · Revisar antes de cada fase*
+## 📊 RESUMEN DE PROGRESO
+
+| Fase | Nombre | Estado | Fecha |
+|------|--------|--------|-------|
+| 0 | Configuración base | ✅ Completada | 2026-04-04 |
+| 1 | Productos reales (Llantas) | ✅ Completada | 2026-04-04 |
+| 2 | Autenticación (Login/Registro) | ✅ Completada | 2026-04-04 |
+| 3 | Vehículos reales | ❌ Pendiente | — |
+| 4 | Carrito sincronizado (backend) | ❌ Pendiente | — |
+| 5 | Pedidos, Direcciones, Checkout | ❌ Pendiente | — |
+
+---
+
+*Guía creada para el proyecto Ectyre · Versión 2.0 · Actualizada 2026-04-04 · Revisar antes de cada fase*

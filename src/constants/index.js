@@ -1,13 +1,14 @@
 // Constantes de la aplicación ECTYRE
 
 // Impuestos
-export const IVA_RATE = 0.16; // 16% IVA México
+export const IVA_RATE = 0.15; // 15% IVA Ecuador
 
 // LocalStorage keys
 export const STORAGE_KEYS = {
   CART: 'ectyre_cart',
   USER: 'ectyre_user',
   TOKEN: 'ectyre_token',
+  SESSION_ID: 'ectyre_session_id',
 };
 
 // Categorías de productos
