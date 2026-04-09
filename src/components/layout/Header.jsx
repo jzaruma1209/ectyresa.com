@@ -121,9 +121,17 @@ const Header = () => {
                       <span className="account-label">HOLA, {displayName}</span>
                       <span className="account-sub" style={{ textDecoration: 'underline' }}>Mi Perfil</span>
                     </Link>
-                    <Link to="/mis-pedidos" className="account-text-block" style={{ color: 'white', textDecoration: 'none', fontSize: '0.9rem' }}>
-                      <span className="account-sub" style={{ color: '#E60000', fontWeight: 'bold' }}>Mis Pedidos</span>
-                    </Link>
+
+                    {user?.role === 'admin' ? (
+                       <Link to="/admin" className="account-text-block" style={{ color: 'white', textDecoration: 'none', fontSize: '0.9rem' }}>
+                         <span className="account-sub" style={{ color: '#E60000', fontWeight: 'bold' }}>Panel Admin</span>
+                       </Link>
+                    ) : (
+                      <Link to="/mis-pedidos" className="account-text-block" style={{ color: 'white', textDecoration: 'none', fontSize: '0.9rem' }}>
+                        <span className="account-sub" style={{ color: '#E60000', fontWeight: 'bold' }}>Mis Pedidos</span>
+                      </Link>
+                    )}
+
                   </div>
                   <button className="header-logout-btn" onClick={handleLogout} title="Cerrar sesión">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="18" height="18">
@@ -191,9 +199,17 @@ const Header = () => {
               <Link to="/perfil" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>
                 Mi Perfil ({displayName})
               </Link>
-              <Link to="/mis-pedidos" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>
-                Mis Pedidos
-              </Link>
+              
+              {user?.role === 'admin' ? (
+                <Link to="/admin" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>
+                  Panel Admin
+                </Link>
+              ) : (
+                <Link to="/mis-pedidos" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>
+                  Mis Pedidos
+                </Link>
+              )}
+
               <button className="mobile-nav-link mobile-nav-btn" onClick={() => { handleLogout(); setMenuOpen(false); }}>
                 Cerrar Sesión
               </button>

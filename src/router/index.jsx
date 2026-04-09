@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import HomePage from "../pages/shop/HomePage";
@@ -14,6 +14,16 @@ import OrdersPage from "../pages/shop/OrdersPage";
 import OrderDetailPage from "../pages/shop/OrderDetailPage";
 import ProtectedRoute from "../components/shared/ProtectedRoute";
 
+// ── Admin imports ──
+import AdminLayout from "../components/admin/AdminLayout";
+import AdminRoute from "../components/shared/AdminRoute";
+import AdminDashboard from "../pages/admin/AdminDashboard";
+import AdminPedidos from "../pages/admin/AdminPedidos";
+import AdminClientes from "../pages/admin/AdminClientes";
+import AdminProductos from "../pages/admin/AdminProductos";
+import AdminInventario from "../pages/admin/AdminInventario";
+import AdminReportes from "../pages/admin/AdminReportes";
+
 export default function AppRouter() {
     return (
         <Router>
@@ -21,6 +31,9 @@ export default function AppRouter() {
                 <Header />
                 <main className="app-main">
                     <Routes>
+                        {/* ═══════════════════════════════════════
+                            RUTAS DE LA TIENDA (SHOP)
+                            ═══════════════════════════════════════ */}
                         <Route path="/" element={<HomePage />} />
                         <Route path="/product/:id" element={<ProductDetailsPage />} />
                         <Route path="/cart" element={<CartPage />} />
@@ -59,6 +72,29 @@ export default function AppRouter() {
                                 </ProtectedRoute>
                             }
                         />
+
+                        {/* ═══════════════════════════════════════
+                            RUTAS DEL ADMIN PANEL
+                            Integrado dentro del mismo sitio
+                            con Header y Footer visibles.
+                            ═══════════════════════════════════════ */}
+                        <Route
+                            path="/admin"
+                            element={
+                                <AdminRoute>
+                                    <AdminLayout />
+                                </AdminRoute>
+                            }
+                        >
+                            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                            <Route path="dashboard" element={<AdminDashboard />} />
+                            <Route path="pedidos" element={<AdminPedidos />} />
+                            <Route path="clientes" element={<AdminClientes />} />
+                            <Route path="productos" element={<AdminProductos />} />
+                            <Route path="inventario" element={<AdminInventario />} />
+                            <Route path="reportes" element={<AdminReportes />} />
+                        </Route>
+
                         <Route path="*" element={<NotFoundPage />} />
                     </Routes>
                 </main>

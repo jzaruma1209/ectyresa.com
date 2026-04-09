@@ -28,6 +28,18 @@ export const useAuth = () => {
       dispatch(setAuthLoading(true));
       dispatch(clearAuthError());
 
+      // ─── LOGIN TEMPORAL ADMIN ───
+      // Credenciales: admin / admin
+      // TODO: Eliminar cuando el backend real tenga autenticación admin
+      if (email === 'admin' && password === 'admin') {
+        dispatch(setCredentials({
+          user: { id: 0, nombre: 'Administrador', email: 'admin@ectyre.com', role: 'admin' },
+          token: 'dev-admin-token',
+        }));
+        return { success: true, isAdmin: true };
+      }
+      // ─── FIN LOGIN TEMPORAL ───
+
       const response = await authService.login(email, password);
       const { token: newToken, cliente } = response.data || response;
 

@@ -17,7 +17,7 @@ const LoginForm = ({ onSuccess }) => {
 
     const result = await login(email, password);
     if (result.success && onSuccess) {
-      onSuccess();
+      onSuccess(result);
     }
   };
 
@@ -44,7 +44,7 @@ const LoginForm = ({ onSuccess }) => {
           <div className="auth-field">
             <label htmlFor="login-email">Correo electrónico</label>
             <input
-              type="email"
+              type="text"
               id="login-email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
