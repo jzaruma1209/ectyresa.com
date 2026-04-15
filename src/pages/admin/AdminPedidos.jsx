@@ -31,11 +31,14 @@ export default function AdminPedidos() {
       setLoading(true);
       const params = { page, limit: 20 };
       if (filtroEstado) params.estado = filtroEstado;
-      const data = await adminService.getPedidos(params);
-      setPedidos(data.pedidos || data.data || data || []);
-      setTotalPages(data.totalPages || 1);
+      // El backend responde: { success, data: { pedidos: [], total, totalPaginas } }
+      const res = await adminService.getPedidos(params);
+      const payload = res?.data ?? res;
+      setPedidos(Array.isArray(payload?.pedidos) ? payload.pedidos : []);
+      setTotalPages(payload?.totalPaginas || payload?.totalPages || 1);
     } catch (err) {
       console.error('Error cargando pedidos:', err);
+      setPedidos([]);
     } finally {
       setLoading(false);
     }

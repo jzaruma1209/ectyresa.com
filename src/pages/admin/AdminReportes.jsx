@@ -26,10 +26,14 @@ export default function AdminReportes() {
         ]);
 
         if (ventasData.status === 'fulfilled') {
-          setVentas(ventasData.value.ventas || ventasData.value.data || ventasData.value || []);
+          const v = ventasData.value;
+          const arr = v?.ventas ?? v?.data ?? v;
+          setVentas(Array.isArray(arr) ? arr : []);
         }
         if (topData.status === 'fulfilled') {
-          setTopProductos(topData.value.productos || topData.value.data || topData.value || []);
+          const t = topData.value;
+          const arr = t?.productos ?? t?.data ?? t;
+          setTopProductos(Array.isArray(arr) ? arr : []);
         }
         if (carritosData.status === 'fulfilled') {
           setStatsCarritos(carritosData.value);

@@ -1,23 +1,82 @@
+/* ════════════════════════════════════════════════════════════
+   CheckoutPage — Ectyre Color System
+   ════════════════════════════════════════════════════════════ */
+
 .checkout-page {
-  padding: 2rem;
-  max-width: 1200px;
+  padding: 2.5rem 2rem;
+  max-width: 1100px;
   margin: 0 auto;
+  min-height: 70vh;
 }
 
 .checkout-page h1 {
   margin-bottom: 2rem;
   font-size: 2rem;
-  color: #1A1A1A; /* Color secundario según las reglas Ectyre */
+  font-weight: 700;
+  color: #1A1A1A;
+  letter-spacing: -0.02em;
+  border-left: 4px solid #E60000;
+  padding-left: 1rem;
 }
 
-/* Manejo en dispositivos móviles */
-@media (max-width: 768px) {
-  .checkout-page {
-    padding: 1rem;
+.checkout-page-grid {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.checkout-page-summary {
+  position: sticky;
+  top: 2rem;
+}
+
+/* ── Empty checkout state ────────────────────────────────────────────── */
+.cart-page {
+  min-height: 70vh;
+  padding: 2.5rem 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.cart-empty {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: #F5F5F5;
+  border-radius: 12px;
+  margin: 2rem auto;
+  max-width: 480px;
+}
+
+.cart-empty h2 {
+  margin-bottom: 0.75rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.cart-empty p {
+  margin-bottom: 2rem;
+  color: #808080;
+  line-height: 1.5;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .checkout-page-grid {
+    grid-template-columns: 1fr;
   }
-  
-  .checkout-page > div {
-    grid-template-columns: 1fr !important; /* Stack vertically on small screens */
-    gap: 1.5rem !important;
+  .checkout-page-summary {
+    position: static;
+    order: -1;
+  }
+}
+
+@media (max-width: 600px) {
+  .checkout-page {
+    padding: 1.5rem 1rem;
+  }
+  .checkout-page h1 {
+    font-size: 1.5rem;
   }
 }

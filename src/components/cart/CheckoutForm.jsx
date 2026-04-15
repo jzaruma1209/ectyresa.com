@@ -79,7 +79,7 @@ const CheckoutForm = () => {
       clearCartLocal();
 
       // Redirigir a confirmación / detalle
-      navigate(`/mis-pedidos/${pedido.idPedido || pedido.id}`, { replace: true });
+      navigate(`/mis-pedidos/${pedido.idPedido || pedido.id}`);
       
     } catch (err) {
       setError(err.response?.data?.message || 'Error al procesar el pedido');
@@ -172,7 +172,7 @@ const CheckoutForm = () => {
           <div className="form-actions">
             <button type="submit" className="btn-primary" disabled={loading}>Guardar Dirección</button>
             {direcciones.length > 0 && (
-              <button type="button" className="btn-secondary" onClick={() => setShowNewAddressForm(false)} disabled={loading}>
+              <button type="button" className="btn-secondary-outline" onClick={() => setShowNewAddressForm(false)} disabled={loading}>
                 Cancelar
               </button>
             )}

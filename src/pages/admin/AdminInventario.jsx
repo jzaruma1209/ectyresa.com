@@ -18,7 +18,8 @@ export default function AdminInventario() {
       setLoading(true);
       // Traer todas las llantas (sin paginación si es posible, o con limite alto)
       const data = await adminService.getLlantas({ page: 1, limit: 200 });
-      let items = data.llantas || data.data || data || [];
+      const responseData = data.data || data;
+      let items = responseData.llantas || responseData || [];
       // Ordenar por stock de menor a mayor
       items = [...items].sort((a, b) => (a.stock || 0) - (b.stock || 0));
       setLlantas(items);

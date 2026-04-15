@@ -26,8 +26,9 @@ export default function AdminProductos() {
     try {
       setLoading(true);
       const data = await adminService.getLlantas({ page, limit: 20 });
-      setLlantas(data.llantas || data.data || data || []);
-      setTotalPages(data.totalPages || 1);
+      const responseData = data.data || data;
+      setLlantas(responseData.llantas || responseData || []);
+      setTotalPages(responseData.totalPaginas || responseData.totalPages || 1);
     } catch (err) {
       console.error('Error cargando llantas:', err);
     } finally {
@@ -38,7 +39,8 @@ export default function AdminProductos() {
   const fetchMarcas = async () => {
     try {
       const data = await adminService.getMarcas();
-      setMarcas(data.marcas || data || []);
+      const responseData = data.data || data;
+      setMarcas(responseData.marcas || responseData || []);
     } catch (err) {
       console.error('Error cargando marcas:', err);
     }

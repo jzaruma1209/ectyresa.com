@@ -46,7 +46,7 @@ const RegisterForm = ({ onSuccess }) => {
     const result = await register(dataToSend);
 
     if (result.success && onSuccess) {
-      onSuccess();
+      onSuccess(result);
     }
   };
 

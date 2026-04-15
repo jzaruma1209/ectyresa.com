@@ -1,0 +1,214 @@
+/* ════════════════════════════════════════════════════════════
+   OrdersPage — Mis Pedidos — Ectyre Color System
+   ════════════════════════════════════════════════════════════ */
+
+.orders-page {
+  padding: 2.5rem 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  min-height: 70vh;
+}
+
+.orders-page h1 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  letter-spacing: -0.02em;
+  border-left: 4px solid #E60000;
+  padding-left: 1rem;
+}
+
+/* ── Loading / Error states ──────────────────────────────────────────── */
+.orders-loading,
+.orders-error {
+  padding: 4rem 2rem;
+  text-align: center;
+  font-size: 1rem;
+  color: #808080;
+}
+
+.orders-error {
+  color: #E60000;
+}
+
+/* ── Empty state ─────────────────────────────────────────────────────── */
+.orders-empty {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: #F5F5F5;
+  border-radius: 12px;
+}
+
+.orders-empty-icon {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 1.25rem;
+}
+
+.orders-empty h2 {
+  margin-bottom: 0.75rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.orders-empty p {
+  margin-bottom: 2rem;
+  color: #808080;
+  line-height: 1.5;
+}
+
+/* ── Orders list ─────────────────────────────────────────────────────── */
+.orders-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Order card ──────────────────────────────────────────────────────── */
+.order-card {
+  background: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.order-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  border-color: #CCCCCC;
+}
+
+.order-card-info h3 {
+  margin: 0 0 0.4rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.order-card-info p {
+  margin: 0 0 0.2rem 0;
+  font-size: 0.875rem;
+  color: #808080;
+  line-height: 1.4;
+}
+
+/* ── Estado badge ────────────────────────────────────────────────────── */
+.order-status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.order-status-badge.PENDIENTE {
+  background: #fff3e0;
+  color: #e67e22;
+}
+
+.order-status-badge.PROCESANDO {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.order-status-badge.ENVIADO {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.order-status-badge.ENTREGADO {
+  background: #e8f5e9;
+  color: #1b5e20;
+}
+
+.order-status-badge.CANCELADO {
+  background: #fff5f5;
+  color: #E60000;
+}
+
+/* ── Order card right ────────────────────────────────────────────────── */
+.order-card-actions {
+  text-align: right;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.75rem;
+}
+
+.order-card-total {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+/* ── Buttons ─────────────────────────────────────────────────────────── */
+.btn-outline-dark {
+  display: inline-block;
+  padding: 0.6rem 1.25rem;
+  background: transparent;
+  color: #1A1A1A;
+  border: 2px solid #1A1A1A;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.02em;
+}
+
+.btn-outline-dark:hover {
+  background: #1A1A1A;
+  color: white;
+}
+
+.btn-red {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: #E60000;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.btn-red:hover {
+  background: #cc0000;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .orders-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .orders-page h1 {
+    font-size: 1.5rem;
+  }
+
+  .order-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .order-card-actions {
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

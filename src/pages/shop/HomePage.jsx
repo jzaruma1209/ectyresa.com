@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 
 import HeroBanner from "../../components/products/HeroBanner";
 import HeroSearchOptions from "../../components/products/HeroSearchOptions";
@@ -23,10 +24,21 @@ const heroAccentColors = {
 };
 
 const HomePage = () => {
+  const location = useLocation();
   const [activeVehicle, setActiveVehicle] = useState("auto");
+  const [welcomeToast, setWelcomeToast] = useState(
+    location.state?.welcomeMessage || null
+  );
 
   const heroBg = heroBgColors[activeVehicle] ?? "#FFFFFF";
   const heroAccent = heroAccentColors[activeVehicle] ?? "#E60000";
+
+  // Auto-ocultar el toast de bienvenida después de 4 segundos
+  useEffect(() => {
+    if (!welcomeToast) return;
+    const timer = setTimeout(() => setWelcomeToast(null), 4000);
+    return () => clearTimeout(timer);
+  }, [welcomeToast]);
 
   // Sync hero background color to body so it extends behind the header
   useEffect(() => {
@@ -39,6 +51,36 @@ const HomePage = () => {
 
   return (
     <div className="home-page">
+      {/* Toast de bienvenida tras registro exitoso */}
+      {welcomeToast && (
+        <div
+          className="welcome-toast"
+          role="status"
+          aria-live="polite"
+          style={{
+            position: "fixed",
+            top: "80px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            backgroundColor: "#1A1A1A",
+            color: "#FFFFFF",
+            padding: "14px 28px",
+            borderRadius: "8px",
+            boxShadow: "0 4px 24px rgba(0,0,0,0.18)",
+            zIndex: 9999,
+            display: "flex",
+            alignItems: "center",
+            gap: "10px",
+            fontSize: "15px",
+            fontWeight: "500",
+            animation: "fadeInDown 0.35s ease",
+          }}
+        >
+          <span style={{ color: "#E60000", fontSize: "18px" }}>✓</span>
+          {welcomeToast}
+        </div>
+      )}
+
       {/* Hero Section with Banner */}
 
       <section

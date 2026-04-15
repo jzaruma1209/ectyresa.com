@@ -1,60 +1,269 @@
+/* ════════════════════════════════════════════════════════════
+   CheckoutForm — Ectyre Color System
+   ════════════════════════════════════════════════════════════ */
+
 .checkout-form {
   background: white;
   padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  border: 1px solid #e8e8e8;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
 }
 
 .checkout-form h2 {
-  margin-bottom: 1.5rem;
-  color: #333;
+  margin: 0 0 1.75rem 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  border-left: 3px solid #E60000;
+  padding-left: 0.75rem;
 }
 
-.form-group {
+/* ── Dirección seleccionada ──────────────────────────────────────────── */
+.direcciones-list {
   margin-bottom: 1.5rem;
+}
+
+.address-card {
+  background: #F5F5F5;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.address-card.selected {
+  border-color: #E60000;
+  background: #fff5f5;
+}
+
+.address-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #1A1A1A;
+  line-height: 1.5;
+}
+
+/* ── Form fields ─────────────────────────────────────────────────────── */
+.form-group {
+  margin-bottom: 1.25rem;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #333;
+  margin-bottom: 0.4rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1A1A1A;
+  letter-spacing: 0.02em;
 }
 
-.form-group input {
+.form-group input,
+.form-group select,
+.form-group textarea {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #CCCCCC;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  color: #1A1A1A;
+  background: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
   outline: none;
-  border-color: #4CAF50;
+  border-color: #1A1A1A;
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.08);
 }
 
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* ── Error messages ──────────────────────────────────────────────────── */
 .error-message {
   display: block;
-  color: #ff4444;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+  color: #E60000;
+  font-size: 0.8rem;
+  margin-top: 0.3rem;
+  font-weight: 500;
 }
 
+.checkout-error {
+  background: #fff5f5;
+  border: 1px solid #ffcccc;
+  border-left: 4px solid #E60000;
+  color: #cc0000;
+  padding: 0.875rem 1rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ── New address form ────────────────────────────────────────────────── */
+.new-address-form {
+  background: #F5F5F5;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+}
+
+.new-address-form h3 {
+  margin: 0 0 1.25rem 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.form-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+/* ── Link button ─────────────────────────────────────────────────────── */
+.btn-link {
+  background: none;
+  border: none;
+  color: #E60000;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.2s;
+}
+
+.btn-link:hover {
+  color: #cc0000;
+}
+
+/* ── Checkout button (CTA principal) ─────────────────────────────────── */
 .checkout-button {
   width: 100%;
-  padding: 1rem;
-  background-color: #4CAF50;
+  padding: 1rem 1.5rem;
+  background-color: #E60000;
   color: white;
   border: none;
-  border-radius: 4px;
-  font-size: 1.125rem;
-  font-weight: 500;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  letter-spacing: 0.02em;
+  margin-top: 1rem;
 }
 
-.checkout-button:hover {
-  background-color: #45a049;
+.checkout-button:hover:not(:disabled) {
+  background-color: #cc0000;
+  transform: translateY(-1px);
 }
 
+.checkout-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.checkout-button:disabled {
+  background-color: #CCCCCC;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ── Primary/secondary buttons ───────────────────────────────────────── */
+.btn-primary {
+  padding: 0.75rem 1.5rem;
+  background-color: #1A1A1A;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #333;
+}
+
+.btn-primary:disabled {
+  background-color: #CCCCCC;
+  cursor: not-allowed;
+}
+
+.btn-secondary-outline {
+  padding: 0.75rem 1.5rem;
+  background-color: transparent;
+  color: #1A1A1A;
+  border: 1.5px solid #CCCCCC;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary-outline:hover:not(:disabled) {
+  border-color: #1A1A1A;
+}
+
+.btn-secondary-outline:disabled {
+  color: #CCCCCC;
+  cursor: not-allowed;
+}
+
+/* ── Divider ─────────────────────────────────────────────────────────── */
+.checkout-divider {
+  border: none;
+  border-top: 1px solid #e8e8e8;
+  margin: 1.5rem 0;
+}
+
+/* ── Checkbox ────────────────────────────────────────────────────────── */
+.checkbox-group {
+  margin-bottom: 1.5rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #1A1A1A;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #E60000;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .checkout-form {
+    padding: 1.25rem;
+    border-radius: 8px;
+  }
+
+  .form-actions {
+    flex-direction: column;
+  }
+
+  .checkout-button {
+    font-size: 1rem;
+    padding: 0.875rem;
+  }
+}

@@ -40,8 +40,10 @@ export const useAuth = () => {
       }
       // ─── FIN LOGIN TEMPORAL ───
 
+      // authService.login() ya retorna response.data de axios
+      // El backend responde: { success, message, data: { cliente, token } }
       const response = await authService.login(email, password);
-      const { token: newToken, cliente } = response.data || response;
+      const { token: newToken, cliente } = response.data;
 
       dispatch(setCredentials({
         user: cliente,
@@ -50,9 +52,15 @@ export const useAuth = () => {
 
       return { success: true };
     } catch (err) {
-      const message = err.response?.data?.message || 'Error al iniciar sesión';
+      const message =
+        err.response?.data?.message ||
+        err.message ||
+        'Error al iniciar sesión';
       dispatch(setAuthError(message));
       return { success: false, message };
+    } finally {
+      // Garantizamos que el spinner nunca quede activo si algo falla inesperadamente
+      dispatch(setAuthLoading(false));
     }
   }, [dispatch]);
 
@@ -64,10 +72,12 @@ export const useAuth = () => {
       dispatch(setAuthLoading(true));
       dispatch(clearAuthError());
 
+      // authService.register() ya retorna response.data de axios
+      // El backend responde: { success, message, data: { cliente, token } }
       const response = await authService.register(userData);
-      const { token: newToken, cliente } = response.data || response;
+      const { token: newToken, cliente } = response.data;
 
-      // Si el backend devuelve token al registrar, logueamos automáticamente
+      // El backend devuelve token al registrar → auto-login inmediato
       if (newToken) {
         dispatch(setCredentials({
           user: cliente,
@@ -75,11 +85,17 @@ export const useAuth = () => {
         }));
       }
 
-      return { success: true };
+      return { success: true, cliente };
     } catch (err) {
-      const message = err.response?.data?.message || 'Error al registrarse';
+      const message =
+        err.response?.data?.message ||
+        err.message ||
+        'Error al registrarse';
       dispatch(setAuthError(message));
       return { success: false, message };
+    } finally {
+      // Garantizamos que el spinner nunca quede activo si algo falla inesperadamente
+      dispatch(setAuthLoading(false));
     }
   }, [dispatch]);
 

@@ -6,7 +6,7 @@
 > Este documento NO es código. Es el mapa completo de qué construir, en qué orden,
 > por qué razón y bajo qué reglas. Léelo de arriba a abajo antes de tocar una sola línea.
 >
-> **Última actualización:** 2026-04-04 — Fases 0, 1 y 2 completadas ✅
+> **Última actualización:** 2026-04-13 — Fases 0, 1, 2 y 4 completadas ✅
 
 ---
 
@@ -56,7 +56,7 @@
 FRONTEND actual          BACKEND real                    ESTADO
 /products           ≠    /llantas                        ✅ CONECTADO (Fase 1)
 datos hardcoded     ≠    /vehiculos/marcas               ❌ Pendiente (Fase 3)
-localStorage solo   ≠    /carrito (backend sincronizado)  ❌ Pendiente (Fase 4)
+localStorage solo   ≠    /carrito (backend sincronizado)  ✅ CONECTADO (Fase 4)
 console.log         ≠    /pedidos/checkout                ❌ Pendiente (Fase 5)
 no existe           ≠    /clientes/login y /registro      ✅ CONECTADO (Fase 2)
 no existe           ≠    /direcciones                     ❌ Pendiente (Fase 5)
@@ -71,7 +71,7 @@ no existe           ≠    /pedidos (historial)             ❌ Pendiente (Fase 
 FASE 0  →  FASE 1  →  FASE 2  →  FASE 3  →  FASE 4  →  FASE 5
 Config      Llantas    Auth       Vehículos  Carrito    Pedidos y
 base        reales                reales     backend    Direcciones
-  ✅          ✅         ✅         ❌          ❌          ❌
+  ✅          ✅         ✅         ❌          ✅          ❌
 ```
 
 Cada fase **depende de la anterior**. No saltar fases.
@@ -324,6 +324,8 @@ o mejor aún, usar el valor que devuelve el backend directamente.
 El carrito se guarda en el servidor. Si el usuario abre otra pestaña o recarga,
 el carrito persiste. El stock se valida en tiempo real.
 
+**✅ COMPLETADO (2026-04-13):** Archivos implementados: `cart.service.js` (doble estrategia invitado/auth con sesionId), `cart.slice.js` (thunks async que consumen el backend), `useCart.js` (hook actualizado), `CartInitializer.jsx` (carga carrito al iniciar app), `CartItem.jsx`, `CartSummary.jsx`, `CartPage.jsx`, `CheckoutPage.jsx`, `CheckoutForm.jsx` (con gestión de direcciones y checkout real). Estilos completos con paleta Ectyre (rojo/negro/blanco) y responsive.
+
 ---
 
 ## FASE 5 — Pedidos, Direcciones y Checkout real
@@ -542,7 +544,7 @@ Al terminar todas las fases, un usuario real debe poder hacer esto sin errores:
 | 1 | Productos reales (Llantas) | ✅ Completada | 2026-04-04 |
 | 2 | Autenticación (Login/Registro) | ✅ Completada | 2026-04-04 |
 | 3 | Vehículos reales | ❌ Pendiente | — |
-| 4 | Carrito sincronizado (backend) | ❌ Pendiente | — |
+| 4 | Carrito sincronizado (backend) | ✅ Completada | 2026-04-13 |
 | 5 | Pedidos, Direcciones, Checkout | ❌ Pendiente | — |
 
 ---

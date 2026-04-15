@@ -1,0 +1,296 @@
+/* ════════════════════════════════════════════════════════════
+   OrderDetailPage — Detalle de Pedido — Ectyre Color System
+   ════════════════════════════════════════════════════════════ */
+
+.order-detail-page {
+  padding: 2.5rem 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  min-height: 70vh;
+}
+
+/* ── Back link ───────────────────────────────────────────────────────── */
+.order-detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.5rem;
+  color: #808080;
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.order-detail-back:hover {
+  color: #1A1A1A;
+}
+
+/* ── Header ──────────────────────────────────────────────────────────── */
+.order-detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.order-detail-header h1 {
+  margin: 0;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  border-left: 4px solid #E60000;
+  padding-left: 1rem;
+}
+
+/* ── Status badge ────────────────────────────────────────────────────── */
+.order-detail-status {
+  padding: 0.4rem 1rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.order-detail-status.PENDIENTE   { background: #fff3e0; color: #e67e22; }
+.order-detail-status.PROCESANDO  { background: #e3f2fd; color: #1565c0; }
+.order-detail-status.ENVIADO     { background: #e8f5e9; color: #2e7d32; }
+.order-detail-status.ENTREGADO   { background: #e8f5e9; color: #1b5e20; }
+.order-detail-status.CANCELADO   { background: #fff5f5; color: #E60000; }
+
+/* ── Content grid ────────────────────────────────────────────────────── */
+.order-detail-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+/* ── Products card ───────────────────────────────────────────────────── */
+.order-items-card {
+  background: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 1.75rem;
+}
+
+.order-items-card h3 {
+  margin: 0 0 1.25rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.order-items-divider {
+  border: none;
+  border-top: 1px solid #F5F5F5;
+  margin: 0 0 1.25rem 0;
+}
+
+.order-detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #F5F5F5;
+  gap: 1rem;
+}
+
+.order-detail-item:last-child {
+  border-bottom: none;
+}
+
+.order-item-info h4 {
+  margin: 0 0 0.2rem 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.order-item-info p {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #808080;
+}
+
+.order-item-subtotal {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  white-space: nowrap;
+}
+
+/* ── Summary card ────────────────────────────────────────────────────── */
+.order-summary-card {
+  background: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 1.75rem;
+  position: sticky;
+  top: 2rem;
+  height: fit-content;
+}
+
+.order-summary-card h3 {
+  margin: 0 0 1.25rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.order-summary-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0;
+  font-size: 0.9rem;
+  color: #808080;
+  border-bottom: 1px solid #F5F5F5;
+}
+
+.order-summary-row:last-child {
+  border-bottom: none;
+}
+
+.order-summary-row.total-row {
+  border-top: 2px solid #1A1A1A;
+  border-bottom: none;
+  padding-top: 1rem;
+  margin-top: 0.5rem;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.order-summary-row.total-row span:last-child {
+  color: #E60000;
+}
+
+/* ── Tracking timeline ───────────────────────────────────────────────── */
+.order-tracking-section {
+  margin-top: 2rem;
+  background: white;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 1.75rem;
+  grid-column: 1 / -1;
+}
+
+.order-tracking-section h3 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  border-left: 3px solid #E60000;
+  padding-left: 0.75rem;
+}
+
+.tracking-timeline {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
+}
+
+.tracking-timeline::before {
+  content: '';
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: #F5F5F5;
+}
+
+.tracking-timeline-item {
+  padding: 0 0 1.5rem 2.5rem;
+  position: relative;
+}
+
+.tracking-timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.tracking-timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 4px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #1A1A1A;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #1A1A1A;
+}
+
+.tracking-timeline-item:first-child::before {
+  background: #E60000;
+  box-shadow: 0 0 0 2px #E60000;
+}
+
+.tracking-estado {
+  margin: 0 0 0.2rem 0;
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.tracking-fecha {
+  margin: 0 0 0.3rem 0;
+  font-size: 0.8rem;
+  color: #808080;
+}
+
+.tracking-comentario {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #808080;
+  font-style: italic;
+}
+
+/* ── Loading / Error ─────────────────────────────────────────────────── */
+.order-detail-loading,
+.order-detail-error {
+  padding: 4rem 2rem;
+  text-align: center;
+  font-size: 1rem;
+}
+
+.order-detail-error {
+  color: #E60000;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .order-detail-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .order-detail-header h1 {
+    font-size: 1.35rem;
+  }
+
+  .order-detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .order-summary-card {
+    position: static;
+    order: -1;
+  }
+
+  .order-tracking-section {
+    grid-column: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .order-detail-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

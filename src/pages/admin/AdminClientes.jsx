@@ -21,8 +21,9 @@ export default function AdminClientes() {
       const params = { page, limit: 20 };
       if (search.trim()) params.search = search.trim();
       const data = await adminService.getClientes(params);
-      setClientes(data.clientes || data.data || data || []);
-      setTotalPages(data.totalPages || 1);
+      const responseData = data.data || data;
+      setClientes(responseData.clientes || responseData || []);
+      setTotalPages(responseData.totalPaginas || 1);
     } catch (err) {
       console.error('Error cargando clientes:', err);
     } finally {

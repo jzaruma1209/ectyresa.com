@@ -25,8 +25,12 @@ export default function AdminLayout() {
   useEffect(() => {
     const fetchPendientes = async () => {
       try {
-        const data = await adminService.getDashboard();
-        setPedidosPendientes(data.pedidosPendientes || 0);
+        const res = await adminService.getDashboard();
+        // El backend devuelve: { success, data: { pedidos: { porEstado: [{estado, total}] } } }
+        const payload = res?.data ?? res;
+        const porEstado = payload?.pedidos?.porEstado ?? [];
+        const pendienteEntry = porEstado.find((e) => e.estado === 'PENDIENTE');
+        setPedidosPendientes(pendienteEntry ? Number(pendienteEntry.total) : 0);
       } catch {
         // silencioso — no romper el layout por un fallo de polling
       }

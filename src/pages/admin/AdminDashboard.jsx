@@ -14,8 +14,10 @@ export default function AdminDashboard() {
     const fetchDashboard = async () => {
       try {
         setLoading(true);
-        const data = await adminService.getDashboard();
-        setStats(data);
+        const res = await adminService.getDashboard();
+        // Backend: { success, data: { ventas, pedidos, clientes, productosMasVendidos, stockBajo } }
+        const payload = res?.data ?? res;
+        setStats(payload);
       } catch (err) {
         setError('No se pudieron cargar las métricas. Verifica la conexión.');
         console.error('Dashboard error:', err);
@@ -44,17 +46,18 @@ export default function AdminDashboard() {
     );
   }
 
+  // Calcular pedidos pendientes desde el array porEstado
+  const porEstado = stats?.pedidos?.porEstado ?? [];
+  const pendienteCount = Number(porEstado.find((e) => e.estado === 'PENDIENTE')?.total ?? 0);
+  const totalPedidosCount = porEstado.reduce((acc, e) => acc + Number(e.total), 0);
+
   const cards = [
-    { icon: '👥', value: stats?.totalClientes ?? 0, label: 'Total Clientes' },
-    { icon: '📦', value: stats?.totalPedidos ?? 0, label: 'Total Pedidos' },
-    {
-      icon: '⏳',
-      value: stats?.pedidosPendientes ?? 0,
-      label: 'Pedidos Pendientes',
-    },
+    { icon: '👥', value: stats?.clientes?.total ?? 0, label: 'Total Clientes' },
+    { icon: '📦', value: totalPedidosCount, label: 'Total Pedidos' },
+    { icon: '⏳', value: pendienteCount, label: 'Pedidos Pendientes' },
     {
       icon: '💰',
-      value: `$${(stats?.ingresosMes ?? 0).toLocaleString('es-CO')}`,
+      value: `$${(stats?.ventas?.mes ?? 0).toLocaleString('es-CO')}`,
       label: 'Ingresos del Mes',
     },
   ];
@@ -84,11 +87,11 @@ export default function AdminDashboard() {
         </h3>
         <p style={{ margin: 0, fontSize: '0.88rem', color: 'var(--admin-text-secondary)' }}>
           Usa el menú lateral para gestionar pedidos, clientes, productos, inventario y reportes.
-          {stats?.pedidosPendientes > 0 && (
+        {stats?.pedidosPendientes > 0 || pendienteCount > 0 ? (
             <span style={{ color: 'var(--admin-accent)', fontWeight: 600 }}>
-              {' '}Tienes {stats.pedidosPendientes} pedido{stats.pedidosPendientes !== 1 ? 's' : ''} esperando atención.
+              {' '}Tienes {pendienteCount} pedido{pendienteCount !== 1 ? 's' : ''} esperando atención.
             </span>
-          )}
+          ) : null}
         </p>
       </div>
     </div>
