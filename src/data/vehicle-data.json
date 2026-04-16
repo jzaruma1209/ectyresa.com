@@ -1,0 +1,45 @@
+{
+  "marcas": [
+    {
+      "nombre": "Chevrolet",
+      "modelos": ["Aveo", "Sail", "Tracker", "Captiva", "Colorado", "N300", "Groove", "Onix"]
+    },
+    {
+      "nombre": "Toyota",
+      "modelos": ["Corolla", "Hilux", "RAV4", "Yaris", "Fortuner", "Land Cruiser", "Prado"]
+    },
+    {
+      "nombre": "Kia",
+      "modelos": ["Sportage", "Picanto", "Rio", "Stonic", "Soluto", "Sorento", "Seltos"]
+    },
+    {
+      "nombre": "Hyundai",
+      "modelos": ["Tucson", "Accent", "Creta", "Santa Fe", "i10", "i20", "Elantra"]
+    },
+    {
+      "nombre": "Mazda",
+      "modelos": ["Mazda 2", "Mazda 3", "CX-3", "CX-5", "CX-9", "BT-50"]
+    },
+    {
+      "nombre": "Ford",
+      "modelos": ["Ranger", "Escape", "Explorer", "Ecosport", "F-150", "Territory"]
+    },
+    {
+      "nombre": "Nissan",
+      "modelos": ["Frontier", "March", "Kicks", "X-Trail", "Sentra", "Navara"]
+    },
+    {
+      "nombre": "Volkswagen",
+      "modelos": ["Golf", "Polo", "Tiguan", "Jetta", "Amarok", "T-Cross"]
+    },
+    {
+      "nombre": "Mitsubishi",
+      "modelos": ["L200", "Outlander", "ASX", "Eclipse Cross", "Montero Sport"]
+    },
+    {
+      "nombre": "Honda",
+      "modelos": ["Civic", "CR-V", "HRV", "Fit", "Pilot", "Ridgeline"]
+    }
+  ],
+  "anios": [2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 2010, 2009, 2008, 2007, 2006, 2005, 2004, 2003, 2002, 2001, 2000]
+}

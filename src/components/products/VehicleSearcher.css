@@ -1,0 +1,483 @@
+/* ═══════════════════════════════════════════════════
+   VehicleSearcher.css — Paleta Ectyre (blanco/negro/rojo)
+   Misma estructura visual que TireSearcher
+   ═══════════════════════════════════════════════════ */
+
+.vehicle-searcher {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 14px 12px 18px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Inter', 'Outfit', Arial, sans-serif;
+}
+
+/* ── Breadcrumb ─────────────────────────────── */
+.vs-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.vs-crumb-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.vs-crumb {
+  background: #f5f5f5;
+  border: 1.5px solid #ddd;
+  color: #888;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  cursor: default;
+  transition: all 0.2s;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.vs-crumb.done {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #fff;
+  cursor: pointer;
+}
+
+.vs-crumb.done:hover {
+  background: #333;
+}
+
+.vs-crumb.active {
+  background: #E60000;
+  border-color: #E60000;
+  color: #fff;
+}
+
+.vs-crumb:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.vs-crumb-arrow {
+  color: #bbb;
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* ── Título del paso ────────────────────────── */
+.vs-step-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin: 0;
+}
+
+.vs-accent {
+  color: #E60000;
+}
+
+/* ── Visual del vehículo ─────────────────────── */
+.vs-vehicle-visual {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 0;
+}
+
+.vs-vehicle-icon {
+  font-size: 40px;
+  line-height: 1;
+  filter: drop-shadow(0 2px 6px rgba(0,0,0,0.12));
+}
+
+.vs-vehicle-label {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+  text-align: center;
+  background: #f5f5f5;
+  border-radius: 8px;
+  padding: 4px 14px;
+}
+
+.vs-vehicle-label strong {
+  color: #1a1a1a;
+}
+
+/* ── Grid de botones ─────────────────────────── */
+.vs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+
+/* Para marcas y modelos (texto más largo) */
+.vs-grid--brands {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.vs-btn {
+  background: #f5f5f5;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  color: #1a1a1a;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.vs-btn:hover:not(:disabled) {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+  transform: translateY(-1px);
+}
+
+.vs-btn--active {
+  background: #E60000 !important;
+  border-color: #E60000 !important;
+  color: #fff !important;
+}
+
+.vs-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Ver Todos ──────────────────────────────── */
+.vs-show-all {
+  width: 100%;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-transform: uppercase;
+}
+
+.vs-show-all:hover {
+  background: #333;
+}
+
+/* ── Reset ──────────────────────────────────── */
+.vs-reset {
+  background: transparent;
+  border: 1.5px solid #ccc;
+  color: #888;
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.vs-reset:hover {
+  border-color: #1a1a1a;
+  color: #1a1a1a;
+}
+
+/* ── Estados ────────────────────────────────── */
+.vs-status {
+  width: 100%;
+  text-align: center;
+  padding: 18px 12px;
+  border-radius: 12px;
+  background: #f5f5f5;
+  color: #555;
+  font-size: 14px;
+}
+
+.vs-status p {
+  margin: 4px 0 0;
+}
+
+.vs-spinner {
+  margin: 0 auto 8px;
+  width: 30px;
+  height: 30px;
+  border: 3px solid #e0e0e0;
+  border-top-color: #E60000;
+  border-radius: 50%;
+  animation: vs-spin 0.7s linear infinite;
+}
+
+@keyframes vs-spin {
+  to { transform: rotate(360deg); }
+}
+
+.vs-status--error {
+  background: #fff0f0;
+  color: #c00;
+  border: 1px solid #ffcccc;
+}
+
+.vs-status--empty {
+  background: #f8f8f8;
+  color: #666;
+}
+
+.vs-status--empty span {
+  font-size: 28px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ── Resultados ─────────────────────────────── */
+.vs-results {
+  width: 100%;
+}
+
+.vs-results-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.vs-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.vs-result-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.vs-result-card:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+  transform: translateY(-2px);
+}
+
+.vs-card-logo {
+  height: 22px;
+  object-fit: contain;
+}
+
+.vs-card-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.vs-card-model {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-align: center;
+  margin: 0;
+}
+
+.vs-card-measure {
+  font-size: 11px;
+  color: #808080;
+  margin: 0;
+}
+
+.vs-card-origin {
+  font-size: 10px;
+  color: #aaa;
+  margin: 0;
+}
+
+.vs-card-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.vs-card-original {
+  font-size: 11px;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.vs-card-final {
+  font-size: 18px;
+  font-weight: 800;
+  color: #E60000;
+}
+
+.vs-card-stock {
+  font-size: 11px;
+  color: #3a9a3a;
+  margin: 0;
+  font-weight: 600;
+}
+
+.vs-card-stock--out {
+  color: #aaa;
+}
+
+.vs-card-btn {
+  width: 100%;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 0;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.vs-card-btn:hover {
+  background: #E60000;
+}
+
+/* ── Responsive ─────────────────────────────── */
+@media (max-width: 480px) {
+  .vs-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .vs-grid--brands {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .vehicle-searcher {
+    border-radius: 12px;
+    padding: 16px 12px 20px;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   MODAL — Popup flotante (resultados + ver todos)
+   ══════════════════════════════════════════════ */
+
+.vs-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: vs-backdrop-in 0.2s ease;
+}
+
+@keyframes vs-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.vs-modal {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: vs-modal-in 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes vs-modal-in {
+  from { transform: scale(0.92) translateY(12px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0px);  opacity: 1; }
+}
+
+.vs-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 12px;
+  border-bottom: 1.5px solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.vs-modal-title {
+  font-family: 'Inter', 'Outfit', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.vs-modal-close {
+  background: #f5f5f5;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.vs-modal-close:hover {
+  background: #E60000;
+  color: #fff;
+}
+
+.vs-modal-body {
+  padding: 16px 20px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Grid dentro del modal */
+.vs-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 400px) {
+  .vs-modal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

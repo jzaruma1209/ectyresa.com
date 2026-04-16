@@ -17,6 +17,16 @@
 
 ---
 
+## 🔑 Credenciales de Prueba (Seeders)
+
+Para interactuar con los endpoints que requieren autenticación, puedes usar estas cuentas:
+
+- 👑 **Administrador:** `admin@ectyre.com` / `Admin2026#Ectyre`
+- 👤 **Cliente 1:** `carlos.mendoza@test.com` / `Test1234!`
+- 👤 **Cliente 2:** `maria.torres@test.com` / `Test1234!`
+
+---
+
 ## 📌 Rutas Generales
 
 | Método | Ruta | Descripción | Auth |

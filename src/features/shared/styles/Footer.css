@@ -32,3 +32,103 @@
   color: #999;
 }
 
+/* ─── Ubicación Clickable (Texto) ─── */
+.footer-link-text {
+  margin: 0.5rem 0;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  display: inline-block;
+  width: 100%;
+}
+
+.footer-link-text:hover {
+  color: #E60000;
+}
+
+/* ─── Modal del Mapa ─── */
+.ft-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: ft-fadeIn 0.2s ease;
+}
+
+@keyframes ft-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.ft-modal {
+  background: #fff;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+  animation: ft-slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes ft-slideUp {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.ft-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid #eee;
+  background: #fdfdfd;
+}
+
+.ft-modal-header h3 {
+  margin: 0;
+  color: #1a1a1a;
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.ft-modal-close {
+  background: #f0f0f0;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  color: #666;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.ft-modal-close:hover {
+  background: #E60000;
+  color: #fff;
+}
+
+.ft-modal-body {
+  padding: 24px;
+}
+
+.ft-map-placeholder {
+  background: #f9f9f9;
+  border: 2px dashed #ddd;
+  border-radius: 8px;
+  padding: 40px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import '../../features/shared/styles/Footer.css';
 
 const Footer = () => {
@@ -7,12 +8,16 @@ const Footer = () => {
         <div className="footer-section">
           <h3>Contacto</h3>
           <p>Email: info@ectyre.com</p>
-          <p>Teléfono: +52 123 456 7890</p>
+          <p>Teléfono: +593 999601748</p>
         </div>
         <div className="footer-section">
           <h3>Ubicaciones</h3>
-          <p>Tienda Principal</p>
-          <p>Ciudad de México</p>
+          <Link to="/ubicacion" className="footer-link-text" style={{ textDecoration: 'none', display: 'block' }} title="Ver en mapa">
+            Tienda Principal
+          </Link>
+          <Link to="/ubicacion" className="footer-link-text" style={{ textDecoration: 'none', display: 'block' }} title="Ver en mapa">
+            Ecuador <span style={{ fontSize: '12px' }}>📍</span>
+          </Link>
         </div>
         <div className="footer-section">
           <h3>Horarios</h3>
@@ -21,11 +26,10 @@ const Footer = () => {
         </div>
       </div>
       <div className="footer-bottom">
-        <p>&copy; 2024 Ectyre Llantas. Todos los derechos reservados.</p>
+        <p>&copy; 2026 Ectyre Llantas. Todos los derechos reservados.</p>
       </div>
     </footer>
   );
 };
 
 export default Footer;
-

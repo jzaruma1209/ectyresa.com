@@ -1,0 +1,476 @@
+/* ═══════════════════════════════════════════════════
+   TireSearcher.css — Paleta Ectyre (blanco/negro/rojo)
+   ═══════════════════════════════════════════════════ */
+
+.tire-searcher {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  padding: 14px 12px 18px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.10);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Inter', 'Outfit', Arial, sans-serif;
+}
+
+/* ── Breadcrumb ─────────────────────────────── */
+.ts-breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ts-crumb-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.ts-crumb {
+  background: #f5f5f5;
+  border: 1.5px solid #ddd;
+  color: #888;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  cursor: default;
+  transition: all 0.2s;
+}
+
+.ts-crumb.done {
+  background: #1a1a1a;
+  border-color: #1a1a1a;
+  color: #fff;
+  cursor: pointer;
+}
+
+.ts-crumb.done:hover {
+  background: #333;
+}
+
+.ts-crumb.active {
+  background: #E60000;
+  border-color: #E60000;
+  color: #fff;
+}
+
+.ts-crumb:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.ts-crumb-arrow {
+  color: #bbb;
+  font-size: 16px;
+  line-height: 1;
+}
+
+/* ── Título del paso ────────────────────────── */
+.ts-step-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #1a1a1a;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin: 0;
+}
+
+.ts-accent {
+  color: #E60000;
+}
+
+/* ── Imagen de llanta ─────────────────────── */
+.ts-tire-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 180px;
+  height: 90px;
+  margin: 0 auto;
+}
+
+.ts-tire-img {
+  width: 160px;
+  height: 90px;
+  object-fit: contain;
+  display: block;
+  /* Sin filtros y opacidad completa */
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+.ts-measure-arc-wrapper {
+  position: absolute;
+  top: -21px;
+  /* Subido más para que el texto corone la parte de goma negra */
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  pointer-events: none;
+  /* Sombra para que las letras blancas resalten sobre la goma negra */
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.8));
+}
+
+.ts-measure-arc-wrapper svg {
+  display: block;
+}
+
+/* ── Grid de botones ─────────────────────── */
+.ts-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+  width: 100%;
+}
+
+.ts-btn {
+  background: #f5f5f5;
+  border: 1.5px solid #e0e0e0;
+  border-radius: 8px;
+  color: #1a1a1a;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 8px 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+
+.ts-btn:hover:not(:disabled) {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+  transform: translateY(-1px);
+}
+
+.ts-btn--active {
+  background: #E60000 !important;
+  border-color: #E60000 !important;
+  color: #fff !important;
+}
+
+.ts-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Ver Todos ──────────────────────────────── */
+.ts-show-all {
+  width: 100%;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 11px 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.2s;
+  text-transform: uppercase;
+}
+
+.ts-show-all:hover {
+  background: #333;
+}
+
+/* ── Reset ──────────────────────────────────── */
+.ts-reset {
+  background: transparent;
+  border: 1.5px solid #ccc;
+  color: #888;
+  border-radius: 8px;
+  padding: 7px 18px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ts-reset:hover {
+  border-color: #1a1a1a;
+  color: #1a1a1a;
+}
+
+/* ── Estados ────────────────────────────────── */
+.ts-status {
+  width: 100%;
+  text-align: center;
+  padding: 18px 12px;
+  border-radius: 12px;
+  background: #f5f5f5;
+  color: #555;
+  font-size: 14px;
+}
+
+.ts-status p {
+  margin: 4px 0 0;
+}
+
+.ts-spinner {
+  margin: 0 auto 8px;
+  width: 30px;
+  height: 30px;
+  border: 3px solid #e0e0e0;
+  border-top-color: #E60000;
+  border-radius: 50%;
+  animation: ts-spin 0.7s linear infinite;
+}
+
+@keyframes ts-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ts-status--error {
+  background: #fff0f0;
+  color: #c00;
+  border: 1px solid #ffcccc;
+}
+
+.ts-status--empty {
+  background: #f8f8f8;
+  color: #666;
+}
+
+.ts-status--empty span {
+  font-size: 28px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ── Resultados ─────────────────────────────── */
+.ts-results {
+  width: 100%;
+}
+
+.ts-results-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.ts-results-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 12px;
+}
+
+.ts-result-card {
+  background: #fff;
+  border: 1px solid #e8e8e8;
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.ts-result-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10);
+  transform: translateY(-2px);
+}
+
+.ts-card-logo {
+  height: 22px;
+  object-fit: contain;
+}
+
+.ts-card-img {
+  width: 100px;
+  height: 100px;
+  object-fit: contain;
+}
+
+.ts-card-model {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1a1a1a;
+  text-align: center;
+  margin: 0;
+}
+
+.ts-card-measure {
+  font-size: 11px;
+  color: #808080;
+  margin: 0;
+}
+
+.ts-card-origin {
+  font-size: 10px;
+  color: #aaa;
+  margin: 0;
+}
+
+.ts-card-price {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.ts-card-original {
+  font-size: 11px;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+.ts-card-final {
+  font-size: 18px;
+  font-weight: 800;
+  color: #E60000;
+}
+
+.ts-card-stock {
+  font-size: 11px;
+  color: #3a9a3a;
+  margin: 0;
+  font-weight: 600;
+}
+
+.ts-card-stock--out {
+  color: #aaa;
+}
+
+.ts-card-btn {
+  width: 100%;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 0;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.ts-card-btn:hover {
+  background: #E60000;
+}
+
+/* ── Responsive ─────────────────────────────── */
+@media (max-width: 480px) {
+  .ts-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .tire-searcher {
+    border-radius: 12px;
+    padding: 16px 12px 20px;
+  }
+}
+
+/* ══════════════════════════════════════════════
+   MODAL — Popup flotante (resultados + ver todos)
+   ══════════════════════════════════════════════ */
+
+.ts-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: ts-backdrop-in 0.2s ease;
+}
+
+@keyframes ts-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.ts-modal {
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+  width: 100%;
+  max-width: 500px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: ts-modal-in 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes ts-modal-in {
+  from { transform: scale(0.92) translateY(12px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0px);  opacity: 1; }
+}
+
+.ts-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px 12px;
+  border-bottom: 1.5px solid #f0f0f0;
+  flex-shrink: 0;
+}
+
+.ts-modal-title {
+  font-family: 'Inter', 'Outfit', Arial, sans-serif;
+  font-size: 14px;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.ts-modal-close {
+  background: #f5f5f5;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+
+.ts-modal-close:hover {
+  background: #E60000;
+  color: #fff;
+}
+
+.ts-modal-body {
+  padding: 16px 20px 20px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Grid inside modal (VER TODOS) */
+.ts-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+}
+
+@media (max-width: 400px) {
+  .ts-modal-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

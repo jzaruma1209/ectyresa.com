@@ -8,11 +8,13 @@ import SearchResultsPage from "../pages/shop/SearchResultsPage";
 import LoginPage from "../pages/shop/LoginPage";
 import RegisterPage from "../pages/shop/RegisterPage";
 import ProfilePage from "../pages/shop/ProfilePage";
+import UbicacionPage from "../pages/shop/UbicacionPage";
 import NotFoundPage from "../pages/shop/NotFoundPage";
 import CheckoutPage from "../pages/shop/CheckoutPage";
 import OrdersPage from "../pages/shop/OrdersPage";
 import OrderDetailPage from "../pages/shop/OrderDetailPage";
 import ProtectedRoute from "../components/shared/ProtectedRoute";
+import ScrollToTop from "../components/shared/ScrollToTop";
 
 // ── Admin imports ──
 import AdminLayout from "../components/admin/AdminLayout";
@@ -27,6 +29,7 @@ import AdminReportes from "../pages/admin/AdminReportes";
 export default function AppRouter() {
     return (
         <Router>
+            <ScrollToTop />
             <div className="app">
                 <Header />
                 <main className="app-main">
@@ -38,6 +41,7 @@ export default function AppRouter() {
                         <Route path="/product/:id" element={<ProductDetailsPage />} />
                         <Route path="/cart" element={<CartPage />} />
                         <Route path="/search" element={<SearchResultsPage />} />
+                        <Route path="/ubicacion" element={<UbicacionPage />} />
                         <Route path="/login" element={<LoginPage />} />
                         <Route path="/registro" element={<RegisterPage />} />
                         <Route

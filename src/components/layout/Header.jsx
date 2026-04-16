@@ -60,7 +60,7 @@ const Header = () => {
                 <circle cx="5.5" cy="18.5" r="2.5" />
                 <circle cx="18.5" cy="18.5" r="2.5" />
               </svg>
-              Envío gratis
+              Envío a todo el Ecuador
             </span>
             <span className="topbar-divider">|</span>
             <span className="topbar-item">
@@ -73,7 +73,11 @@ const Header = () => {
           <div className="topbar-right desktop-only">
             <a href="#" className="topbar-link">Seguimiento de pedido</a>
             <span className="topbar-divider">|</span>
-            <a href="#" className="topbar-link">Sucursales</a>
+            <span
+              className="topbar-link"
+              style={{ cursor: 'pointer' }}
+              onClick={() => navigate('/ubicacion')}
+            >Sucursales</span>
           </div>
         </div>
       </div>
@@ -220,7 +224,11 @@ const Header = () => {
           <Link to="/cart" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>
             Carrito {cartItemCount > 0 && `(${cartItemCount})`}
           </Link>
-          <a href="#" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Sucursales</a>
+          <span
+            className="mobile-nav-link"
+            style={{ cursor: 'pointer' }}
+            onClick={() => { navigate('/ubicacion'); setMenuOpen(false); }}
+          >Sucursales</span>
           <a href="#" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Seguimiento de pedido</a>
         </nav>
       )}
