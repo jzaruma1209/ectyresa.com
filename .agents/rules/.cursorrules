@@ -3,3 +3,4 @@
 - **Framework**: Este es un proyecto de React usando Vite. Prioriza el uso de componentes funcionales y React Hooks.
 - **Estilos**: El proyecto utiliza Tailwind CSS. Prioriza el uso de clases de utilería de Tailwind en lugar de crear archivos CSS separados, a menos que sea estrictamente necesario.
 - **Estructura**: Mantén la estructura organizada. Los componentes reutilizables deben ir en `src/components`.
+- **Validación de API**: Siempre que vayas a crear una nueva ruta principal, crear un nuevo componente o consultar datos, **DEBES revisar primero el archivo `Ectyre_API_Postman_Collection.json`** en la raíz del proyecto. Esto asegura que identifiques y uses los endpoints reales y funcionales existentes (para no romper código ni inventar rutas falsas).

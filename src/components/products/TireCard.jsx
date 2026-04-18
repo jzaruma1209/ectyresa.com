@@ -1,5 +1,8 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import { useCart } from "../../hooks/useCart";
+import { openAuthModal } from "../../store/slices/authModal.slice";
 
 const TireCard = ({
   product,         // Objeto principal de la tarjeta actual (Tire)
@@ -12,13 +15,15 @@ const TireCard = ({
   pvp,
 }) => {
   const { addToCart } = useCart();
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
   const [qty, setQty] = useState(1);
 
   // ----------------------------------------------------
   // PLACEHOLDERS & REGULARIZACIÓN DE PROPS DESDE LA BD
   // ----------------------------------------------------
-  // 1. Imagen Central
-  const finalTireSrc = tireSrc || product?.image || "/placeholder-tire.png";
+  const altImage = (product?.name?.length || 0) % 2 === 0 ? "/llanta1.png" : "/llanta2.png";
+  const finalTireSrc = tireSrc || product?.image || altImage;
 
   // 2. Especificaciones de Terreno y Físicas
   const finalSpecs = specs || { wet: 0, dry: 0, noise: "109S" };
@@ -49,6 +54,12 @@ const TireCard = ({
   const handleBuy = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!isAuthenticated) {
+      dispatch(openAuthModal({ type: 'ADD_TO_CART', payload: product, quantity: qty }));
+      return;
+    }
+
     // Usa el hook global con la cantidad local visual!
     addToCart(product, qty);
   };
@@ -76,12 +87,19 @@ const TireCard = ({
       </div>
 
       {/* --- IMAGEN MATRÍZ Y SPECS LATERALES --- */}
-      <div className="px-2.5 pt-2.5 pb-1.5 flex gap-1.5 items-start">
+      <Link
+        to={`/product/${product?.id || "#"}`}
+        className="px-2.5 pt-2.5 pb-1.5 flex gap-1.5 items-start"
+        style={{ textDecoration: "none" }}
+        title={`Ver detalles de ${name}`}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
         <img 
           src={finalTireSrc} 
           alt={name} 
           className="flex-1 w-0 h-[130px] object-contain"
-          onError={(e) => { e.target.src = '/placeholder-tire.png'; }}
+          onError={(e) => { e.target.src = '/llanta1.png'; }}
         />
 
         <div className="flex flex-col gap-1.5 pt-1 items-center">
@@ -134,16 +152,19 @@ const TireCard = ({
             </div>
           </div>
         </div>
-      </div>
+      </Link>
 
       <div className="border-t-[0.5px] border-t-black/10 mx-3" />
 
       {/* --- CORTINA DE PRECIO --- */}
       <div className="px-3 pt-2.5 pb-1 flex items-center gap-2">
         {show247 && (
-          <div className="bg-[#1a1a1a] text-white rounded-full w-8 h-8 flex items-center justify-center text-[8px] font-medium leading-[1.1] text-center shrink-0 shadow-sm border border-black/5">
-            24<br />7
-          </div>
+          <img 
+            src="/1.png" 
+            alt="Promoción" 
+            className="w-8 h-8 rounded-full object-cover shrink-0 shadow-sm border-[0.5px] border-black/10"
+            onError={(e) => e.target.style.display = 'none'} // Si no existe localmente, se oculta para no romper el diseño
+          />
         )}
         <div className="flex flex-col gap-[1px]">
           <div className="flex items-baseline gap-0.5">

@@ -1,0 +1,306 @@
+/* ═══════════════════════════════════════════════════════════════
+   AuthModal.css — Estilos del modal flotante de login
+   Paleta Ectyre: #FFF 60% | #1A1A1A 30% | #E60000 10%
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── Overlay ─────────────────────────────────────────────────── */
+.auth-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  animation: authModalFadeIn 0.25s ease-out;
+  padding: 20px;
+}
+
+@keyframes authModalFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Modal card ──────────────────────────────────────────────── */
+.auth-modal {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  padding: 36px 32px 28px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.25), 0 8px 32px rgba(0, 0, 0, 0.1);
+  animation: authModalSlideUp 0.3s ease-out;
+}
+
+@keyframes authModalSlideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ── Close button ────────────────────────────────────────────── */
+.auth-modal-close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #F5F5F5;
+  border: none;
+  cursor: pointer;
+  color: #808080;
+  transition: all 0.2s ease;
+}
+
+.auth-modal-close:hover {
+  background: #E8E8E8;
+  color: #1A1A1A;
+}
+
+/* ── Header ──────────────────────────────────────────────────── */
+.auth-modal-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.auth-modal-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #FFF0F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 14px;
+}
+
+.auth-modal-header h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin: 0 0 6px;
+}
+
+.auth-modal-header p {
+  font-size: 0.9rem;
+  color: #808080;
+  margin: 0;
+}
+
+/* ── Error / Success messages ────────────────────────────────── */
+.auth-modal-error {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  background: #FFF0F0;
+  border: 1px solid #E60000;
+  border-radius: 8px;
+  margin-bottom: 18px;
+  color: #E60000;
+  font-size: 0.85rem;
+  animation: authModalShake 0.4s ease;
+}
+
+@keyframes authModalShake {
+  0%, 100% { transform: translateX(0); }
+  20%  { transform: translateX(-6px); }
+  40%  { transform: translateX(6px); }
+  60%  { transform: translateX(-4px); }
+  80%  { transform: translateX(4px); }
+}
+
+.auth-modal-error svg {
+  flex-shrink: 0;
+}
+
+.auth-modal-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 18px;
+  background: #f0fdf4;
+  border: 1px solid #22c55e;
+  border-radius: 8px;
+  color: #15803d;
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 18px;
+  animation: authModalFadeIn 0.3s ease;
+}
+
+.auth-modal-success svg {
+  flex-shrink: 0;
+  color: #22c55e;
+}
+
+/* ── Form ────────────────────────────────────────────────────── */
+.auth-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.auth-modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.auth-modal-field label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #1A1A1A;
+}
+
+.auth-modal-field input {
+  padding: 11px 14px;
+  border: 1.5px solid #E0E0E0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  color: #1A1A1A;
+  background: #FAFAFA;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-modal-field input:focus {
+  border-color: #1A1A1A;
+  box-shadow: 0 0 0 3px rgba(26, 26, 26, 0.08);
+  background: #FFFFFF;
+}
+
+.auth-modal-field input::placeholder {
+  color: #BCBCBC;
+}
+
+/* Password wrap */
+.auth-modal-password-wrap {
+  position: relative;
+  display: flex;
+}
+
+.auth-modal-password-wrap input {
+  padding-right: 48px;
+}
+
+.auth-modal-pwd-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  color: #808080;
+  display: flex;
+  align-items: center;
+}
+
+.auth-modal-pwd-toggle:hover {
+  color: #1A1A1A;
+}
+
+/* ── Submit button ───────────────────────────────────────────── */
+.auth-modal-submit {
+  padding: 13px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  background: #E60000;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease;
+  margin-top: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+}
+
+.auth-modal-submit:hover:not(:disabled) {
+  background: #CC0000;
+  transform: translateY(-1px);
+}
+
+.auth-modal-submit:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.auth-modal-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Spinner */
+.auth-modal-spinner {
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #FFFFFF;
+  border-radius: 50%;
+  animation: authModalSpin 0.7s linear infinite;
+}
+
+@keyframes authModalSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Footer ──────────────────────────────────────────────────── */
+.auth-modal-footer {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid #F0F0F0;
+}
+
+.auth-modal-footer p {
+  font-size: 0.85rem;
+  color: #808080;
+  margin: 0;
+}
+
+.auth-modal-link {
+  background: none;
+  border: none;
+  color: #E60000;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-decoration: none;
+  padding: 0;
+}
+
+.auth-modal-link:hover {
+  text-decoration: underline;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .auth-modal-overlay {
+    padding: 12px;
+    align-items: flex-end;
+  }
+
+  .auth-modal {
+    border-radius: 16px 16px 0 0;
+    padding: 28px 20px 24px;
+    max-width: 100%;
+    animation: authModalSlideUpMobile 0.35s ease-out;
+  }
+
+  @keyframes authModalSlideUpMobile {
+    from { opacity: 0; transform: translateY(100%); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+}

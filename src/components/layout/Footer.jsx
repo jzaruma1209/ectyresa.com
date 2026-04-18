@@ -12,12 +12,12 @@ const Footer = () => {
         </div>
         <div className="footer-section">
           <h3>Ubicaciones</h3>
-          <Link to="/ubicacion" className="footer-link-text" style={{ textDecoration: 'none', display: 'block' }} title="Ver en mapa">
+          <a href="/ubicacion" className="footer-link-text" style={{ textDecoration: 'none', display: 'block' }} title="Ver en mapa">
             Tienda Principal
-          </Link>
-          <Link to="/ubicacion" className="footer-link-text" style={{ textDecoration: 'none', display: 'block' }} title="Ver en mapa">
+          </a>
+          <a href="/ubicacion" className="footer-link-text" style={{ textDecoration: 'none', display: 'block' }} title="Ver en mapa">
             Ecuador <span style={{ fontSize: '12px' }}>📍</span>
-          </Link>
+          </a>
         </div>
         <div className="footer-section">
           <h3>Horarios</h3>

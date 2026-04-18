@@ -1,17 +1,55 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useAuth } from "../../hooks/useAuth";
 import PromoBanner from "../../features/shared/PromoBanner";
+import SearchMegaMenu from "../ui/SearchMegaMenu";
 import "../../features/shared/styles/Header.css";
+
+const searchMegaMenuItems = [
+  {
+    label: "Llantas",
+    bgColor: "#F5F5F5",
+    textColor: "#000000",
+    links: [
+      { label: "Aro 12", href: "/search?q=aro 12" },
+      { label: "Aro 13", href: "/search?q=aro 13" },
+      { label: "Aro 14", href: "/search?q=aro 14" },
+      { label: "Aro 15", href: "/search?q=aro 15" }
+    ]
+  },
+  {
+    label: "Aros", 
+    bgColor: "#F5F5F5",
+    textColor: "#000000",
+    links: [
+      { label: "Deportivos", href: "/search?q=deportivos" },
+      { label: "Clásicos", href: "/search?q=clasicos" },
+      { label: "Off-Road", href: "/search?q=off-road" }
+    ]
+  },
+  {
+    label: "Accesorios",
+    bgColor: "#FFFFFF", 
+    textColor: "#000000",
+    links: [
+      { label: "Moquetas", href: "/search?q=moquetas" },
+      { label: "Conos de seguridad", href: "/search?q=conos" },
+      { label: "Kits de emergencia", href: "/search?q=kits" }
+    ]
+  }
+];
 
 const Header = () => {
   const cartItemCount = useSelector((state) => state.cart.itemCount);
+  const cartTotal = useSelector((state) => state.cart.total);
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [isHidden, setIsHidden] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [searchFocused, setSearchFocused] = useState(false);
+  const searchWrapperRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +65,16 @@ const Header = () => {
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (searchWrapperRef.current && !searchWrapperRef.current.contains(event.target)) {
+        setSearchFocused(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -70,14 +118,10 @@ const Header = () => {
               Instalamos tus llantas
             </span>
           </div>
-          <div className="topbar-right desktop-only">
+          <div className="topbar-right desktop-only" style={{ zIndex: 10, position: 'relative' }}>
             <a href="#" className="topbar-link">Seguimiento de pedido</a>
             <span className="topbar-divider">|</span>
-            <span
-              className="topbar-link"
-              style={{ cursor: 'pointer' }}
-              onClick={() => navigate('/ubicacion')}
-            >Sucursales</span>
+            <a href="/ubicacion" className="topbar-link">Sucursales</a>
           </div>
         </div>
       </div>
@@ -92,17 +136,22 @@ const Header = () => {
           </Link>
 
           {/* Search bar */}
-          <div className="header-search-bar">
-            <svg className="search-icon-left" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2">
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Busca llantas por medida, marca o vehículo..."
-            />
-            <button className="search-btn">BUSCAR</button>
+          <div ref={searchWrapperRef} style={{ flexGrow: 1, position: 'relative' }}>
+            <div className={`header-search-bar ${searchFocused ? 'focused' : ''}`}>
+              <svg className="search-icon-left" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2">
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Busca llantas por medida, marca o vehículo..."
+                onFocus={() => setSearchFocused(true)}
+              />
+              <button className="search-btn">BUSCAR</button>
+            </div>
+            
+            <SearchMegaMenu isOpen={searchFocused} items={searchMegaMenuItems} onClose={() => setSearchFocused(false)} />
           </div>
 
           {/* Right actions */}
@@ -172,7 +221,7 @@ const Header = () => {
               </div>
               <div className="account-text-block">
                 <span className="account-label">CARRITO</span>
-                <span className="account-sub">$0.00</span>
+                <span className="account-sub">${(cartTotal || 0).toFixed(2)}</span>
               </div>
             </Link>
 
@@ -224,11 +273,7 @@ const Header = () => {
           <Link to="/cart" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>
             Carrito {cartItemCount > 0 && `(${cartItemCount})`}
           </Link>
-          <span
-            className="mobile-nav-link"
-            style={{ cursor: 'pointer' }}
-            onClick={() => { navigate('/ubicacion'); setMenuOpen(false); }}
-          >Sucursales</span>
+          <a href="/ubicacion" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Sucursales</a>
           <a href="#" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Seguimiento de pedido</a>
         </nav>
       )}

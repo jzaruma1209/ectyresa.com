@@ -1,14 +1,24 @@
 import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 import { useCart } from '../../hooks/useCart';
+import { openAuthModal } from '../../store/slices/authModal.slice';
 import '../../features/home/styles/ProductCard.css';
 
 const ProductCard = ({ product }) => {
   const { addToCart } = useCart();
+  const dispatch = useDispatch();
+  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (!isAuthenticated) {
+      dispatch(openAuthModal({ type: 'ADD_TO_CART', payload: product, quantity: 1 }));
+      return;
+    }
+
     addToCart(product, 1);
   };
 
@@ -16,7 +26,7 @@ const ProductCard = ({ product }) => {
   const hasDiscount = product.discount && product.discount > 0;
 
   return (
-    <Link to={`/product/${product.id}`} className="product-card">
+    <Link to={`/product/${product.id}`} className="product-card" target="_blank" rel="noopener noreferrer">
       <div className="product-card-image">
         {hasDiscount && (
           <span className="product-discount-badge">

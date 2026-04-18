@@ -15,6 +15,8 @@ import OrdersPage from "../pages/shop/OrdersPage";
 import OrderDetailPage from "../pages/shop/OrderDetailPage";
 import ProtectedRoute from "../components/shared/ProtectedRoute";
 import ScrollToTop from "../components/shared/ScrollToTop";
+import AuthModal from "../components/Auth/AuthModal";
+import CartToast from "../components/cart/CartToast";
 
 // ── Admin imports ──
 import AdminLayout from "../components/admin/AdminLayout";
@@ -30,6 +32,8 @@ export default function AppRouter() {
     return (
         <Router>
             <ScrollToTop />
+            <AuthModal />
+            <CartToast />
             <div className="app">
                 <Header />
                 <main className="app-main">

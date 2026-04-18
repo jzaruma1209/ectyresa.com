@@ -1,12 +1,24 @@
+import { useSelector, useDispatch } from "react-redux";
 import { useCart } from "../../hooks/useCart";
 import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import { useNavigate } from "react-router-dom";
+import { openAuthModal } from "../../store/slices/authModal.slice";
 import "../styles/CartPage.css";
 
 const CartPage = () => {
   const { items, itemCount, loading, error, clearError } = useCart();
+  const { isAuthenticated } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const handleCheckout = () => {
+    if (!isAuthenticated) {
+      dispatch(openAuthModal({ type: 'CHECKOUT' }));
+      return;
+    }
+    navigate("/checkout");
+  };
 
   if (itemCount === 0 && !loading) {
     return (
@@ -53,7 +65,7 @@ const CartPage = () => {
           <CartSummary />
           <button
             className="cart-checkout-cta"
-            onClick={() => navigate("/checkout")}
+            onClick={handleCheckout}
             disabled={loading || itemCount === 0}
           >
             {loading ? "Actualizando..." : "Proceder al Checkout →"}

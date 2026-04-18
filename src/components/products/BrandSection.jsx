@@ -34,8 +34,8 @@ const BrandSection = ({ brand, products }) => {
               key={i}
               product={{
                 ...product,
-                name: product.title, // Mapping title to name
-                // ensure price is there
+                id: product.id,           // ← ID para el enlace a la PDP
+                name: product.title,
                 price: product.price,
                 image: product.image
               }}

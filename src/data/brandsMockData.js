@@ -6,9 +6,8 @@
  * Imagen genérica de llanta: usamos SVGs en base64 simples para no depender de assets externos.
  */
 
-// Imagen placeholder SVG de una llanta vista de frente
-const TYRE_PLACEHOLDER =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23222' stroke='%23555' stroke-width='3'/%3E%3Ccircle cx='50' cy='50' r='32' fill='%23444'/%3E%3Ccircle cx='50' cy='50' r='15' fill='%23222' stroke='%23999' stroke-width='2'/%3E%3C/svg%3E";
+// Eliminado el feo SVG, usamos un string vacío para que el componente TireCard auto-asigne llanta1 y llanta2
+const TYRE_PLACEHOLDER = "";
 
 // Logo genérico SVG para las marcas (texto + color de fondo)
 const makeLogo = (text, bg, fg = "%23fff") =>
@@ -27,6 +26,7 @@ export const BRAND_SECTIONS = [
     },
     products: [
       {
+        id: "nk-1",
         image: TYRE_PLACEHOLDER,
         title: "Nankang Sportnek",
         model: "Sportnek AS-2+",
@@ -37,6 +37,7 @@ export const BRAND_SECTIONS = [
         badge: "OFERTA",
       },
       {
+        id: "nk-2",
         image: TYRE_PLACEHOLDER,
         title: "Nankang Cross Sport",
         model: "SP-9",
@@ -47,6 +48,7 @@ export const BRAND_SECTIONS = [
         badge: null,
       },
       {
+        id: "nk-3",
         image: TYRE_PLACEHOLDER,
         title: "Nankang Econex",
         model: "NA-1",
@@ -57,6 +59,7 @@ export const BRAND_SECTIONS = [
         badge: null,
       },
       {
+        id: "nk-4",
         image: TYRE_PLACEHOLDER,
         title: "Nankang Mudstar",
         model: "M/T",
@@ -77,148 +80,30 @@ export const BRAND_SECTIONS = [
       link: "#",
     },
     products: [
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Yeada YD-136",
-        model: "YD-136",
-        measure: "295/80R22.5",
-        description: "Carga pesada para camiones de larga distancia.",
-        price: "320.00",
-        originalPrice: "390.00",
-        badge: "LIQUIDACIÓN",
-      },
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Yeada YDA-226",
-        model: "YDA-226",
-        measure: "315/70R22.5",
-        description: "Dirección precisa en flota de transporte.",
-        price: "285.00",
-        originalPrice: null,
-        badge: null,
-      },
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Yeada YD-118",
-        model: "YD-118",
-        measure: "235/75R17.5",
-        description: "Óptima para reparto urbano y distribución regional.",
-        price: "178.00",
-        originalPrice: "210.00",
-        badge: null,
-      },
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Yeada YDA-286",
-        model: "YDA-286",
-        measure: "11R22.5",
-        description: "Máximo agarre en carretera húmeda para flota pesada.",
-        price: "340.00",
-        originalPrice: null,
-        badge: "NUEVO",
-      },
+      { id: "yd-1", image: TYRE_PLACEHOLDER, title: "Yeada YD-136",  model: "YD-136",  measure: "295/80R22.5", description: "Carga pesada para camiones de larga distancia.", price: "320.00", originalPrice: "390.00", badge: "LIQUIDACIÓN" },
+      { id: "yd-2", image: TYRE_PLACEHOLDER, title: "Yeada YDA-226", model: "YDA-226", measure: "315/70R22.5", description: "Dirección precisa en flota de transporte.", price: "285.00", originalPrice: null, badge: null },
+      { id: "yd-3", image: TYRE_PLACEHOLDER, title: "Yeada YD-118",  model: "YD-118",  measure: "235/75R17.5", description: "Óptima para reparto urbano y distribución regional.", price: "178.00", originalPrice: "210.00", badge: null },
+      { id: "yd-4", image: TYRE_PLACEHOLDER, title: "Yeada YDA-286", model: "YDA-286", measure: "11R22.5",     description: "Máximo agarre en carretera húmeda para flota pesada.", price: "340.00", originalPrice: null, badge: "NUEVO" },
     ],
   },
 
   {
-    brand: {
-      name: "TORNEL",
-      tagline: "Orgullo en Movimiento",
-      logo: "/img_marcas/tornel.png",
-      link: "#",
-    },
+    brand: { name: "TORNEL", tagline: "Orgullo en Movimiento", logo: "/img_marcas/tornel.png", link: "#" },
     products: [
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Tornel Real",
-        model: "Real",
-        measure: "420/85R34",
-        description: "Alta flotación para tractores en terreno blando.",
-        price: "160.00",
-        originalPrice: null,
-        badge: null,
-      },
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Tornel Direccional",
-        model: "Direccional",
-        measure: "380/70R28",
-        description: "Agarre excelente para el día a día.",
-        price: "90.00",
-        originalPrice: "110.00",
-        badge: "OFERTA",
-      },
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Tornel America",
-        model: "America Cargo",
-        measure: "480/65R28",
-        description: "Resistencia extrema para carga pesada.",
-        price: "120.00",
-        originalPrice: null,
-        badge: null,
-      },
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Tornel Classic",
-        model: "Classic",
-        measure: "280/70R18",
-        description: "El clasico diseño con larga duración.",
-        price: "85.00",
-        originalPrice: "95.00",
-        badge: null,
-      },
+      { id: "tn-1", image: TYRE_PLACEHOLDER, title: "Tornel Real",        model: "Real",         measure: "420/85R34", description: "Alta flotación para tractores en terreno blando.", price: "160.00", originalPrice: null,     badge: null },
+      { id: "tn-2", image: TYRE_PLACEHOLDER, title: "Tornel Direccional", model: "Direccional",  measure: "380/70R28", description: "Agarre excelente para el día a día.", price: "90.00",  originalPrice: "110.00", badge: "OFERTA" },
+      { id: "tn-3", image: TYRE_PLACEHOLDER, title: "Tornel America",     model: "America Cargo",measure: "480/65R28", description: "Resistencia extrema para carga pesada.", price: "120.00", originalPrice: null,     badge: null },
+      { id: "tn-4", image: TYRE_PLACEHOLDER, title: "Tornel Classic",     model: "Classic",      measure: "280/70R18", description: "El clásico diseño con larga duración.", price: "85.00",  originalPrice: "95.00",  badge: null },
     ],
   },
 
   {
-    brand: {
-      name: "WANLI",
-      tagline: "Innova tu Camino",
-      logo: "/img_marcas/WANLI-LOGO-1.jpg",
-      link: "#",
-    },
+    brand: { name: "WANLI", tagline: "Innova tu Camino", logo: "/img_marcas/WANLI-LOGO-1.jpg", link: "#" },
     products: [
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Wanli Harmonic",
-        model: "Harmonic",
-        measure: "215/60R16",
-        description: "Confort silencioso para sedanes y crossovers.",
-        price: "96.00",
-        originalPrice: null,
-        badge: null,
-      },
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Wanli Racing",
-        model: "Racing",
-        measure: "245/40R18",
-        description: "Alto rendimiento con excelente respuesta en curva.",
-        price: "138.00",
-        originalPrice: "160.00",
-        badge: "OFERTA",
-      },
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Wanli SnowGrip",
-        model: "SnowGrip",
-        measure: "205/55R16",
-        description: "Diseñado para frío extremo, lluvia y nieve.",
-        price: "112.00",
-        originalPrice: null,
-        badge: "NUEVO",
-      },
-      {
-        image: TYRE_PLACEHOLDER,
-        title: "Wanli SUV Comfort",
-        model: "SUV Comfort",
-        measure: "265/60R18",
-        description: "Para SUVs y camionetas con uso mixto.",
-        price: "152.00",
-        originalPrice: "185.00",
-        badge: null,
-      },
+      { id: "wl-1", image: TYRE_PLACEHOLDER, title: "Wanli Harmonic",    model: "Harmonic",    measure: "215/60R16", description: "Confort silencioso para sedanes y crossovers.",         price: "96.00",  originalPrice: null,     badge: null },
+      { id: "wl-2", image: TYRE_PLACEHOLDER, title: "Wanli Racing",      model: "Racing",      measure: "245/40R18", description: "Alto rendimiento con excelente respuesta en curva.",    price: "138.00", originalPrice: "160.00", badge: "OFERTA" },
+      { id: "wl-3", image: TYRE_PLACEHOLDER, title: "Wanli SnowGrip",    model: "SnowGrip",    measure: "205/55R16", description: "Diseñado para frío extremo, lluvia y nieve.",           price: "112.00", originalPrice: null,     badge: "NUEVO" },
+      { id: "wl-4", image: TYRE_PLACEHOLDER, title: "Wanli SUV Comfort", model: "SUV Comfort", measure: "265/60R18", description: "Para SUVs y camionetas con uso mixto.",                 price: "152.00", originalPrice: "185.00", badge: null },
     ],
   }
 ];

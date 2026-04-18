@@ -5,6 +5,7 @@ import filtersReducer from "./slices/filters.slice";
 import uiReducer from "./slices/ui.slice";
 import authReducer from "./slices/auth.slice";
 import vehiculosReducer from "./slices/vehiculos.slice";
+import authModalReducer from "./slices/authModal.slice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
     ui: uiReducer,
     auth: authReducer,
     vehiculos: vehiculosReducer,
+    authModal: authModalReducer,
   },
 });
 
