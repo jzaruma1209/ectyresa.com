@@ -12,7 +12,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { useCart } from '../../hooks/useCart';
 import { closeAuthModal } from '../../store/slices/authModal.slice';
+import GoogleLoginButton from './GoogleLoginButton';
 import './styles/AuthModal.css';
+import './styles/GoogleLoginButton.css';
 
 const AuthModal = () => {
   const dispatch = useDispatch();
@@ -222,7 +224,12 @@ const AuthModal = () => {
         {/* Footer */}
         {!successMsg && (
           <div className="auth-modal-footer">
-            <p>
+            {/* Divisor Google */}
+            <div className="auth-divider" style={{ margin: '0 0 16px' }}>
+              <span>o continúa con</span>
+            </div>
+            <GoogleLoginButton label="Continuar con Google" />
+            <p style={{ marginTop: '16px' }}>
               ¿No tienes cuenta?{' '}
               <button type="button" className="auth-modal-link" onClick={handleGoToRegister}>
                 Regístrate aquí

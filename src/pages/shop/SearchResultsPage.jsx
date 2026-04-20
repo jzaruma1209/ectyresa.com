@@ -2,6 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import { useProducts } from "../../hooks/useProducts";
 import ProductGrid from "../../components/products/ProductGrid";
+import { SkeletonGrid } from "../../components/shared/SkeletonCard";
 import "../styles/SearchResultsPage.css";
 
 const SearchResultsPage = () => {
@@ -21,23 +22,26 @@ const SearchResultsPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hasFilters, searchProducts]);
 
-  if (loading) {
-    return <div className="loading">Buscando productos...</div>;
-  }
-
   return (
     <div className="search-results-page">
       <h1>Resultados de Búsqueda</h1>
-      <div className="search-results-info">
-        <p>
-          {products.length > 0
-            ? `Se encontraron ${products.length} productos`
-            : "No se encontraron productos"}
-        </p>
-      </div>
-      <ProductGrid products={products} />
+      {loading ? (
+        <SkeletonGrid count={8} />
+      ) : (
+        <>
+          <div className="search-results-info">
+            <p>
+              {products.length > 0
+                ? `Se encontraron ${products.length} productos`
+                : "No se encontraron productos"}
+            </p>
+          </div>
+          <ProductGrid products={products} />
+        </>
+      )}
     </div>
   );
 };
 
 export default SearchResultsPage;
+

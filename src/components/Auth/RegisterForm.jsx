@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import GoogleLoginButton from './GoogleLoginButton';
 import './styles/AuthForms.css';
+import './styles/GoogleLoginButton.css';
 
 const RegisterForm = ({ onSuccess }) => {
   const { register, loading, error, clearError } = useAuth();
@@ -203,6 +205,13 @@ const RegisterForm = ({ onSuccess }) => {
             )}
           </button>
         </form>
+
+        {/* ── Divisor Google ── */}
+        <div className="auth-divider">
+          <span>o regístrate con</span>
+        </div>
+
+        <GoogleLoginButton label="Registro con Google" />
 
         <div className="auth-footer">
           <p>

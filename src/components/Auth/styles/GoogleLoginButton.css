@@ -1,0 +1,65 @@
+/* ═══════════════════════════════════════════════════════════════
+   GoogleLoginButton.css
+   Paleta Ectyre: #FFF 60% | #1A1A1A 30% | #E60000 10%
+   Botón Google siguiendo las brand guidelines de Google:
+   fondo blanco, texto oscuro, borde sutil.
+   ═══════════════════════════════════════════════════════════════ */
+
+.google-login-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 12px 16px;
+  background: #FFFFFF;
+  border: 1.5px solid #E0E0E0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #1A1A1A;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+  min-height: 48px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.google-login-btn:hover {
+  background: #F7F7F7;
+  border-color: #CCCCCC;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1px);
+}
+
+.google-login-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.google-login-btn__icon {
+  flex-shrink: 0;
+}
+
+/* Divisor "o continúa con" */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #E0E0E0;
+}
+
+.auth-divider span {
+  font-size: 0.82rem;
+  color: #808080;
+  white-space: nowrap;
+  flex-shrink: 0;
+}

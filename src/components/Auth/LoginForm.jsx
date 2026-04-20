@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
+import GoogleLoginButton from './GoogleLoginButton';
 import './styles/AuthForms.css';
+import './styles/GoogleLoginButton.css';
 
 const LoginForm = ({ onSuccess }) => {
   const { login, loading, error, clearError } = useAuth();
@@ -96,6 +98,13 @@ const LoginForm = ({ onSuccess }) => {
             )}
           </button>
         </form>
+
+        {/* ── Divisor Google ── */}
+        <div className="auth-divider">
+          <span>o continúa con</span>
+        </div>
+
+        <GoogleLoginButton label="Continuar con Google" />
 
         <div className="auth-footer">
           <p>

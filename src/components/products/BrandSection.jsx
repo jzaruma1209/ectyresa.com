@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
 import TireCard from "./TireCard";
 
 /**
@@ -16,14 +17,16 @@ const BrandSection = ({ brand, products }) => {
               src={brand.logo}
               alt={brand.name}
               className="brand-logo-img"
+              loading="lazy"
+              decoding="async"
             />
           </div>
           <div className="brand-meta">
             <h2 className="brand-section-title">{brand.name}</h2>
             <p className="brand-section-tagline">{brand.tagline}</p>
-            <a href={brand.link || "#"} className="brand-see-all-btn">
+            <Link to={`/brand/${brand.name.toLowerCase()}`} className="brand-see-all-btn">
               Ver todos →
-            </a>
+            </Link>
           </div>
         </div>
 

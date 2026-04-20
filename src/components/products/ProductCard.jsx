@@ -36,6 +36,8 @@ const ProductCard = ({ product }) => {
         <img
           src={product.image || '/placeholder-tire.png'}
           alt={product.name}
+          loading="lazy"
+          decoding="async"
           onError={(e) => {
             e.target.src = '/placeholder-tire.png';
           }}

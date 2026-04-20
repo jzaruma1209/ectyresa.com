@@ -36,6 +36,9 @@ const HeroBanner = () => {
               src={slide.src}
               alt={slide.alt}
               className="absolute inset-0 block h-full w-full object-cover"
+              loading={index === 0 ? "eager" : "lazy"}
+              decoding={index === 0 ? "sync" : "async"}
+              fetchPriority={index === 0 ? "high" : "low"}
             />
           </div>
         ))}

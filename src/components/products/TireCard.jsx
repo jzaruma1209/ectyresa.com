@@ -68,7 +68,7 @@ const TireCard = ({
     <div className="bg-white border-[0.5px] border-black/10 rounded-xl w-[220px] overflow-hidden font-sans hover:shadow-md transition-shadow">
       {/* --- SASH BANDA PROMOCIONAL --- */}
       {sashSrc ? (
-        <img src={sashSrc} alt="Promoción" className="w-full h-9 object-cover block" />
+        <img src={sashSrc} alt="Promoción" className="w-full h-9 object-cover block" loading="lazy" decoding="async" />
       ) : (
         <div className="w-full h-9 bg-gray-100 flex items-center justify-center text-[10px] text-gray-400 font-bold tracking-widest bg-[url('https://www.transparenttextures.com/patterns/diagonal-stripes.png')]">
           [PROMO SASH]
@@ -78,7 +78,7 @@ const TireCard = ({
       {/* --- LOGO DE MARCA --- */}
       <div className="px-3 py-[6px] flex justify-center border-b-[0.5px] border-black/5">
         {brandLogoSrc ? (
-          <img src={brandLogoSrc} alt="Marca" className="h-[28px] object-contain" />
+          <img src={brandLogoSrc} alt="Marca" className="h-[28px] object-contain" loading="lazy" decoding="async" />
         ) : (
           <div className="w-[110px] h-[28px] bg-gray-50 border-[1px] border-dashed border-gray-300 rounded-md flex items-center justify-center text-[11px] text-gray-500 font-black uppercase tracking-wide">
             {product?.brand || "MARCA C.A."}
@@ -99,6 +99,8 @@ const TireCard = ({
           src={finalTireSrc} 
           alt={name} 
           className="flex-1 w-0 h-[130px] object-contain"
+          loading="lazy"
+          decoding="async"
           onError={(e) => { e.target.src = '/llanta1.png'; }}
         />
 
