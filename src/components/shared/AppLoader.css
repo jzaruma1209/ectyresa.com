@@ -7,78 +7,41 @@
   position: fixed;
   inset: 0;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 24px;
   background-color: #ffffff;
   z-index: 9999;
-
-  /* Fade-out suave antes de unmount */
-  animation: apploader-fadein 0.3s ease forwards;
+  animation: apploader-fadein 0.4s ease forwards;
 }
 
-/* ── Brand row ── */
-.app-loader__brand {
+.app-loader__content {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 14px;
+  gap: 20px;
 }
 
-.app-loader__logo-icon {
-  width: 48px;
-  height: 48px;
-  animation: apploader-spin 1.6s linear infinite;
-  transform-origin: center;
+.app-loader__img {
+  width: 120px; /* Ajusta el tamaño según sea necesario */
+  height: auto;
+  animation: apploader-pulse 2s ease-in-out infinite;
 }
 
-.app-loader__wordmark {
-  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 28px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  color: #1a1a1a;
-  user-select: none;
-}
-
-/* ── Barra de progreso ── */
-.app-loader__bar-track {
-  width: 180px;
-  height: 3px;
-  background-color: #f0f0f0;
-  border-radius: 99px;
-  overflow: hidden;
-}
-
-.app-loader__bar-fill {
-  height: 100%;
-  background-color: #e60000;
-  border-radius: 99px;
-  animation: apploader-progress 1.6s ease-in-out infinite;
-  transform-origin: left;
-}
-
-/* ── Texto ── */
 .app-loader__text {
-  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 13px;
-  font-weight: 500;
-  color: #808080;
-  letter-spacing: 0.04em;
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   margin: 0;
+  opacity: 0.8;
 }
 
-/* ── Keyframes ── */
-@keyframes apploader-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
-}
-
-@keyframes apploader-progress {
-  0%   { transform: scaleX(0);    margin-left: 0;    }
-  40%  { transform: scaleX(0.7);  margin-left: 0;    }
-  60%  { transform: scaleX(0.3);  margin-left: 70%;  }
-  100% { transform: scaleX(0);    margin-left: 100%; }
+@keyframes apploader-pulse {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
 }
 
 @keyframes apploader-fadein {
