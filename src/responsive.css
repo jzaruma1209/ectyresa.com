@@ -1,0 +1,197 @@
+/* 📱 ARCHIVO RESPONSIVE 📱
+   Generado según RESPONSIVE_INSTRUCTIONS.md
+   NO cambia colores, solo ajusta layouts para móviles.
+*/
+
+/* 1.1 TOP BAR */
+@media (max-width: 480px) {
+  .header-topbar {
+    display: none !important;
+  }
+}
+
+/* 1.2 NAVBAR PRINCIPAL */
+@media (max-width: 768px) {
+  .header-main-inner {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
+  }
+  .header-logo-img {
+    max-height: 40px !important;
+  }
+  /* Buscador a la segunda línea */
+  .header-main-inner > div:nth-child(2) {
+    flex: 1 1 100% !important;
+    margin-top: 8px !important;
+    order: 3;
+  }
+  .header-logo-link {
+    order: 1;
+  }
+  .header-actions {
+    order: 2;
+    margin-left: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .header-main-inner {
+    padding: 8px 12px !important;
+  }
+  .search-input {
+    font-size: 13px !important;
+  }
+}
+
+/* 1.3 SECCIÓN HERO / CONTENIDO PRINCIPAL */
+@media (max-width: 1024px) {
+  .hero-left-column {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  .hero-container {
+    grid-template-columns: 1fr !important;
+  }
+  .hero-right-column {
+    flex: 1 1 100% !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-left-column {
+    grid-template-columns: 1fr !important; /* Apilar en móvil */
+  }
+  .zone-image {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .zone-btn {
+    width: 100% !important;
+  }
+}
+
+/* 1.4 TARJETAS DE PRODUCTOS DESTACADOS */
+@media (max-width: 768px) {
+  .product-card {
+    padding: 8px !important;
+  }
+  /* Asegurar que el texto no se salga del contenedor */
+  .product-card-name, .product-card-title {
+    font-size: 11px !important;
+    white-space: normal !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 2 !important;
+    -webkit-box-orient: vertical !important;
+  }
+  .product-card-button,
+  .product-card .buy-btn,
+  .product-btn-add {
+    font-size: 11px !important;
+    padding: 6px 4px !important;
+    white-space: normal !important;
+  }
+  .product-card-image img,
+  .product-img {
+    max-width: 100% !important;
+    height: auto !important;
+  }
+  .product-card-final-price,
+  .product-card .price {
+    font-size: 13px !important;
+  }
+}
+
+/* 1.5 PANEL BUSCADOR POR TIPO DE VEHÍCULO */
+@media (max-width: 768px) {
+  /* En caso de que se utilicen estilos de grid fijos */
+  .msb-vehicle-types button {
+    width: 100% !important;
+    margin: 0 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .msb-values-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 6px !important;
+  }
+  .msb-show-more-btn {
+    width: 100% !important;
+  }
+  .msb-search-btn {
+    width: 100% !important;
+  }
+}
+
+/* 1.6 SECCIÓN DE MARCAS CON PRODUCTOS */
+@media (max-width: 1024px) {
+  .brand-cards-scroll {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 1rem !important;
+    overflow-x: visible !important;
+  }
+  .brand-section-card {
+    flex: auto !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .brand-cards-scroll {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  .brand-section-header {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-cards-scroll {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 8px !important;
+  }
+  .brand-section-title {
+    font-size: 1.1rem !important;
+  }
+  .product-card-name, .product-title {
+    font-size: 12px !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    white-space: nowrap !important;
+  }
+}
+
+/* 1.7 TARJETAS INDIVIDUALES DE PRODUCTO */
+@media (max-width: 480px) {
+  .product-card-final-price, .product-price-main, .price {
+    font-size: 14px !important;
+    font-weight: bold !important;
+  }
+  .product-card-button, .product-btn-add, .buy-btn {
+    padding: 8px 10px !important;
+    font-size: 13px !important;
+    width: 100% !important;
+  }
+  .product-qty-control {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    width: 100% !important;
+  }
+  .product-badge, .product-discount-badge {
+    overflow: hidden !important;
+  }
+}
+
+/* FIXES GENERALES */
+@media (max-width: 768px) {
+  .home-page, body {
+    overflow-x: hidden !important;
+  }
+}

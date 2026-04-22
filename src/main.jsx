@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import 'leaflet/dist/leaflet.css';
 import './utils/leafletIconFix';
 import './index.css'
+import './responsive.css'
 import App from './App.jsx'
 import AppLoader from './components/shared/AppLoader.jsx'
 
