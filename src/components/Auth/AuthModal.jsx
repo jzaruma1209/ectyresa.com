@@ -224,11 +224,12 @@ const AuthModal = () => {
         {/* Footer */}
         {!successMsg && (
           <div className="auth-modal-footer">
-            {/* Divisor Google */}
+            {/* ── Divisor Google (Oculto temporalmente) ──
             <div className="auth-divider" style={{ margin: '0 0 16px' }}>
               <span>o continúa con</span>
             </div>
             <GoogleLoginButton label="Continuar con Google" />
+            */}
             <p style={{ marginTop: '16px' }}>
               ¿No tienes cuenta?{' '}
               <button type="button" className="auth-modal-link" onClick={handleGoToRegister}>

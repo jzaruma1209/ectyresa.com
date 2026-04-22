@@ -21,7 +21,7 @@ const mapLlantaToProduct = (llanta) => {
     : 0;
 
   return {
-    id: llanta.id,
+    id: llanta.idLlanta || llanta.id,
     name: llanta.modelo || llanta.nombre || 'Sin nombre',
     brand: llanta.marca?.nombre || llanta.marcaNombre || '',
     price,
@@ -136,6 +136,33 @@ export const productsService = {
   },
 
   /**
+   * Búsqueda general unificada (medida, modelo, texto, etc.)
+   * Backend: GET /llantas/buscar-general?q=texto
+   * Retorna resultados y recomendaciones
+   */
+  buscarGeneral: async (q) => {
+    if (!q) return { resultados: [], recomendaciones: [], tipo: 'vacio' };
+    
+    const cacheKey = `search-general-text:${q}`;
+    const cached = apiCache.get(cacheKey);
+    if (cached) return cached;
+
+    const response = await api.get('/llantas/buscar-general', { params: { q } });
+    const { resultados, recomendaciones, tipo, parsedMedida, marcaBuscada } = response.data.data;
+    
+    const result = {
+      resultados: mapLlantasToProducts(resultados || []),
+      recomendaciones: mapLlantasToProducts(recomendaciones || []),
+      tipo,
+      parsedMedida,
+      marcaBuscada
+    };
+
+    apiCache.set(cacheKey, result, CACHE_TTL.SEARCH_RESULTS);
+    return result;
+  },
+
+  /**
    * Buscar productos con filtros genéricos
    * Traduce los filtros del frontend a los params del backend
    */
@@ -175,7 +202,7 @@ export const productsService = {
       });
     }
 
-    // Búsqueda general
+    // Búsqueda general antigua (si se usan otros filtros)
     const cacheKey = `search-general:${JSON.stringify(params)}`;
     const cached = apiCache.get(cacheKey);
     if (cached) return cached;

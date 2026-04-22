@@ -50,18 +50,16 @@ const TireCard = ({
 
   const name = product?.name || "Producto sin nombre";
 
-  // 4. Lógica de Integración con el Sistema Ectyre (useCart)
+  // 4. Lógica de Redirección temporal a WhatsApp
   const handleBuy = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!isAuthenticated) {
-      dispatch(openAuthModal({ type: 'ADD_TO_CART', payload: product, quantity: qty }));
-      return;
-    }
-
-    // Usa el hook global con la cantidad local visual!
-    addToCart(product, qty);
+    const phoneNumber = "593999601748";
+    const message = `Hola, estoy interesado en el producto: ${name} y la cantidad: ${qty} por ahora.`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, '_blank');
   };
 
   return (

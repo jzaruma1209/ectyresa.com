@@ -14,12 +14,11 @@ const ProductCard = ({ product }) => {
     e.preventDefault();
     e.stopPropagation();
 
-    if (!isAuthenticated) {
-      dispatch(openAuthModal({ type: 'ADD_TO_CART', payload: product, quantity: 1 }));
-      return;
-    }
-
-    addToCart(product, 1);
+    const phoneNumber = "593999601748";
+    const message = `Hola, estoy interesado en el producto: ${product.name} y la cantidad: 1 por ahora.`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, '_blank');
   };
 
   const finalPrice = product.finalPrice || product.price;
@@ -82,4 +81,3 @@ ProductCard.propTypes = {
 };
 
 export default ProductCard;
-

@@ -99,12 +99,13 @@ const LoginForm = ({ onSuccess }) => {
           </button>
         </form>
 
-        {/* ── Divisor Google ── */}
+        {/* ── Divisor Google (Oculto temporalmente) ──
         <div className="auth-divider">
           <span>o continúa con</span>
         </div>
 
         <GoogleLoginButton label="Continuar con Google" />
+        */}
 
         <div className="auth-footer">
           <p>

@@ -12,10 +12,10 @@ const searchMegaMenuItems = [
     bgColor: "#F5F5F5",
     textColor: "#000000",
     links: [
-      { label: "Aro 12", href: "/search?q=aro 12" },
-      { label: "Aro 13", href: "/search?q=aro 13" },
-      { label: "Aro 14", href: "/search?q=aro 14" },
-      { label: "Aro 15", href: "/search?q=aro 15" }
+      { label: "Aro 12", href: "/busqueda?q=R12" },
+      { label: "Aro 13", href: "/busqueda?q=R13" },
+      { label: "Aro 14", href: "/busqueda?q=R14" },
+      { label: "Aro 15", href: "/busqueda?q=R15" }
     ]
   },
   {
@@ -23,9 +23,9 @@ const searchMegaMenuItems = [
     bgColor: "#F5F5F5",
     textColor: "#000000",
     links: [
-      { label: "Deportivos", href: "/search?q=deportivos" },
-      { label: "Clásicos", href: "/search?q=clasicos" },
-      { label: "Off-Road", href: "/search?q=off-road" }
+      { label: "Deportivos", href: "/busqueda?q=deportivos" },
+      { label: "Clásicos", href: "/busqueda?q=clasicos" },
+      { label: "Off-Road", href: "/busqueda?q=off-road" }
     ]
   },
   {
@@ -33,9 +33,9 @@ const searchMegaMenuItems = [
     bgColor: "#FFFFFF", 
     textColor: "#000000",
     links: [
-      { label: "Moquetas", href: "/search?q=moquetas" },
-      { label: "Conos de seguridad", href: "/search?q=conos" },
-      { label: "Kits de emergencia", href: "/search?q=kits" }
+      { label: "Moquetas", href: "/busqueda?q=moquetas" },
+      { label: "Conos de seguridad", href: "/busqueda?q=conos" },
+      { label: "Kits de emergencia", href: "/busqueda?q=kits" }
     ]
   }
 ];
@@ -49,6 +49,7 @@ const Header = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchFocused, setSearchFocused] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
   const searchWrapperRef = useRef(null);
 
   useEffect(() => {
@@ -87,6 +88,20 @@ const Header = () => {
   const handleLogout = async () => {
     await logout();
     navigate("/");
+  };
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchValue.trim()) {
+      setSearchFocused(false);
+      navigate(`/busqueda?q=${encodeURIComponent(searchValue.trim())}`);
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch(e);
+    }
   };
 
   // Nombre a mostrar en el Header
@@ -137,7 +152,7 @@ const Header = () => {
 
           {/* Search bar */}
           <div ref={searchWrapperRef} style={{ flexGrow: 1, position: 'relative' }}>
-            <div className={`header-search-bar ${searchFocused ? 'focused' : ''}`}>
+            <form onSubmit={handleSearch} className={`header-search-bar ${searchFocused ? 'focused' : ''}`}>
               <svg className="search-icon-left" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2">
                 <circle cx="11" cy="11" r="8" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" />
@@ -146,10 +161,13 @@ const Header = () => {
                 type="text"
                 className="search-input"
                 placeholder="Busca llantas por medida, marca o vehículo..."
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
                 onFocus={() => setSearchFocused(true)}
+                onKeyDown={handleKeyDown}
               />
-              <button className="search-btn">BUSCAR</button>
-            </div>
+              <button type="submit" className="search-btn">BUSCAR</button>
+            </form>
             
             <SearchMegaMenu isOpen={searchFocused} items={searchMegaMenuItems} onClose={() => setSearchFocused(false)} />
           </div>

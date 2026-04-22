@@ -6,12 +6,13 @@ import adminService from '../../services/admin.service';
 import './AdminLayout.css';
 
 const NAV_ITEMS = [
-  { to: '/admin/dashboard', icon: '⚡', label: 'Dashboard' },
-  { to: '/admin/pedidos', icon: '📦', label: 'Pedidos' },
-  { to: '/admin/clientes', icon: '👥', label: 'Clientes' },
-  { to: '/admin/productos', icon: '🛞', label: 'Productos' },
-  { to: '/admin/inventario', icon: '📊', label: 'Inventario' },
-  { to: '/admin/reportes', icon: '📈', label: 'Reportes' },
+  { to: '/admin/dashboard',  icon: '⚡',  label: 'Dashboard'  },
+  { to: '/admin/pedidos',    icon: '📦',  label: 'Pedidos'    },
+  { to: '/admin/clientes',   icon: '👥',  label: 'Clientes'   },
+  { to: '/admin/productos',  icon: '🛞',  label: 'Productos'  },
+  { to: '/admin/inventario', icon: '📊',  label: 'Inventario' },
+  { to: '/admin/catalogos',  icon: '📋',  label: 'Catálogos'  },
+  { to: '/admin/reportes',   icon: '📈',  label: 'Reportes'   },
 ];
 
 export default function AdminLayout() {

@@ -34,6 +34,7 @@ const AdminPedidos   = lazy(() => import("../pages/admin/AdminPedidos"));
 const AdminClientes  = lazy(() => import("../pages/admin/AdminClientes"));
 const AdminProductos = lazy(() => import("../pages/admin/AdminProductos"));
 const AdminInventario = lazy(() => import("../pages/admin/AdminInventario"));
+const AdminCatalogos  = lazy(() => import("../pages/admin/AdminCatalogos"));
 const AdminReportes  = lazy(() => import("../pages/admin/AdminReportes"));
 
 export default function AppRouter() {
@@ -54,7 +55,13 @@ export default function AppRouter() {
                             <Route path="/" element={<HomePage />} />
                             <Route path="/product/:id" element={<ProductDetailsPage />} />
                             <Route path="/cart" element={<CartPage />} />
-                            <Route path="/search" element={<SearchResultsPage />} />
+                            
+                            {/* NUEVA RUTA DE BÚSQUEDA */}
+                            <Route path="/busqueda" element={<SearchResultsPage />} />
+                            
+                            {/* MANTENER ALIAS /search POR SI ACASO */}
+                            <Route path="/search" element={<Navigate to="/busqueda" replace />} />
+                            
                             <Route path="/ubicacion" element={<UbicacionPage />} />
                             <Route path="/login" element={<LoginPage />} />
                             <Route path="/registro" element={<RegisterPage />} />
@@ -116,6 +123,7 @@ export default function AppRouter() {
                                 <Route path="clientes"   element={<AdminClientes />} />
                                 <Route path="productos"  element={<AdminProductos />} />
                                 <Route path="inventario" element={<AdminInventario />} />
+                                <Route path="catalogos"  element={<AdminCatalogos />} />
                                 <Route path="reportes"   element={<AdminReportes />} />
                             </Route>
 

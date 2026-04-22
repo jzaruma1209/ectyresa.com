@@ -12,7 +12,11 @@ const ProductInfo = ({ product }) => {
   const hasDiscount = product.discount && product.discount > 0;
 
   const handleAddToCart = () => {
-    addToCart(product, 1);
+    const phoneNumber = "593999601748";
+    const message = `Hola, estoy interesado en el producto: ${product.name} y la cantidad: 1 por ahora.`;
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, '_blank');
   };
 
   return (
@@ -64,4 +68,3 @@ const ProductInfo = ({ product }) => {
 };
 
 export default ProductInfo;
-

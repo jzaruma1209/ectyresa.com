@@ -206,12 +206,13 @@ const RegisterForm = ({ onSuccess }) => {
           </button>
         </form>
 
-        {/* ── Divisor Google ── */}
+        {/* ── Divisor Google (Oculto temporalmente) ──
         <div className="auth-divider">
           <span>o regístrate con</span>
         </div>
 
         <GoogleLoginButton label="Registro con Google" />
+        */}
 
         <div className="auth-footer">
           <p>

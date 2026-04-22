@@ -91,6 +91,22 @@ export const useProducts = () => {
     }
   }, [dispatch]);
 
+  // Búsqueda general por texto (devuelve promesa con resultados y recomendaciones)
+  const buscarGeneral = useCallback(async (q) => {
+    try {
+      dispatch(setLoading(true));
+      dispatch(setError(null));
+      const data = await productsService.buscarGeneral(q);
+      dispatch(setProducts(data.resultados || []));
+      return data;
+    } catch (err) {
+      dispatch(setError(getErrorMessage(err)));
+      return { resultados: [], recomendaciones: [] };
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }, [dispatch]);
+
   return {
     products,
     loading,
@@ -101,6 +117,7 @@ export const useProducts = () => {
     searchProducts,
     searchByMeasure,
     searchByVehicle,
+    buscarGeneral,
     setSelectedProduct: (product) => dispatch(setSelectedProduct(product)),
   };
 };

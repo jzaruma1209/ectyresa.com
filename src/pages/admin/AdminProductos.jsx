@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import adminService from '../../services/admin.service';
+import catalogoService from '../../services/catalogo.service';
 
 /**
  * Módulo CRUD de productos (llantas) para el admin.
@@ -8,6 +9,9 @@ import adminService from '../../services/admin.service';
 export default function AdminProductos() {
   const [llantas, setLlantas] = useState([]);
   const [marcas, setMarcas] = useState([]);
+  const [anchoOpts, setAnchoOpts] = useState([]);
+  const [perfilOpts, setPerfilOpts] = useState([]);
+  const [aroOpts, setAroOpts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -47,7 +51,13 @@ export default function AdminProductos() {
   };
 
   useEffect(() => { fetchLlantas(); }, [fetchLlantas]);
-  useEffect(() => { fetchMarcas(); }, []);
+  useEffect(() => {
+    fetchMarcas();
+    // Cargar opciones de anchos, perfiles y aros desde catálogos
+    catalogoService.getAnchoOptions().then(setAnchoOpts);
+    catalogoService.getPerfilOptions().then(setPerfilOpts);
+    catalogoService.getAroOptions().then(setAroOpts);
+  }, []);
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -243,17 +253,44 @@ export default function AdminProductos() {
                 <div className="admin-form-row">
                   <div className="admin-form-group">
                     <label>Ancho</label>
-                    <input name="ancho" type="number" value={form.ancho} onChange={handleChange} required placeholder="205" />
+                    {anchoOpts.length > 0 ? (
+                      <select name="ancho" value={form.ancho} onChange={handleChange} required>
+                        <option value="">Seleccionar ancho…</option>
+                        {anchoOpts.map(o => (
+                          <option key={o.value} value={o.value}>{o.label}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input name="ancho" type="number" value={form.ancho} onChange={handleChange} required placeholder="205" />
+                    )}
                   </div>
                   <div className="admin-form-group">
-                    <label>Perfil</label>
-                    <input name="perfil" type="number" value={form.perfil} onChange={handleChange} required placeholder="55" />
+                    <label>Perfil (Alto)</label>
+                    {perfilOpts.length > 0 ? (
+                      <select name="perfil" value={form.perfil} onChange={handleChange} required>
+                        <option value="">Seleccionar perfil…</option>
+                        {perfilOpts.map(o => (
+                          <option key={o.value} value={o.value}>{o.label}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input name="perfil" type="number" value={form.perfil} onChange={handleChange} required placeholder="55" />
+                    )}
                   </div>
                 </div>
                 <div className="admin-form-row">
                   <div className="admin-form-group">
-                    <label>Rin</label>
-                    <input name="rin" type="number" value={form.rin} onChange={handleChange} required placeholder="16" />
+                    <label>Rin (Aro)</label>
+                    {aroOpts.length > 0 ? (
+                      <select name="rin" value={form.rin} onChange={handleChange} required>
+                        <option value="">Seleccionar rin…</option>
+                        {aroOpts.map(o => (
+                          <option key={o.value} value={o.value}>{o.label}</option>
+                        ))}
+                      </select>
+                    ) : (
+                      <input name="rin" type="number" value={form.rin} onChange={handleChange} required placeholder="16" />
+                    )}
                   </div>
                   <div className="admin-form-group">
                     <label>Precio ($)</label>

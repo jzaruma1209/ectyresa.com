@@ -1,24 +1,99 @@
 .search-results-page {
-  min-height: 100vh;
-  padding: 2rem;
-  max-width: 1200px;
+  padding: 2rem 5%;
+  max-width: 1400px;
   margin: 0 auto;
+  min-height: 70vh;
 }
 
-.search-results-page h1 {
-  margin-bottom: 1rem;
+.search-results-header {
+  margin-bottom: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+  padding-bottom: 1rem;
+}
+
+.search-results-header h1 {
+  font-size: 2rem;
   color: #333;
+  margin: 0;
+}
+
+.search-results-header span {
+  color: #e60000;
+  font-weight: 800;
+}
+
+.search-section {
+  margin-bottom: 4rem;
+}
+
+.search-section h2 {
+  font-size: 1.5rem;
+  color: #222;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .search-results-info {
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   color: #666;
+  font-size: 1rem;
 }
 
-.loading {
+.no-results-banner {
+  background-color: #fff8f8;
+  border: 1px dashed #ffcccc;
+  border-radius: 8px;
+  padding: 2rem;
   text-align: center;
-  padding: 4rem;
-  font-size: 1.25rem;
-  color: #666;
+  color: #333;
 }
 
+.no-results-icon {
+  font-size: 3rem;
+  display: block;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.no-results-sub {
+  color: #888;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.recommendations-section {
+  background-color: #f9fafb;
+  padding: 2rem;
+  border-radius: 12px;
+  border: 1px solid #eee;
+}
+
+.recommendations-header {
+  margin-bottom: 2rem;
+}
+
+.recommendations-header h2 {
+  color: #1a3a8f; /* Un color distinto para recomendaciones */
+}
+
+.recommendations-header p {
+  color: #666;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .search-results-page {
+    padding: 1rem;
+  }
+  
+  .search-results-header h1 {
+    font-size: 1.5rem;
+  }
+  
+  .recommendations-section {
+    padding: 1rem;
+  }
+}
