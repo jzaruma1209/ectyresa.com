@@ -44,7 +44,7 @@ const PromoBanner = () => {
           >
             {/* Primer conjunto de mensajes */}
             <span>
-              <strong className="font-semibold">GeneriCon 2023</strong>
+              <strong className="font-semibold">Instalación incluida</strong>
               <svg
                 viewBox="0 0 2 2"
                 aria-hidden="true"
@@ -52,18 +52,7 @@ const PromoBanner = () => {
               >
                 <circle r={1} cx={1} cy={1} />
               </svg>
-              Join us in Denver from June 7 – 9 to see what's coming next.
-            </span>
-            <span>
-              <strong className="font-semibold">Envíos gratis</strong>
-              <svg
-                viewBox="0 0 2 2"
-                aria-hidden="true"
-                className="mx-2 inline size-0.5 fill-current"
-              >
-                <circle r={1} cx={1} cy={1} />
-              </svg>
-              Compra ahora y recibe envío sin costo en tu primera orden.
+              En todas tus compras de llantas, la instalación es sin costo adicional.
             </span>
             <span>
               <strong className="font-semibold">Instalación incluida</strong>
@@ -75,11 +64,22 @@ const PromoBanner = () => {
                 <circle r={1} cx={1} cy={1} />
               </svg>
               Agenda tu cita y te instalamos tus llantas sin costo adicional.
+            </span>
+            <span>
+              <strong className="font-semibold">Instalación incluida</strong>
+              <svg
+                viewBox="0 0 2 2"
+                aria-hidden="true"
+                className="mx-2 inline size-0.5 fill-current"
+              >
+                <circle r={1} cx={1} cy={1} />
+              </svg>
+              ¡Todas nuestras llantas incluyen instalación profesional gratuita!
             </span>
 
             {/* Duplicado para crear el efecto infinito */}
             <span>
-              <strong className="font-semibold">GeneriCon 2023</strong>
+              <strong className="font-semibold">Instalación incluida</strong>
               <svg
                 viewBox="0 0 2 2"
                 aria-hidden="true"
@@ -87,18 +87,7 @@ const PromoBanner = () => {
               >
                 <circle r={1} cx={1} cy={1} />
               </svg>
-              Join us in Denver from June 7 – 9 to see what's coming next.
-            </span>
-            <span>
-              <strong className="font-semibold">Envíos gratis</strong>
-              <svg
-                viewBox="0 0 2 2"
-                aria-hidden="true"
-                className="mx-2 inline size-0.5 fill-current"
-              >
-                <circle r={1} cx={1} cy={1} />
-              </svg>
-              Compra ahora y recibe envío sin costo en tu primera orden.
+              En todas tus compras de llantas, la instalación es sin costo adicional.
             </span>
             <span>
               <strong className="font-semibold">Instalación incluida</strong>
@@ -110,6 +99,17 @@ const PromoBanner = () => {
                 <circle r={1} cx={1} cy={1} />
               </svg>
               Agenda tu cita y te instalamos tus llantas sin costo adicional.
+            </span>
+            <span>
+              <strong className="font-semibold">Instalación incluida</strong>
+              <svg
+                viewBox="0 0 2 2"
+                aria-hidden="true"
+                className="mx-2 inline size-0.5 fill-current"
+              >
+                <circle r={1} cx={1} cy={1} />
+              </svg>
+              ¡Todas nuestras llantas incluyen instalación profesional gratuita!
             </span>
           </div>
         </div>
