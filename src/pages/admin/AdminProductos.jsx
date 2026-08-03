@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import adminService from '../../services/admin.service';
 import catalogoService from '../../services/catalogo.service';
+import ImageDropzone from '../../components/admin/ImageDropzone';
 
 /**
  * Módulo CRUD de productos (llantas) para el admin.
@@ -19,6 +20,7 @@ export default function AdminProductos() {
   const [editando, setEditando] = useState(null);
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [pendingImageFile, setPendingImageFile] = useState(null);
 
   const emptyForm = {
     idMarca: '', modelo: '', ancho: '', perfil: '', rin: '',
@@ -65,6 +67,7 @@ export default function AdminProductos() {
 
   const handleEditar = (llanta) => {
     setEditando(llanta);
+    setPendingImageFile(null);
     setForm({
       idMarca: llanta.idMarca || '',
       modelo: llanta.modelo || '',
@@ -81,6 +84,7 @@ export default function AdminProductos() {
 
   const handleNuevo = () => {
     setEditando(null);
+    setPendingImageFile(null);
     setForm(emptyForm);
     setShowForm(true);
   };
@@ -99,15 +103,32 @@ export default function AdminProductos() {
         idMarca: Number(form.idMarca),
       };
 
+      let idLlantaFinal;
+
       if (editando) {
+        // Editar: actualizar datos del producto
         await adminService.updateLlanta(editando.id || editando.idLlanta, payload);
+        idLlantaFinal = editando.id || editando.idLlanta;
       } else {
-        await adminService.createLlanta(payload);
+        // Crear: obtener el id de la nueva llanta
+        const created = await adminService.createLlanta(payload);
+        idLlantaFinal = created?.data?.idLlanta || created?.idLlanta || created?.data?.id || created?.id;
+      }
+
+      // Si hay una imagen pendiente, subirla al backend (Cloudinary)
+      if (pendingImageFile && idLlantaFinal) {
+        try {
+          await adminService.subirImagenLlanta(idLlantaFinal, pendingImageFile, 'PRINCIPAL');
+        } catch (imgErr) {
+          // El producto ya se guardó — solo avisamos del fallo de imagen
+          alert('Producto guardado, pero hubo un error al subir la imagen: ' + (imgErr.response?.data?.message || imgErr.message));
+        }
       }
 
       setShowForm(false);
       setEditando(null);
       setForm(emptyForm);
+      setPendingImageFile(null);
       fetchLlantas();
     } catch (err) {
       alert('Error al guardar: ' + (err.response?.data?.message || err.message));
@@ -302,8 +323,12 @@ export default function AdminProductos() {
                   <input name="stock" type="number" value={form.stock} onChange={handleChange} required placeholder="50" />
                 </div>
                 <div className="admin-form-group">
-                  <label>URL de imagen</label>
-                  <input name="imagen_url" value={form.imagen_url} onChange={handleChange} placeholder="https://…" />
+                  <label>Imagen del producto</label>
+                  <ImageDropzone
+                    onFileChange={(file) => setPendingImageFile(file)}
+                    previewUrl={form.imagen_url || null}
+                    disabled={saving}
+                  />
                 </div>
                 <div className="admin-form-group">
                   <label>Descripción</label>

@@ -1,5 +1,5 @@
 import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
 import AppLoader from "../components/shared/AppLoader";
 
 // ── Layout (siempre presente) — NO lazy ──
@@ -37,102 +37,93 @@ const AdminInventario = lazy(() => import("../pages/admin/AdminInventario"));
 const AdminCatalogos  = lazy(() => import("../pages/admin/AdminCatalogos"));
 const AdminReportes  = lazy(() => import("../pages/admin/AdminReportes"));
 
+/**
+ * Layout público: Header + contenido + Footer.
+ * Se usa para todas las rutas de la tienda.
+ */
+function PublicLayout() {
+  return (
+    <div className="app">
+      <Header />
+      <main className="app-main">
+        <Suspense fallback={<AppLoader />}>
+          <Outlet />
+        </Suspense>
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
 export default function AppRouter() {
-    return (
-        <Router>
-            <ScrollToTop />
-            <AuthModal />
-            <CartToast />
-            <div className="app">
-                <Header />
-                <main className="app-main">
-                    {/* Suspense raíz: muestra AppLoader mientras se descarga cualquier chunk de ruta */}
-                    <Suspense fallback={<AppLoader />}>
-                        <Routes>
-                            {/* ═══════════════════════════════════════
-                                RUTAS DE LA TIENDA (SHOP)
-                                ═══════════════════════════════════════ */}
-                            <Route path="/" element={<HomePage />} />
-                            <Route path="/product/:id" element={<ProductDetailsPage />} />
-                            <Route path="/cart" element={<CartPage />} />
-                            
-                            {/* NUEVA RUTA DE BÚSQUEDA */}
-                            <Route path="/busqueda" element={<SearchResultsPage />} />
-                            
-                            {/* MANTENER ALIAS /search POR SI ACASO */}
-                            <Route path="/search" element={<Navigate to="/busqueda" replace />} />
-                            
-                            <Route path="/ubicacion" element={<UbicacionPage />} />
-                            <Route path="/login" element={<LoginPage />} />
-                            <Route path="/registro" element={<RegisterPage />} />
-                            {/* ── Ruta callback Google OAuth ── */}
-                            <Route path="/auth/callback" element={<AuthCallback />} />
-                            
-                            {/* ── Ruta Marca ── */}
-                            <Route path="/brand/:brandId" element={<BrandCatalogPage />} />
-                            
-                            <Route
-                                path="/perfil"
-                                element={
-                                    <ProtectedRoute>
-                                        <ProfilePage />
-                                    </ProtectedRoute>
-                                }
-                            />
-                            <Route
-                                path="/checkout"
-                                element={
-                                    <ProtectedRoute>
-                                        <CheckoutPage />
-                                    </ProtectedRoute>
-                                }
-                            />
-                            <Route
-                                path="/mis-pedidos"
-                                element={
-                                    <ProtectedRoute>
-                                        <OrdersPage />
-                                    </ProtectedRoute>
-                                }
-                            />
-                            <Route
-                                path="/mis-pedidos/:id"
-                                element={
-                                    <ProtectedRoute>
-                                        <OrderDetailPage />
-                                    </ProtectedRoute>
-                                }
-                            />
+  return (
+    <Router>
+      <ScrollToTop />
+      <AuthModal />
+      <CartToast />
+      <Routes>
 
-                            {/* ═══════════════════════════════════════
-                                RUTAS DEL ADMIN PANEL
-                                Integrado dentro del mismo sitio
-                                con Header y Footer visibles.
-                                ═══════════════════════════════════════ */}
-                            <Route
-                                path="/admin"
-                                element={
-                                    <AdminRoute>
-                                        <AdminLayout />
-                                    </AdminRoute>
-                                }
-                            >
-                                <Route index element={<Navigate to="/admin/dashboard" replace />} />
-                                <Route path="dashboard"  element={<AdminDashboard />} />
-                                <Route path="pedidos"    element={<AdminPedidos />} />
-                                <Route path="clientes"   element={<AdminClientes />} />
-                                <Route path="productos"  element={<AdminProductos />} />
-                                <Route path="inventario" element={<AdminInventario />} />
-                                <Route path="catalogos"  element={<AdminCatalogos />} />
-                                <Route path="reportes"   element={<AdminReportes />} />
-                            </Route>
+        {/* ═══════════════════════════════════════════════════
+            RUTAS DEL ADMIN PANEL
+            Full-page — sin Header/Footer del sitio.
+            El SidebarProvider de shadcn necesita ser el
+            contenedor raíz para que position:fixed funcione.
+            ═══════════════════════════════════════════════ */}
+        <Route
+          path="/admin"
+          element={
+            <AdminRoute>
+              <Suspense fallback={<AppLoader />}>
+                <AdminLayout />
+              </Suspense>
+            </AdminRoute>
+          }
+        >
+          <Route index element={<Navigate to="/admin/dashboard" replace />} />
+          <Route path="dashboard"  element={<Suspense fallback={<AppLoader />}><AdminDashboard /></Suspense>} />
+          <Route path="pedidos"    element={<Suspense fallback={<AppLoader />}><AdminPedidos /></Suspense>} />
+          <Route path="clientes"   element={<Suspense fallback={<AppLoader />}><AdminClientes /></Suspense>} />
+          <Route path="productos"  element={<Suspense fallback={<AppLoader />}><AdminProductos /></Suspense>} />
+          <Route path="inventario" element={<Suspense fallback={<AppLoader />}><AdminInventario /></Suspense>} />
+          <Route path="catalogos"  element={<Suspense fallback={<AppLoader />}><AdminCatalogos /></Suspense>} />
+          <Route path="reportes"   element={<Suspense fallback={<AppLoader />}><AdminReportes /></Suspense>} />
+        </Route>
 
-                            <Route path="*" element={<NotFoundPage />} />
-                        </Routes>
-                    </Suspense>
-                </main>
-                <Footer />
-            </div>
-        </Router>
-    );
+        {/* ═══════════════════════════════════════════════════
+            RUTAS DE LA TIENDA (SHOP)
+            Con Header y Footer del sitio.
+            ═══════════════════════════════════════════════ */}
+        <Route element={<PublicLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/product/:id" element={<ProductDetailsPage />} />
+          <Route path="/cart" element={<CartPage />} />
+          <Route path="/busqueda" element={<SearchResultsPage />} />
+          <Route path="/search" element={<Navigate to="/busqueda" replace />} />
+          <Route path="/ubicacion" element={<UbicacionPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/registro" element={<RegisterPage />} />
+          <Route path="/auth/callback" element={<AuthCallback />} />
+          <Route path="/brand/:brandId" element={<BrandCatalogPage />} />
+          <Route
+            path="/perfil"
+            element={<ProtectedRoute><ProfilePage /></ProtectedRoute>}
+          />
+          <Route
+            path="/checkout"
+            element={<ProtectedRoute><CheckoutPage /></ProtectedRoute>}
+          />
+          <Route
+            path="/mis-pedidos"
+            element={<ProtectedRoute><OrdersPage /></ProtectedRoute>}
+          />
+          <Route
+            path="/mis-pedidos/:id"
+            element={<ProtectedRoute><OrderDetailPage /></ProtectedRoute>}
+          />
+          <Route path="*" element={<NotFoundPage />} />
+        </Route>
+
+      </Routes>
+    </Router>
+  );
 }

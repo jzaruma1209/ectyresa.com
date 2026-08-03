@@ -4,6 +4,7 @@ import store from "./store";
 import { logout } from "./store/slices/auth.slice";
 import CartInitializer from "./components/cart/CartInitializer";
 import AppRouter from "./router";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import "./App.css";
 
 /**
@@ -29,12 +30,13 @@ const AuthInitializer = () => {
 function App() {
   return (
     <Provider store={store}>
-      <AuthInitializer />
-      <CartInitializer />
-      <AppRouter />
+      <TooltipProvider>
+        <AuthInitializer />
+        <CartInitializer />
+        <AppRouter />
+      </TooltipProvider>
     </Provider>
   );
 }
 
 export default App;
-

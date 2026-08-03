@@ -25,18 +25,31 @@
   --admin-transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* ── SHELL — inline, not fullscreen ── */
-.admin-shell {
-  display: flex;
-  min-height: 70vh;
-  background: var(--admin-bg);
-  border-radius: var(--admin-radius);
-  overflow: hidden;
-  border: 1px solid var(--admin-border);
-  margin: 0;
+/* ── PANEL ADMIN — contenedor raiz full-page ── */
+.admin-panel {
+  width: 100%;
+  min-height: 100vh;
+  display: contents; /* transparente, solo aplica CSS vars */
 }
 
-/* ── SIDEBAR — relative, not fixed ── */
+/* ── SHELL — legacy (no usado, conservado por seguridad) ── */
+.admin-shell {
+  display: flex;
+  min-height: 100vh;
+  background: var(--admin-bg);
+  overflow: hidden;
+}
+
+/* ── MAIN — legacy ── */
+.admin-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--admin-bg);
+}
+
+/* ── SIDEBAR — legacy ── */
 .admin-sidebar {
   width: var(--admin-sidebar-w);
   background: var(--admin-sidebar-bg);
@@ -252,7 +265,7 @@
   min-width: 0;
 }
 
-/* Header inside admin */
+/* ── HEADER inside admin ── */
 .admin-header {
   height: 50px;
   background: var(--admin-surface);
@@ -261,6 +274,30 @@
   align-items: center;
   justify-content: space-between;
   padding: 0 20px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.admin-header__left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* SidebarTrigger de shadcn dentro del header */
+.admin-header__trigger {
+  background: none !important;
+  border: 1px solid var(--admin-border) !important;
+  color: var(--admin-text) !important;
+  border-radius: var(--admin-radius-sm) !important;
+  padding: 4px 8px !important;
+  width: auto !important;
+  height: auto !important;
+}
+
+.admin-header__trigger:hover {
+  background: var(--admin-bg) !important;
 }
 
 .admin-header__toggle {

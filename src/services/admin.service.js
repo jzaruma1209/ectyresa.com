@@ -79,6 +79,43 @@ const adminService = {
     return response.data;
   },
 
+  // ──────────────────────────────────────────
+  // IMÁGENES DE LLANTAS (Cloudinary via backend)
+  // ──────────────────────────────────────────
+  /**
+   * Sube una imagen a una llanta existente.
+   * Usa multipart/form-data — NO agregar Content-Type manualmente.
+   * @param {number} idLlanta
+   * @param {File} archivo
+   * @param {string} tipoImagen - 'PRINCIPAL' | 'LATERAL' | 'DETALLE'
+   */
+  subirImagenLlanta: async (idLlanta, archivo, tipoImagen = 'PRINCIPAL') => {
+    const formData = new FormData();
+    formData.append('imagen', archivo);
+    formData.append('tipoImagen', tipoImagen);
+
+    const response = await api.post(
+      `/admin/llantas/${idLlanta}/imagenes`,
+      formData,
+      {
+        headers: {
+          // Dejar que axios/browser pongan el Content-Type con boundary correcto
+          'Content-Type': undefined,
+        },
+      }
+    );
+    return response.data;
+  },
+
+  /**
+   * Obtiene todas las imágenes de una llanta.
+   * @param {number} idLlanta
+   */
+  getImagenesLlanta: async (idLlanta) => {
+    const response = await api.get(`/admin/llantas/${idLlanta}/imagenes`);
+    return response.data;
+  },
+
   updateStock: async (id, stock) => {
     // Endpoint dedicado cuando se cree en el backend
     // Por ahora usa el PUT general

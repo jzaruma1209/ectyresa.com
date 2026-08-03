@@ -1,10 +1,13 @@
 # 📱 INSTRUCCIONES: Hacer Ectyre Responsivo (Mobile-First)
 
 ## CONTEXTO DEL PROYECTO
-- **Framework:** React + Vite
+- **Framework:** React 19 + Vite 7
 - **Repo:** `jzaruma1209/ectyresa.com`
 - **URL producción:** https://ectyresa-com.vercel.app
-- **Stack CSS:** Probablemente CSS puro o CSS Modules (verificar en `/src`)
+- **Stack CSS:** Tailwind CSS 3 (principal) + CSS Modules (para componentes complejos)
+- **UI Library:** shadcn/ui (Radix-based)
+- **Estado:** Redux Toolkit (7 slices)
+- **Routing:** React Router v7
 
 ## REGLA ABSOLUTA
 > ❌ NO cambiar colores, tipografías, íconos ni funcionalidad.  
@@ -18,10 +21,10 @@
 Antes de escribir una sola línea de CSS, el agente debe:
 
 1. **Listar todos los archivos** del proyecto con `tree src/` o explorando manualmente.
-2. **Identificar los archivos CSS** — pueden ser:
-   - `src/index.css` o `src/App.css` (CSS global)
-   - Archivos `.module.css` por componente (e.g. `Navbar.module.css`)
-   - CSS-in-JS (styled-components, emotion) — si es así, los estilos están dentro de los `.jsx`
+2. **Identificar el approach de estilos**:
+   - **Tailwind CSS** es el approach principal — la mayoría de estilos están en clases JSX
+   - Archivos CSS existentes: `src/index.css` (global + variables shadcn), `src/App.css`, `src/responsive.css` (media queries globales), y CSS modules por componente en `src/pages/styles/`, `src/features/*/styles/`, `src/components/*/styles/`
+   - NO hay CSS-in-JS ni styled-components
 3. **Identificar los componentes** clave que necesitan arreglo (ver Sección 1 más abajo).
 4. **Verificar si ya existe un `meta viewport`** en `index.html`:
    ```html
@@ -30,6 +33,7 @@ Antes de escribir una sola línea de CSS, el agente debe:
    Si NO existe, agregarlo. Sin esto, nada de lo demás funcionará en celular.
 
 5. **Verificar los breakpoints actuales** — buscar en todos los CSS si ya hay `@media` queries definidas. Si las hay, no duplicarlas, sino modificarlas o complementarlas.
+6. **Preferir Tailwind primero** — antes de escribir CSS manual, verificar si se puede lograr con clases utilitarias de Tailwind (ej. `flex-wrap`, `w-full`, `hidden lg:flex`, `grid-cols-1 md:grid-cols-2`). Usar CSS solo cuando Tailwind no sea suficiente.
 
 ---
 
@@ -141,19 +145,22 @@ Usar estos breakpoints de forma consistente en todo el proyecto:
 
 ## PASO 3 — DÓNDE ESCRIBIR LOS CAMBIOS
 
-El agente debe determinar dónde están los estilos **antes** de escribir. Opciones:
+El agente debe determinar dónde están los estilos **antes** de escribir. Opciones (en orden de preferencia):
 
-### Opción A — CSS Global (`index.css` o `App.css`)
-Si los estilos son globales con clases normales, agregar los `@media` queries al final del archivo correspondiente. No tocar los estilos existentes, solo AGREGAR bloques nuevos al final.
+### Opción A — Clases utilitarias de Tailwind (PREFERIDA)
+Agregar clases responsive directamente en el JSX: `className="w-full md:w-1/2 lg:w-1/3"`. Esto es lo más limpio y consistente con el resto del proyecto.
 
-### Opción B — CSS Modules (`.module.css`)
-Si cada componente tiene su propio `.module.css`, agregar los `@media` queries al final de cada archivo del módulo correspondiente.
+### Opción B — `responsive.css` (YA EXISTE)
+El archivo `src/responsive.css` ya existe y está importado en `main.jsx`. Es el lugar designado para media queries CSS globales. Simplemente agregar bloques `@media` nuevos al final.
 
-### Opción C — Inline styles o CSS-in-JS
-Si los estilos están inline en JSX (ej. `style={{ display: 'flex' }}`), hay que convertirlos a clases CSS o usar lógica condicional con `window.innerWidth` o un hook `useWindowSize`. En este caso, lo más limpio es:
-1. Crear un archivo `responsive.css` en `src/`.
-2. Importarlo en `App.jsx` o `main.jsx` con `import './responsive.css'`.
-3. Agregar clases específicas a los elementos JSX y definir los `@media` queries en ese archivo.
+### Opción C — CSS Modules (`.css` en `src/pages/styles/` o `src/features/*/styles/`)
+Si un componente ya tiene su propio archivo CSS (ej. `ProductCard.css`), agregar `@media` queries al final de ese archivo.
+
+### Opción D — CSS Global (`index.css` o `App.css`)
+Solo si el estilo aplica globalmente. `index.css` ya tiene las variables shadcn y Tailwind directives. Agregar al final de `App.css` si es necesario.
+
+### ⚠️ Evitar inline styles
+El proyecto casi no usa `style={{}}` en JSX. NO convertir estilos existentes a inline. Si encuentras inline styles, lo mejor es moverlos a una clase en `responsive.css`.
 
 ---
 
@@ -188,3 +195,5 @@ Después de aplicar los cambios, verificar en estos tamaños de pantalla con las
 - Si algo tiene `width: 1200px` fijo → cambiarlo a `max-width: 1200px; width: 100%`.
 - Si algo tiene `height: 500px` fijo → evaluar si se puede cambiar a `min-height: 500px` o `height: auto`.
 - Cualquier elemento con `position: absolute` que se salga en móvil → revisar su `top/left/right/bottom` y agregar `@media` para reposicionarlo.
+- **Tailwind tiene sus propios breakpoints:** `sm: 640px`, `md: 768px`, `lg: 1024px`, `xl: 1280px`. Puedes usarlos directamente en lugar de CSS `@media`.
+- **Ejemplo Tailwind:** `className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"` equivale a escribir 3 media queries.
