@@ -86,9 +86,7 @@
     -webkit-line-clamp: 2 !important;
     -webkit-box-orient: vertical !important;
   }
-  .product-card-button,
-  .product-card .buy-btn,
-  .product-btn-add {
+  .product-card-button {
     font-size: 11px !important;
     padding: 6px 4px !important;
     white-space: normal !important;
@@ -134,11 +132,6 @@
     gap: 1rem !important;
     overflow-x: visible !important;
   }
-  .brand-section-card {
-    flex: auto !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-  }
 }
 
 @media (max-width: 768px) {
@@ -172,19 +165,12 @@
     font-size: 14px !important;
     font-weight: bold !important;
   }
-  .product-card-button, .product-btn-add, .buy-btn {
+  .product-card-button {
     padding: 8px 10px !important;
     font-size: 13px !important;
     width: 100% !important;
   }
-  .product-qty-control {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important;
-    width: 100% !important;
-  }
-  .product-badge, .product-discount-badge {
+  .product-discount-badge {
     overflow: hidden !important;
   }
 }

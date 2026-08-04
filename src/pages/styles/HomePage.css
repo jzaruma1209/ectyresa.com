@@ -422,11 +422,9 @@
   border-radius: 4px;
 }
 
-/* Card dentro de la sección de marca */
-.brand-section-card {
-  flex: 0 0 190px !important;
-  max-width: 190px !important;
-  min-width: 190px !important;
+/* Card dentro del carrusel de marcas: ancho mínimo solo en modo scroll horizontal */
+.brand-cards-scroll > .tire-card {
+  flex: 0 0 220px;
 }
 
 /* ── RESPONSIVE ── */

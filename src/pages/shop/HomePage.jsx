@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
+import CategoryBar from "../../components/products/CategoryBar";
 import HeroBanner from "../../components/products/HeroBanner";
 import HeroSearchOptions from "../../components/products/HeroSearchOptions";
 import MainSearchBox from "../../components/products/MainSearchBox";
@@ -80,6 +81,9 @@ const HomePage = () => {
           {welcomeToast}
         </div>
       )}
+
+      {/* Barra de categorías debajo del PromoBanner y antes del Hero */}
+      <CategoryBar />
 
       {/* Hero Section with Banner */}
 

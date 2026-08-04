@@ -19,7 +19,7 @@ const TireModal = ({ onClose, title, children }) =>
       <div className="ts-modal" onClick={(e) => e.stopPropagation()}>
         <div className="ts-modal-header">
           <span className="ts-modal-title">{title}</span>
-          <button className="ts-modal-close" onClick={onClose}>✕</button>
+          <button data-slot="modal-close" className="ts-modal-close" onClick={onClose}>✕</button>
         </div>
         <div className="ts-modal-body">{children}</div>
       </div>
@@ -101,6 +101,7 @@ const TireSearcher = () => {
           {['Ancho', 'Perfil', 'Rin'].map((label, idx) => (
             <span key={label} className="ts-crumb-group">
               <button
+                data-slot="crumb-btn"
                 className={`ts-crumb ${idx < step ? 'done' : ''} ${idx === step ? 'active' : ''}`}
                 onClick={() => goToStep(idx)}
                 disabled={idx > step}
@@ -142,6 +143,7 @@ const TireSearcher = () => {
         <div className="ts-grid">
           {visibleOptions.map((valor) => (
             <button
+              data-slot="grid-btn"
               key={valor}
               className={`ts-btn ${currentSelected === valor ? 'ts-btn--active' : ''}`}
               onClick={() => handleSelect(valor)}
@@ -153,7 +155,7 @@ const TireSearcher = () => {
 
         {/* Botón "Ver todos" → abre modal */}
         {currentOptions.length > MAX_VISIBLE && (
-          <button className="ts-show-all" onClick={() => setShowAllModal(true)}>
+          <button data-slot="show-all" className="ts-show-all" onClick={() => setShowAllModal(true)}>
             VER TODOS LOS VALORES ▼
           </button>
         )}
@@ -171,6 +173,7 @@ const TireSearcher = () => {
           <div className="ts-modal-grid">
             {currentOptions.map((valor) => (
               <button
+                data-slot="grid-btn"
                 key={valor}
                 className={`ts-btn ${currentSelected === valor ? 'ts-btn--active' : ''}`}
                 onClick={() => {

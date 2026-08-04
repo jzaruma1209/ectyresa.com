@@ -21,7 +21,7 @@ const VsModal = ({ onClose, title, children }) =>
       <div className="vs-modal" onClick={(e) => e.stopPropagation()}>
         <div className="vs-modal-header">
           <span className="vs-modal-title">{title}</span>
-          <button className="vs-modal-close" onClick={onClose}>✕</button>
+          <button data-slot="vs-modal-close" className="vs-modal-close" onClick={onClose}>✕</button>
         </div>
         <div className="vs-modal-body">{children}</div>
       </div>
@@ -135,6 +135,7 @@ const VehicleSearcher = () => {
           {['Marca', 'Año', 'Modelo'].map((label, idx) => (
             <span key={label} className="vs-crumb-group">
               <button
+                data-slot="vs-crumb-btn"
                 className={`vs-crumb ${idx < step ? 'done' : ''} ${idx === step ? 'active' : ''}`}
                 onClick={() => goToStep(idx)}
                 disabled={idx > step}
@@ -171,6 +172,7 @@ const VehicleSearcher = () => {
         <div className={`vs-grid ${step === 0 ? 'vs-grid--brands' : ''}`}>
           {visibleOptions.map((valor) => (
             <button
+              data-slot="vs-grid-btn"
               key={valor}
               className={`vs-btn ${currentSelected === valor ? 'vs-btn--active' : ''}`}
               onClick={() => handleSelect(valor)}
@@ -183,7 +185,7 @@ const VehicleSearcher = () => {
 
         {/* Botón VER TODOS — visible si hay más de 4 opciones */}
         {currentOptions.length > 4 && (
-          <button className="vs-show-all" onClick={() => setShowAllModal(true)}>
+          <button data-slot="vs-show-all" className="vs-show-all" onClick={() => setShowAllModal(true)}>
             VER TODOS LOS VALORES ▼
           </button>
         )}
@@ -200,6 +202,7 @@ const VehicleSearcher = () => {
           <div className="vs-modal-grid">
             {currentOptions.map((valor) => (
               <button
+                data-slot="vs-grid-btn"
                 key={valor}
                 className={`vs-btn ${currentSelected === valor ? 'vs-btn--active' : ''}`}
                 onClick={() => {
@@ -278,6 +281,7 @@ const VehicleSearcher = () => {
                         : <p className="vs-card-stock vs-card-stock--out">Sin stock</p>
                       }
                       <button
+                        data-slot="vs-card-btn"
                         className="vs-card-btn"
                         onClick={() => navigate(`/producto/${llanta.idLlanta}`)}
                       >

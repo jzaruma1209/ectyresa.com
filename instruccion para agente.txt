@@ -1,0 +1,166 @@
+# Refinamiento visual de las Product Cards (Fase de pulido)
+
+La estructura general quedó mucho mejor, pero quiero realizar un último refinamiento visual.
+
+No quiero cambiar la lógica.
+
+No quiero modificar Redux.
+
+No quiero tocar APIs.
+
+No quiero cambiar el funcionamiento del carrito.
+
+Solo quiero mejorar la estética.
+
+---
+
+# Objetivo
+
+Quiero que la parte inferior de la Product Card se vea mucho más limpia, ligera y premium.
+
+Actualmente el selector de cantidad y el botón "Agregar" tienen demasiado peso visual debido al exceso de color rojo.
+
+Quiero reducir ese efecto.
+
+---
+
+# 1. Rediseñar el Stepper
+
+Este es el cambio más importante.
+
+Actualmente existen tres bloques:
+
+[-] [1] [+]
+
+Visualmente ocupan demasiado espacio.
+
+Quiero convertirlos en un único control compacto.
+
+### Nuevo estilo
+
+- fondo blanco
+- borde gris muy claro
+- border-radius entre 10px y 12px
+- altura aproximada entre 32px y 36px
+- botones + y − integrados dentro del mismo contenedor
+- iconos pequeños y discretos
+- número centrado
+- sin sombras
+
+Solo al hacer hover:
+
+- fondo rojo corporativo
+- texto blanco
+
+No quiero tres botones rojos separados.
+
+Quiero un único control elegante.
+
+---
+
+# 2. Reducir el protagonismo del rojo
+
+Actualmente hay demasiados elementos rojos.
+
+Mantener en rojo únicamente:
+
+- Precio
+- Botón principal "Agregar"
+
+Todo lo demás debe utilizar:
+
+- blanco
+- gris claro
+- gris oscuro
+
+Los botones + y − no deben ser rojos por defecto.
+
+---
+
+# 3. Botón "Agregar"
+
+Quiero que siga siendo el protagonista.
+
+Pero debe ocupar un poco menos de espacio horizontal.
+
+Haz que el stepper tenga un ancho fijo aproximado de 80–90px y que el botón "Agregar" ocupe el espacio restante (`flex: 1`).
+
+Aumenta ligeramente el padding vertical para que se vea sólido, pero reduce el ancho que consume dentro de la tarjeta.
+
+Debe verse equilibrado con el nuevo stepper.
+
+---
+
+# 4. Reducir altura del bloque inferior
+
+Analiza toda la zona:
+
+- selector de cantidad
+- botón Agregar
+
+Quiero reducir la altura total aproximadamente entre un 10% y un 15% sin perder comodidad al hacer clic.
+
+Debe sentirse más compacto.
+
+---
+
+# 5. Espaciado
+
+Reduce ligeramente los márgenes entre:
+
+- Specs
+- Stepper
+- Botón
+
+Quiero una tarjeta más compacta sin verse saturada.
+
+---
+
+# 6. Consistencia
+
+Todas las tarjetas deben seguir teniendo exactamente la misma altura.
+
+No romper la alineación conseguida anteriormente.
+
+---
+
+# 7. No modificar
+
+No cambiar:
+
+- lógica
+- handlers
+- Redux
+- carrito
+- stock
+- precios
+- descuentos
+- responsive
+- estructura general
+
+Solo modificar la presentación visual.
+
+---
+
+# Verificación técnica
+
+Antes de finalizar únicamente debes:
+
+- ejecutar `npm run build`
+- verificar que compile correctamente
+- confirmar que no existen errores nuevos provocados por estos cambios
+
+No hagas revisión visual, no describas el resultado visual y no gastes tiempo ni tokens analizando la interfaz. Yo me encargaré personalmente de esa revisión.
+
+---
+
+# Entrega
+
+Cuando termines, indícame únicamente:
+
+- archivos modificados
+- cambios realizados
+- confirmación de que la lógica permanece intacta
+- confirmación de que el proyecto compila correctamente
+
+No realices tareas adicionales que no hayan sido solicitadas.
