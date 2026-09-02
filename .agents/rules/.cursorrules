@@ -4,4 +4,4 @@
 - **Estilos**: El proyecto utiliza Tailwind CSS. Prioriza el uso de clases de utilería de Tailwind en lugar de crear archivos CSS separados, a menos que sea estrictamente necesario.
 - **Estructura**: Mantén la estructura organizada. Los componentes reutilizables deben ir en `src/components`.
 - **Validación de API**: Siempre que vayas a crear una nueva ruta principal, crear un nuevo componente o consultar datos, **DEBES revisar primero los archivos en `src/services/`** para identificar los endpoints reales del backend. No inventes endpoints o schemas falsos.
-- **Cloudinary**: Para integración con subida de imágenes, consulta `plan_cloudinary_ectyre_frontend.md` en la raíz del proyecto.
+- **Cloudinary**: Para integración con subida de imágenes, consulta `docs/plan_cloudinary_ectyre_frontend.md`.

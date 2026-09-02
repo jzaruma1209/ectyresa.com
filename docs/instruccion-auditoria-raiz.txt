@@ -1,0 +1,39 @@
+Actúa como auditor de un repositorio. NO borres ni muevas ningún archivo todavía.
+Solo audita y reporta.
+
+Recorre la RAÍZ del proyecto (no entres a src/ ni node_modules/) y clasifica cada
+archivo y carpeta en una de estas categorías:
+
+A) BASURA SEGURA DE BORRAR
+   Archivos generados automáticamente, logs, o restos de sistema que NO están
+   trackeados en git (verifica con `git status --ignored` y `git ls-files`) y que
+   se regeneran solos (ej: dist/, *.log, archivos vacíos tipo "nul").
+
+B) DOCUMENTACIÓN A REORGANIZAR
+   Archivos .md o .txt de documentación/planificación que sí aportan valor pero
+   deberían vivir dentro de docs/ en vez de la raíz. Para cada uno, di en una
+   línea de qué trata y si sigue vigente o ya quedó obsoleto (compáralo contra
+   el código real de src/, no asumas).
+
+C) CONFIGURACIÓN / NECESARIO — NO TOCAR
+   package.json, configs de build/lint (vite, eslint, postcss, tailwind,
+   jsconfig, components.json), .gitignore, .env*, AGENTS.md, .agent/, .agents/,
+   opencode.json, README.md, index.html, package-lock.json.
+
+D) DUDOSO / DECIDIR
+   Cualquier archivo que no encaje claro en A, B o C — explica por qué dudas y
+   qué información necesitarías para decidir (ej: si algo está referenciado
+   desde algún import, script de package.json, o CI).
+
+Para CADA archivo en A, B o D, verifica antes de clasificarlo:
+1. ¿Está trackeado en git? (`git ls-files | grep <archivo>`)
+2. ¿Está referenciado en algún otro archivo del proyecto? (`grep -r "<nombre>"
+   --include="*.js*" --include="*.json" --include="*.md" .` , excluyendo
+   node_modules y dist)
+3. Si es un .jsx o .js suelto en la raíz (no dentro de src/), ¿se importa desde
+   algún lado o es un archivo huérfano?
+
+Entrégame el resultado como una tabla: Archivo | Categoría | Trackeado en git
+(sí/no) | Referenciado en el código (sí/no) | Razón/nota breve.
+
+No ejecutes ningún borrado, no uses git rm, no uses rm. Esto es solo el reporte.

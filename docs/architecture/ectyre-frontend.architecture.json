@@ -1,0 +1,63 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Arquitectura Frontend — ECTYRE",
+    "output": "ectyre-frontend-architecture.html",
+    "quality_profile": "showcase",
+    "viewBox": [1215, 620],
+    "views": [
+      {
+        "id": "flujo-tienda",
+        "label": "Flujo tienda + checkout",
+        "focus": ["usuario", "react-app", "router", "shop", "services", "api", "backend"],
+        "note": "Sigue el recorrido del cliente desde el navegador hasta la API REST y la persistencia."
+      },
+      {
+        "id": "panel-admin",
+        "label": "Panel de administración",
+        "focus": ["admin", "router", "services", "api", "cloudinary", "store"],
+        "note": "Aísla el guard de admin, sus páginas lazy y la subida de imágenes a Cloudinary."
+      },
+      {
+        "id": "estado-ui",
+        "label": "Estado y componentes",
+        "focus": ["react-app", "router", "store", "ui", "shop", "admin"],
+        "note": "Muestra cómo Redux y la capa shadcn/layout sostienen las páginas."
+      }
+    ]
+  },
+  "components": [
+    { "id": "usuario", "type": "external", "label": "Usuario", "sublabel": "Navegador", "pos": [10, 300], "size": [110, 60] },
+    { "id": "react-app", "type": "frontend", "label": "React App", "sublabel": "main.jsx · App.jsx", "tag": "Redux Provider", "pos": [150, 300], "size": [115, 66] },
+    { "id": "router", "type": "frontend", "label": "Router SPA", "sublabel": "react-router v7 · lazy", "pos": [310, 160], "size": [120, 66] },
+    { "id": "store", "type": "database", "label": "Store Redux", "sublabel": "RTK · 7 slices", "pos": [310, 420], "size": [120, 66] },
+    { "id": "ui", "type": "frontend", "label": "UI Components", "sublabel": "shadcn · layout", "pos": [150, 500], "size": [115, 66] },
+    { "id": "shop", "type": "frontend", "label": "Páginas Tienda", "sublabel": "15 páginas lazy", "pos": [520, 160], "size": [120, 72] },
+    { "id": "admin", "type": "frontend", "label": "Admin Panel", "sublabel": "AdminRoute · 7 páginas", "pos": [520, 420], "size": [120, 72] },
+    { "id": "services", "type": "backend", "label": "Servicios", "sublabel": "7 módulos REST", "pos": [700, 300], "size": [130, 66] },
+    { "id": "api", "type": "cloud", "label": "API Client", "sublabel": "Axios /lib/api.js", "tag": "JWT + 401", "pos": [870, 300], "size": [115, 66] },
+    { "id": "backend", "type": "external", "label": "Backend REST", "sublabel": "ECTYRE API /api/v1", "pos": [1045, 300], "size": [120, 66] },
+    { "id": "cloudinary", "type": "cloud", "label": "Cloudinary", "sublabel": "imágenes Cloud", "pos": [1045, 500], "size": [120, 66] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Frontend React (SPA)", "wraps": ["react-app", "router", "store", "ui", "shop", "admin", "services", "api"] }
+  ],
+  "connections": [
+    { "id": "usuario-app", "from": "usuario", "to": "react-app", "label": "HTTPS", "variant": "emphasis" },
+    { "id": "app-store", "from": "react-app", "to": "store", "label": "Provider", "variant": "security", "fromSide": "bottom", "toSide": "top" },
+    { "id": "app-router", "from": "react-app", "to": "router", "label": "render", "fromSide": "top", "toSide": "bottom" },
+    { "id": "router-shop", "from": "router", "to": "shop" },
+    { "id": "router-admin", "from": "router", "to": "admin", "label": "rutas admin", "variant": "security" },
+    { "id": "shop-services", "from": "shop", "to": "services", "label": "consume", "fromSide": "right", "toSide": "left" },
+    { "id": "admin-services", "from": "admin", "to": "services", "label": "consume", "fromSide": "right", "toSide": "left" },
+    { "id": "services-api", "from": "services", "to": "api", "label": "HTTP" },
+    { "id": "api-backend", "from": "api", "to": "backend", "label": "REST JSON", "variant": "emphasis" },
+    { "id": "backend-images", "from": "backend", "to": "cloudinary", "label": "imágenes", "variant": "dashed", "fromSide": "bottom", "toSide": "top", "labelDy": 34 }
+  ],
+  "cards": [
+    { "dot": "cyan", "title": "Tienda", "items": ["Páginas lazy en PublicLayout con Header/Footer", "Productos, carrito, checkout y pedidos vía servicios", "Búsqueda por medida, vehículo o texto (GET /llantas/*)"] },
+    { "dot": "emerald", "title": "Estado y UI", "items": ["Redux Toolkit con 7 slices (auth, cart, products, filters, ui, vehiculos, authModal)", "shadcn/ui + Tailwind y capa layout/shared", "Hooks: useAuth, useCart, useProducts"] },
+    { "dot": "rose", "title": "Seguridad y externos", "items": ["Axios inyecta JWT; 401 global limpia token y redirige", "AdminRoute + ProtectedRoute protegen panel y checkout", "Backend REST /api/v1 + Cloudinary; datos mock solo en dev"] }
+  ]
+}

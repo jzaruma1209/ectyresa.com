@@ -1,0 +1,11 @@
+Ejecuta solo esto, no toques nada más, no hagas commit:
+
+1. Corrige .agents/rules/.cursorrules línea 7: cambia la referencia de
+   plan_cloudinary_ectyre_frontend.md en la raíz a docs/plan_cloudinary_ectyre_frontend.md.
+   Muéstrame el diff.
+
+2. Agrega "nul" al final de .gitignore (una línea nueva). Muéstrame el diff.
+
+3. Muéstrame de nuevo git status para confirmar cómo queda.
+
+No agregues (git add) ni hagas commit de nada. Yo lo reviso primero.

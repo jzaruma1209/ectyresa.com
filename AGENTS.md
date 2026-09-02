@@ -100,7 +100,7 @@ npm run preview  # Preview production build
 
 ### Before Creating Routes/Components/API Calls
 - **ALWAYS** review the service files in `src/services/` to identify real backend endpoints
-- Refer to `plan_cloudinary_ectyre_frontend.md` for Cloudinary image upload integration details
+- Refer to `docs/plan_cloudinary_ectyre_frontend.md` for Cloudinary image upload integration details
 - Do not invent fake endpoints or schemas
 
 ### Existing Rules (Cursor & Copilot)

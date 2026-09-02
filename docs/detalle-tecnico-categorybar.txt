@@ -1,0 +1,137 @@
+Informe técnico: Barra de categorías estilo Temu
+Resumen del proyecto
+Aspecto	Detalle
+Framework	React 19 + Vite 7 (npm run dev/build/lint/preview)
+Lenguaje	JavaScript (JSX) — sin TypeScript
+Estilos	Tailwind CSS 3 (principal) + CSS planos por componente (src/pages/styles/, src/features/*/styles/, src/components/*/styles/), sin CSS Modules puros, sin SCSS, sin styled-components
+UI Library	shadcn/ui (Radix) en src/components/ui/ + ButtonCom.jsx
+Estado	Redux Toolkit (7 slices: auth, authModal, cart, filters, products, ui, vehiculos)
+Routing	React Router v7 (src/router/index.jsx)
+HTTP	Axios con interceptor JWT (src/lib/api.js)
+Animación	GSAP 3 (gsap)
+Alias	@/ → ./src/
+Stack completo disponible: @heroicons/react, lucide-react, react-icons, radix-ui, react-hook-form, leaflet. No hay Swiper ni Framer Motion (GSAP cubre animaciones).
+---
+Árbol de componentes (página principal)
+App (Provider + TooltipProvider)
+└── AppRouter (BrowserRouter)
+    └── PublicLayout                    src/router/index.jsx:44
+        ├── Header                      src/components/layout/Header.jsx (sticky, z-1000)
+        │   ├── .header-topbar          "Envío a todo el Ecuador | Instalamos tus llantas"
+        │   ├── .header-main            logo + buscador + acciones (chat/cuenta/carrito)
+        │   ├── .mobile-nav             menú hamburguesa (móvil)
+        │   └── <PromoBanner />         ← barra gris/morada "Instalación incluida…" (Header.jsx:300)
+        ├── main.app-main
+        │   └── Suspense (lazy)
+        │       └── HomePage            src/pages/shop/HomePage.jsx
+        │           ├── welcome-toast
+        │           ├── .hero-section   (HomePage.jsx:86)
+        │           │   ├── HeroSearchOptions  → "PRODUCTOS DESTACADOS" (4 en carrusel GSAP)
+        │           │   ├── MainSearchBox      → buscador por dimensiones (activeVehicle)
+        │           │   └── HeroRightColumn    → banner/imagen + CTA
+        │           └── .brands-sections-wrapper → BrandSection × 4 (Nankang, Yeada, Tornel, Wanli)
+        └── Footer
+Nota importante: el HomePage actual difiere del boceto del archivo. Ya no existen secciones separadas "Productos destacados / Buscador / Banner" — las tres viven dentro de .hero-section. "Productos destacados" = HeroSearchOptions, "buscador por dimensiones" = MainSearchBox, "banner principal" = HeroRightColumn.
+---
+Punto exacto de inserción
+La barra informativa ("Instalación incluida…") es el componente PromoBanner, renderizado al final de Header.jsx (línea 300). Justo después arranca el contenido del HomePage dentro de main.app-main.
+Hay dos opciones válidas:
+Opción A (recomendada) — dentro de HomePage.jsx, justo arriba del hero:
+// src/pages/shop/HomePage.jsx (línea ~85)
+<div className="home-page">
+  {/* Toast de bienvenida ... */}
+  <<<< INSERTAR NUEVA BARRA AQUÍ >>>>
+  {/* Hero Section */}
+  <section className="hero-section" ...>
+- Es la interpretación literal del archivo ("debajo de la barra… antes del contenido principal").
+- Es específica del Home (los componentes que la rodean son solo del Home).
+- Al no ser sticky, hace scroll normal con la página (comportamiento típico de Temu si además se añade un sticky propio opcional).
+Opción B — dentro de Header.jsx tras <PromoBanner /> (línea 300):
+- Aparecería en todas las páginas (global) y sería sticky junto al header.
+- Riesgo: el header ya se oculta al hacer scroll (header--hidden, Header.jsx:14-17), así que la barra también se ocultaría — no deseado para una barra de navegación de categorías.
+---
+Archivos que habrá que modificar
+1. src/pages/shop/HomePage.jsx — insertar <CategoryBar /> arriba del .hero-section (línea ~86).
+2. Nuevo componente: src/components/products/CategoryBar.jsx (o src/features/home/CategoryBar.jsx, siguiendo la convención de carpeta de estilos en features).
+3. Nuevo CSS: src/features/home/styles/CategoryBar.css (convención del proyecto: CSS por componente + media queries al final).
+4. Datos (opcional): src/data/brandsMockData.js o nuevo src/data/categoriesMockData.js con las categorías, o src/constants/index.js para las categorías estáticas.
+5. Nada en src/router ni en Redux (a menos que se quiera persistir la categoría activa; ver Riesgos).
+---
+Componentes nuevos recomendados
+- CategoryBar.jsx — barra horizontal de categorías estilo Temu:
+  - Desktop: fila de categorías con icono + etiqueta, hover que cambia a rojo #E60000 (variable --color-primary / #E32619).
+  - Mobile: scroll horizontal (overflow-x: auto, flex-shrink: 0), mismo patrón que .brand-cards-scroll (HomePage.css:402-423).
+  - Opcional: dropdown/mega menú al hacer hover, reutilizando el patrón de SearchMegaMenu.jsx (GSAP).
+- Opcional: CategoryBarItem.jsx si se quiere una pieza atómica reutilizable.
+---
+Componentes reutilizables
+Componente	Uso
+SearchMegaMenu.jsx (src/components/ui/)	Patrón de dropdown/mega menú con animación GSAP — ideal para el sub-menú de categorías
+StaggeredMenu.jsx (src/components/ui/)	Drawer animado en capas (rojo/negro/blanco) — podría reutilizarse para categorías en móvil
+ButtonCom.jsx	Botón universal (variantes primary/dark/outline)
+FilterByCategory.jsx	Ya existe lógica de categorías con Redux (autos/motos/camiones) y botones activos category-btn — buen punto de partida de estilos
+PromoBanner.jsx	Patrón de marquee horizontal ya implementado
+Iconos	lucide-react, @heroicons/react, react-icons ya instalados
+No existen: Chip, Badge, Tabs, CategoryButton, Tag, Navigation dedicados.
+---
+Sistema de estilos
+- Colores: variables en src/index.css:15-21 (--color-primary: #E32619/#e31e24, --color-dark-gray: #1a1a1a, --color-light-gray: #f5f5f5). El rojo corporativo usado en componentes es #E60000 o #E32619. Sidebar admin: negro #1A1A1A + rojo #E60000 (index.css:169-180).
+- Tipografía: Inter (Google Fonts) + Geist Variable. Headings vía font-sans/font-heading.
+- Contenedor principal: max-width: 1400px (Home) / 1440px (Header) centrado con margin: 0 auto; padding: 0 1.5-2rem.
+- Border radius: 8px (botones/cards), 12px, 16px; shadcn usa --radius: 0.625rem.
+- Sombras: 0 2px 8px rgba(0,0,0,0.08) (header), 0 4px 8px rgba(227,30,36,0.3) (botones).
+- Espaciados: gaps de 0.5/1/1.5/2rem; .brand-section usa padding: 2.5rem 0.
+---
+Responsive
+- Método: Tailwind responsive (sm:640 md:768 lg:1024 xl:1280) + src/responsive.css (media queries globales, importado en main.jsx) + CSS por componente.
+- Breakpoints estándar: 480px, 768px, 1024px (documentados en RESPONSIVE_INSTRUCTIONS.md).
+- Patrón ya usado para scroll horizontal: .brand-cards-scroll con scrollbar-width: thin.
+---
+Sistema de estado
+- Redux Toolkit. filters.slice.js ya tiene category (setCategoryFilter) con valores autos/motos/camiones, pero no está conectado al hero del Home.
+- El Home usa useState local (activeVehicle en HomePage.jsx:28) con valores auto/agricola/camion/maquinaria — estos son los que cambiarían el fondo del hero (heroBgColors).
+- Decisión clave a tomar: la barra de categorías puede (a) ser puramente visual/enlaces a /busqueda?q=..., (b) sincronizarse con activeVehicle del hero, o (c) usar el slice de filters con Redux. El backend solo soporta búsqueda por texto vía GET /llantas/buscar-general?q= y GET /llantas con categoria.
+---
+Organización del proyecto (relacionada con Home)
+src/
+├── pages/shop/HomePage.jsx
+├── pages/styles/HomePage.css
+├── components/products/   (BrandSection, HeroSearchOptions, MainSearchBox, ProductCard, …)
+├── components/ui/         (SearchMegaMenu, StaggeredMenu, ButtonCom, button.jsx, …)
+├── components/layout/     (Header.jsx, Footer.jsx)
+├── features/shared/       (PromoBanner.jsx + styles/Header.css, Footer.css)
+├── features/home/styles/  (FilterByCategory.css, FilterByTerrain.css)
+├── features/product/styles/
+├── data/                  (brandsMockData.js, products.mock.json, tire-dimensions.json)
+├── store/slices/          (filters.slice.js, ui.slice.js, …)
+├── services/              (products.service.js, catalogo.service.js, …)
+├── constants/index.js
+├── hooks/
+└── responsive.css
+Convenciones: componentes PascalCase en .jsx; comentarios en español; imports agrupados (terceros → locales); alias @/; semicolons + comillas simples en JSX/CSS nuevo; export default para páginas, named exports para utilidades.
+---
+Dependencias aprovechables
+- GSAP 3 — animaciones hover/entrada de la barra y dropdowns (como en SearchMegaMenu).
+- lucide-react / @heroicons/react / react-icons — iconos por categoría.
+- radix-ui — si se quiere un menú accesible (NavigationMenu, DropdownMenu) sin reinventar.
+- react-router-dom — enlaces a /busqueda?q=… y /brand/:brandId.
+---
+Riesgos detectados
+1. Header sticky + hide-on-scroll: si la barra se mete en Header.jsx, se ocultará al hacer scroll (header--hidden). Por eso la Opción A (HomePage) es más segura.
+2. Color de fondo dinámico del hero: HomePage sincroniza document.body.style.backgroundColor con heroBg (auto=blanco, agricola=verde, camion=azul, maquinaria=amarillo). La barra debe tener fondo propio (blanco o gris) y conviene definir claramente su altura para que no choque visualmente con el hero de colores.
+3. Responsive: en móvil debe ser scroll horizontal sin romper el layout (.home-page y body ya tienen overflow-x: hidden en responsive.css:193-196 — la barra debe usar su propio overflow-x: auto interno).
+4. z-index/stacking: el header es position: sticky; z-index: 1000. Si la barra usa dropdowns absolutos, verificar que no queden tapados ni tapen al header.
+5. Sin endpoint real de categorías: el backend solo expone búsqueda por texto/categoría. Los datos de la barra deben ser estáticos (mock/local) siguiendo la regla de AGENTS.md de no inventar endpoints.
+6. SEO/Performance: baja, app 100% CSR (SPA). La barra es estática; si va en el HomePage, entra al chunk lazy ya existente (sin coste adicional).
+7. Consistencia visual: no usar !important salvo necesidad; respetar la paleta rojo/negro/gris (#E60000, #1A1A1A, #F5F5F5).
+---
+Recomendaciones
+1. Colocar la barra en HomePage.jsx justo antes de <section className="hero-section"> (Opción A), evitando tocar el Header sticky global.
+2. Crear CategoryBar.jsx en src/components/products/ con su CSS en src/features/home/styles/CategoryBar.css (o mantener ambos junto al componente si se prefiere src/components/products/styles/).
+3. Datos: definir las categorías en src/constants/index.js (o src/data/categoriesMockData.js) — sugerencia alineada al sitio: Llantas de Auto, Llantas Agrícolas, Llantas de Camión, Maquinaria, Aros y Accesorios (coinciden con activeVehicle y el menú del header).
+4. Enlaces: apuntar a /busqueda?q=... (patrón ya usado en searchMegaMenuItems, Header.jsx:9-41) para no crear rutas/endpoints nuevos.
+5. Mobile: scroll horizontal con flex-shrink:0 (patrón .brand-cards-scroll) + breakpoints 480/768/1024 de RESPONSIVE_INSTRUCTIONS.md.
+6. Animaciones opcionales con GSAP, replicando el patrón SearchMegaMenu si se quiere dropdown al hover.
+7. Iconos: usar lucide-react o @heroicons/react (ya instalados), no añadir dependencias.
+---
+Siguiente paso: cuando me des la segunda instrucción, procedo a implementar la barra respetando todo lo anterior. Antes de implementar, solo necesito que confirmes dos cosas: (1) ¿colocación en HomePage.jsx (Opción A) o dentro del Header (Opción B)? y (2) ¿la barra será solo navegación a /busqueda?q=… o debe sincronizarse con el activeVehicle del hero para cambiar el fondo?
