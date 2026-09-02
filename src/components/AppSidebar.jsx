@@ -63,15 +63,15 @@ function UserFooter({ user, onLogout }) {
           onClick={() => setOpen((v) => !v)}
         >
           {/* Avatar */}
-          <div style={{
-            width: 30, height: 30, minWidth: 30, borderRadius: '50%',
-            background: '#E60000', color: '#fff',
-            fontSize: '0.8rem', fontWeight: 700,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0, margin: '0 auto'
-          }}>
-            {user?.nombre?.charAt(0)?.toUpperCase() || 'A'}
-          </div>
+          <img
+            src="/1.png"
+            alt={user?.nombre || 'Administrador'}
+            style={{
+              width: 30, height: 30, minWidth: 30, borderRadius: '50%',
+              objectFit: 'cover', flexShrink: 0, margin: '0 auto',
+              background: '#fff',
+            }}
+          />
           {/* Info */}
           <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.3, overflow: 'hidden' }}>
             <span style={{ fontSize: '0.82rem', fontWeight: 600, color: 'var(--sidebar-foreground)', whiteSpace: 'nowrap', textOverflow: 'ellipsis', overflow: 'hidden' }}>
@@ -153,15 +153,14 @@ export function AppSidebar({ pedidosPendientes = 0, ...props }) {
             <SidebarMenuButton size="lg" asChild className="hover:bg-transparent cursor-default">
               <div>
                 {/* Logo icon — visible siempre */}
-                <div style={{
-                  width: 30, height: 30, minWidth: 30, borderRadius: 8,
-                  background: '#E60000', color: '#fff',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontWeight: 800, fontSize: '1.1rem', flexShrink: 0,
-                  fontFamily: 'inherit', margin: '0 auto'
-                }}>
-                  E
-                </div>
+                <img
+                  src="/2.png"
+                  alt="Ectyre"
+                  style={{
+                    width: 30, height: 30, minWidth: 30, borderRadius: 8,
+                    objectFit: 'contain', flexShrink: 0, margin: '0 auto',
+                  }}
+                />
                 {/* Texto — oculto al colapsar */}
                 <div style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.3 }}>
                   <span style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--sidebar-foreground)' }}>

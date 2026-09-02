@@ -21,10 +21,18 @@ export default function AdminProductos() {
   const [confirmDelete, setConfirmDelete] = useState(null);
   const [saving, setSaving] = useState(false);
   const [pendingImageFile, setPendingImageFile] = useState(null);
+  const [pendingLogoMarca, setPendingLogoMarca] = useState(null);
+  const [pendingBanner, setPendingBanner] = useState(null);
+  const [pendingFoto2, setPendingFoto2] = useState(null);
+  const [pendingFoto3, setPendingFoto3] = useState(null);
+  const [pendingFoto4, setPendingFoto4] = useState(null);
 
   const emptyForm = {
+    tipoProducto: 'llantas',
     idMarca: '', modelo: '', ancho: '', perfil: '', rin: '',
-    precio: '', stock: '', descripcion: '', imagen_url: '',
+    precio: '', stock: '', descripcion: '', especificaciones: '',
+    traccion: '', treadwear: '', temperatura: '', indiceVelocidad: '', indiceCarga: '',
+    imagen_url: '',
   };
   const [form, setForm] = useState(emptyForm);
 
@@ -77,6 +85,13 @@ export default function AdminProductos() {
       precio: llanta.precio || '',
       stock: llanta.stock || '',
       descripcion: llanta.descripcion || '',
+      especificaciones: llanta.especificaciones || '',
+      traccion: llanta.traccion || '',
+      treadwear: llanta.treadwear || '',
+      temperatura: llanta.temperatura || '',
+      indiceVelocidad: llanta.indiceVelocidad || '',
+      indiceCarga: llanta.indiceCarga || '',
+      tipoProducto: llanta.tipoProducto || 'llantas',
       imagen_url: llanta.imagen_url || llanta.imagenUrl || '',
     });
     setShowForm(true);
@@ -85,6 +100,11 @@ export default function AdminProductos() {
   const handleNuevo = () => {
     setEditando(null);
     setPendingImageFile(null);
+    setPendingLogoMarca(null);
+    setPendingBanner(null);
+    setPendingFoto2(null);
+    setPendingFoto3(null);
+    setPendingFoto4(null);
     setForm(emptyForm);
     setShowForm(true);
   };
@@ -129,6 +149,11 @@ export default function AdminProductos() {
       setEditando(null);
       setForm(emptyForm);
       setPendingImageFile(null);
+      setPendingLogoMarca(null);
+      setPendingBanner(null);
+      setPendingFoto2(null);
+      setPendingFoto3(null);
+      setPendingFoto4(null);
       fetchLlantas();
     } catch (err) {
       alert('Error al guardar: ' + (err.response?.data?.message || err.message));
@@ -255,7 +280,17 @@ export default function AdminProductos() {
               <button className="admin-modal__close" onClick={() => setShowForm(false)}>✕</button>
             </div>
             <form onSubmit={handleSubmit}>
-              <div className="admin-modal__body">
+              <div className="admin-modal__body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+                <div className="admin-form-group">
+                  <label>Tipo de Producto</label>
+                  <select name="tipoProducto" value={form.tipoProducto} onChange={handleChange} required>
+                    <option value="llantas">Llantas</option>
+                    <option value="aros">Aros</option>
+                    <option value="accesorios">Accesorios</option>
+                    <option value="tubos">Tubos</option>
+                  </select>
+                </div>
+
                 <div className="admin-form-group">
                   <label>Marca</label>
                   <select name="idMarca" value={form.idMarca} onChange={handleChange} required>
@@ -271,6 +306,20 @@ export default function AdminProductos() {
                   <label>Modelo</label>
                   <input name="modelo" value={form.modelo} onChange={handleChange} required placeholder="Ej: Pilot Sport 5" />
                 </div>
+                {form.tipoProducto === 'llantas' && (
+                  <>
+                    <div className="admin-form-row" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+                      <div className="admin-form-group">
+                        <label style={{ fontSize: '0.8rem', color: '#666' }}>Foto Logo Marca</label>
+                        <ImageDropzone onFileChange={setPendingLogoMarca} previewUrl={null} disabled={saving} />
+                      </div>
+                      <div className="admin-form-group">
+                        <label style={{ fontSize: '0.8rem', color: '#666' }}>Banner de Descuento (opcional)</label>
+                        <ImageDropzone onFileChange={setPendingBanner} previewUrl={null} disabled={saving} />
+                      </div>
+                    </div>
+                  </>
+                )}
                 <div className="admin-form-row">
                   <div className="admin-form-group">
                     <label>Ancho</label>
@@ -318,21 +367,105 @@ export default function AdminProductos() {
                     <input name="precio" type="number" step="0.01" value={form.precio} onChange={handleChange} required placeholder="350000" />
                   </div>
                 </div>
+
+                {form.tipoProducto === 'llantas' && (
+                  <div className="admin-form-group" style={{ background: '#f9f9f9', padding: '1rem', borderRadius: 8, marginTop: '1rem' }}>
+                    <h4 style={{ margin: '0 0 1rem 0', fontSize: '0.9rem' }}>Atributos de Llanta</h4>
+                    <div className="admin-form-row">
+                      <div className="admin-form-group">
+                        <label>Treadwear</label>
+                        <select name="treadwear" value={form.treadwear} onChange={handleChange}>
+                          <option value="">Seleccionar...</option>
+                          <option value="200">200 (Blando/Deportivo)</option>
+                          <option value="300">300 (Medio)</option>
+                          <option value="400">400 (Duro/Duradero)</option>
+                          <option value="500">500+</option>
+                          <option value="manual">Manual...</option>
+                        </select>
+                      </div>
+                      <div className="admin-form-group">
+                        <label>Tracción</label>
+                        <select name="traccion" value={form.traccion} onChange={handleChange}>
+                          <option value="">Seleccionar...</option>
+                          <option value="AA">AA (Excelente)</option>
+                          <option value="A">A (Buena)</option>
+                          <option value="B">B (Regular)</option>
+                          <option value="C">C (Aceptable)</option>
+                          <option value="manual">Manual...</option>
+                        </select>
+                      </div>
+                      <div className="admin-form-group">
+                        <label>Temperatura</label>
+                        <select name="temperatura" value={form.temperatura} onChange={handleChange}>
+                          <option value="">Seleccionar...</option>
+                          <option value="A">A (Excelente)</option>
+                          <option value="B">B (Buena)</option>
+                          <option value="C">C (Regular)</option>
+                          <option value="manual">Manual...</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div className="admin-form-row">
+                      <div className="admin-form-group">
+                        <label>Índice Velocidad</label>
+                        <select name="indiceVelocidad" value={form.indiceVelocidad} onChange={handleChange}>
+                          <option value="">Seleccionar...</option>
+                          <option value="H">H (210 km/h)</option>
+                          <option value="V">V (240 km/h)</option>
+                          <option value="W">W (270 km/h)</option>
+                          <option value="Y">Y (300 km/h)</option>
+                          <option value="manual">Manual...</option>
+                        </select>
+                      </div>
+                      <div className="admin-form-group">
+                        <label>Índice Carga</label>
+                        <select name="indiceCarga" value={form.indiceCarga} onChange={handleChange}>
+                          <option value="">Seleccionar...</option>
+                          <option value="82">82 (475 kg)</option>
+                          <option value="85">85 (515 kg)</option>
+                          <option value="88">88 (560 kg)</option>
+                          <option value="91">91 (615 kg)</option>
+                          <option value="94">94 (670 kg)</option>
+                          <option value="manual">Manual...</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                )}
                 <div className="admin-form-group">
                   <label>Stock</label>
                   <input name="stock" type="number" value={form.stock} onChange={handleChange} required placeholder="50" />
                 </div>
+                
                 <div className="admin-form-group">
-                  <label>Imagen del producto</label>
-                  <ImageDropzone
-                    onFileChange={(file) => setPendingImageFile(file)}
-                    previewUrl={form.imagen_url || null}
-                    disabled={saving}
-                  />
+                  <label>Imágenes del producto (Hasta 4 fotos)</label>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1rem' }}>
+                    <ImageDropzone
+                      onFileChange={(file) => setPendingImageFile(file)}
+                      previewUrl={form.imagen_url || null}
+                      disabled={saving}
+                    />
+                    <ImageDropzone
+                      onFileChange={setPendingFoto2}
+                      disabled={saving}
+                    />
+                    <ImageDropzone
+                      onFileChange={setPendingFoto3}
+                      disabled={saving}
+                    />
+                    <ImageDropzone
+                      onFileChange={setPendingFoto4}
+                      disabled={saving}
+                    />
+                  </div>
                 </div>
                 <div className="admin-form-group">
-                  <label>Descripción</label>
+                  <label>Descripción General</label>
                   <textarea name="descripcion" value={form.descripcion} onChange={handleChange} rows={3} placeholder="Descripción del producto…" />
+                </div>
+                <div className="admin-form-group">
+                  <label>Especificaciones Técnicas</label>
+                  <textarea name="especificaciones" value={form.especificaciones} onChange={handleChange} rows={3} placeholder="Detalles técnicos, garantía, materiales..." />
                 </div>
               </div>
               <div className="admin-modal__footer">
