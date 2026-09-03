@@ -33,9 +33,9 @@
     { "id": "router", "type": "frontend", "label": "Router SPA", "sublabel": "react-router v7 · lazy", "pos": [310, 160], "size": [120, 66] },
     { "id": "store", "type": "database", "label": "Store Redux", "sublabel": "RTK · 7 slices", "pos": [310, 420], "size": [120, 66] },
     { "id": "ui", "type": "frontend", "label": "UI Components", "sublabel": "shadcn · layout", "pos": [150, 500], "size": [115, 66] },
-    { "id": "shop", "type": "frontend", "label": "Páginas Tienda", "sublabel": "15 páginas lazy", "pos": [520, 160], "size": [120, 72] },
+    { "id": "shop", "type": "frontend", "label": "Páginas Tienda", "sublabel": "14 páginas lazy", "pos": [520, 160], "size": [120, 72] },
     { "id": "admin", "type": "frontend", "label": "Admin Panel", "sublabel": "AdminRoute · 7 páginas", "pos": [520, 420], "size": [120, 72] },
-    { "id": "services", "type": "backend", "label": "Servicios", "sublabel": "7 módulos REST", "pos": [700, 300], "size": [130, 66] },
+    { "id": "services", "type": "backend", "label": "Servicios", "sublabel": "8 módulos REST", "pos": [700, 300], "size": [130, 66] },
     { "id": "api", "type": "cloud", "label": "API Client", "sublabel": "Axios /lib/api.js", "tag": "JWT + 401", "pos": [870, 300], "size": [115, 66] },
     { "id": "backend", "type": "external", "label": "Backend REST", "sublabel": "ECTYRE API /api/v1", "pos": [1045, 300], "size": [120, 66] },
     { "id": "cloudinary", "type": "cloud", "label": "Cloudinary", "sublabel": "imágenes Cloud", "pos": [1045, 500], "size": [120, 66] }
