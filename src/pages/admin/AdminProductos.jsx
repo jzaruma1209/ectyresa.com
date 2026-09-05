@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Plus, CircleDot, Pencil, Trash2, X, TriangleAlert } from 'lucide-react';
 import adminService from '../../services/admin.service';
 import catalogoService from '../../services/catalogo.service';
 import ImageDropzone from '../../components/admin/ImageDropzone';
@@ -186,7 +187,7 @@ export default function AdminProductos() {
         <div className="admin-toolbar__left" />
         <div className="admin-toolbar__right">
           <button className="admin-btn admin-btn--primary" onClick={handleNuevo}>
-            + Agregar Producto
+            <Plus size={16} strokeWidth={1.75} /> Agregar Producto
           </button>
         </div>
       </div>
@@ -195,7 +196,9 @@ export default function AdminProductos() {
         <div className="admin-loading"><div className="admin-spinner" /> Cargando productos…</div>
       ) : llantas.length === 0 ? (
         <div className="admin-empty">
-          <div className="admin-empty__icon">🛞</div>
+          <div className="admin-empty__icon">
+            <CircleDot size={24} strokeWidth={1.75} />
+          </div>
           <div className="admin-empty__text">No hay productos en el catálogo</div>
         </div>
       ) : (
@@ -226,29 +229,32 @@ export default function AdminProductos() {
                       ) : (
                         <div style={{
                           width: 44, height: 44, background: 'var(--admin-bg)',
+                          border: '1px solid var(--admin-border)',
                           borderRadius: 6, display: 'flex', alignItems: 'center',
-                          justifyContent: 'center', fontSize: '1.2rem',
-                        }}>🛞</div>
+                          justifyContent: 'center', color: 'var(--admin-text-secondary)',
+                        }}>
+                          <CircleDot size={20} strokeWidth={1.75} />
+                        </div>
                       )}
                     </td>
                     <td>{ll.marca?.nombre || ll.nombreMarca || '-'}</td>
                     <td style={{ fontWeight: 600 }}>{ll.modelo}</td>
-                    <td>{ll.ancho}/{ll.perfil} R{ll.rin}</td>
-                    <td style={{ fontWeight: 600 }}>{formatMoney(ll.precio)}</td>
+                    <td className="font-mono">{ll.ancho}/{ll.perfil} R{ll.rin}</td>
+                    <td className="font-mono" style={{ fontWeight: 600 }}>{formatMoney(ll.precio)}</td>
                     <td>
-                      <span className={
+                      <span className={`font-mono ${
                         ll.stock > 10 ? 'stock-ok' :
                         ll.stock > 0 ? 'stock-low' : 'stock-out'
-                      }>
+                      }`}>
                         {ll.stock}
                       </span>
                     </td>
                     <td style={{ display: 'flex', gap: 6 }}>
                       <button className="admin-btn admin-btn--secondary admin-btn--sm" onClick={() => handleEditar(ll)}>
-                        ✏️ Editar
+                        <Pencil size={16} strokeWidth={1.75} /> Editar
                       </button>
-                      <button className="admin-btn admin-btn--danger admin-btn--sm" onClick={() => setConfirmDelete(ll)}>
-                        🗑️
+                      <button className="admin-btn admin-btn--danger admin-btn--sm" onClick={() => setConfirmDelete(ll)} aria-label="Eliminar">
+                        <Trash2 size={16} strokeWidth={1.75} />
                       </button>
                     </td>
                   </tr>
@@ -277,7 +283,9 @@ export default function AdminProductos() {
           <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
             <div className="admin-modal__header">
               <h2>{editando ? 'Editar Producto' : 'Nuevo Producto'}</h2>
-              <button className="admin-modal__close" onClick={() => setShowForm(false)}>✕</button>
+              <button className="admin-modal__close" onClick={() => setShowForm(false)} aria-label="Cerrar">
+                <X size={20} strokeWidth={1.75} />
+              </button>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="admin-modal__body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
@@ -310,11 +318,11 @@ export default function AdminProductos() {
                   <>
                     <div className="admin-form-row" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
                       <div className="admin-form-group">
-                        <label style={{ fontSize: '0.8rem', color: '#666' }}>Foto Logo Marca</label>
+                        <label style={{ fontSize: '0.8rem', color: 'var(--admin-text-secondary)' }}>Foto Logo Marca</label>
                         <ImageDropzone onFileChange={setPendingLogoMarca} previewUrl={null} disabled={saving} />
                       </div>
                       <div className="admin-form-group">
-                        <label style={{ fontSize: '0.8rem', color: '#666' }}>Banner de Descuento (opcional)</label>
+                        <label style={{ fontSize: '0.8rem', color: 'var(--admin-text-secondary)' }}>Banner de Descuento (opcional)</label>
                         <ImageDropzone onFileChange={setPendingBanner} previewUrl={null} disabled={saving} />
                       </div>
                     </div>
@@ -369,7 +377,7 @@ export default function AdminProductos() {
                 </div>
 
                 {form.tipoProducto === 'llantas' && (
-                  <div className="admin-form-group" style={{ background: '#f9f9f9', padding: '1rem', borderRadius: 8, marginTop: '1rem' }}>
+                  <div className="admin-form-group" style={{ background: 'var(--admin-bg)', border: '1px solid var(--admin-border)', padding: '1rem', borderRadius: 8, marginTop: '1rem' }}>
                     <h4 style={{ margin: '0 0 1rem 0', fontSize: '0.9rem' }}>Atributos de Llanta</h4>
                     <div className="admin-form-row">
                       <div className="admin-form-group">
@@ -485,11 +493,15 @@ export default function AdminProductos() {
           <div className="admin-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 420 }}>
             <div className="admin-modal__header">
               <h2>Confirmar Eliminación</h2>
-              <button className="admin-modal__close" onClick={() => setConfirmDelete(null)}>✕</button>
+              <button className="admin-modal__close" onClick={() => setConfirmDelete(null)} aria-label="Cerrar">
+                <X size={20} strokeWidth={1.75} />
+              </button>
             </div>
             <div className="admin-modal__body">
               <div className="admin-confirm">
-                <div className="admin-confirm__icon">⚠️</div>
+                <div className="admin-confirm__icon">
+                  <TriangleAlert size={24} strokeWidth={1.75} />
+                </div>
                 <div className="admin-confirm__text">
                   ¿Estás seguro de eliminar <strong>{confirmDelete.modelo}</strong>?
                 </div>

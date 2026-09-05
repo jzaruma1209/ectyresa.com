@@ -1,5 +1,5 @@
 ---
-trigger: model_decision
+trigger: manual
 description: Aplicar esta regla cuando el proyecto necesite subida, almacenamiento, optimización o gestión de imágenes y videos usando Cloudinary.
 ---
 

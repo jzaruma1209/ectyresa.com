@@ -28,14 +28,7 @@ const AuthCallback       = lazy(() => import("../pages/shop/AuthCallback"));
 const BrandCatalogPage   = lazy(() => import("../pages/shop/BrandCatalogPage"));
 
 // ── Admin pages — lazy loaded (chunk separado) ──
-const AdminLayout    = lazy(() => import("../components/admin/AdminLayout"));
-const AdminDashboard = lazy(() => import("../pages/admin/AdminDashboard"));
-const AdminPedidos   = lazy(() => import("../pages/admin/AdminPedidos"));
-const AdminClientes  = lazy(() => import("../pages/admin/AdminClientes"));
-const AdminProductos = lazy(() => import("../pages/admin/AdminProductos"));
-const AdminInventario = lazy(() => import("../pages/admin/AdminInventario"));
-const AdminCatalogos  = lazy(() => import("../pages/admin/AdminCatalogos"));
-const AdminReportes  = lazy(() => import("../pages/admin/AdminReportes"));
+const AdminLayout = lazy(() => import("../components/admin/AdminLayout"));
 
 /**
  * Layout público: Header + contenido + Footer.
@@ -78,16 +71,20 @@ export default function AppRouter() {
               </Suspense>
             </AdminRoute>
           }
-        >
-          <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="dashboard"  element={<Suspense fallback={<AppLoader />}><AdminDashboard /></Suspense>} />
-          <Route path="pedidos"    element={<Suspense fallback={<AppLoader />}><AdminPedidos /></Suspense>} />
-          <Route path="clientes"   element={<Suspense fallback={<AppLoader />}><AdminClientes /></Suspense>} />
-          <Route path="productos"  element={<Suspense fallback={<AppLoader />}><AdminProductos /></Suspense>} />
-          <Route path="inventario" element={<Suspense fallback={<AppLoader />}><AdminInventario /></Suspense>} />
-          <Route path="catalogos"  element={<Suspense fallback={<AppLoader />}><AdminCatalogos /></Suspense>} />
-          <Route path="reportes"   element={<Suspense fallback={<AppLoader />}><AdminReportes /></Suspense>} />
-        </Route>
+        />
+        <Route
+          path="/admin/:tab"
+          element={
+            <AdminRoute>
+              <Suspense fallback={<AppLoader />}>
+                <AdminLayout />
+              </Suspense>
+            </AdminRoute>
+          }
+        />
+
+        <Route path="/admin2" element={<Navigate to="/admin" replace />} />
+        <Route path="/admin2/*" element={<Navigate to="/admin" replace />} />
 
         {/* ═══════════════════════════════════════════════════
             RUTAS DE LA TIENDA (SHOP)

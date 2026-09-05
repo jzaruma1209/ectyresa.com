@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Users, ShoppingCart, Clock, DollarSign, TriangleAlert } from 'lucide-react';
 import adminService from '../../services/admin.service';
 
 /**
@@ -40,7 +41,9 @@ export default function AdminDashboard() {
   if (error) {
     return (
       <div className="admin-empty">
-        <div className="admin-empty__icon">⚠️</div>
+        <div className="admin-empty__icon">
+          <TriangleAlert size={24} strokeWidth={1.75} />
+        </div>
         <div className="admin-empty__text">{error}</div>
       </div>
     );
@@ -52,11 +55,11 @@ export default function AdminDashboard() {
   const totalPedidosCount = porEstado.reduce((acc, e) => acc + Number(e.total), 0);
 
   const cards = [
-    { icon: '👥', value: stats?.clientes?.total ?? 0, label: 'Total Clientes' },
-    { icon: '📦', value: totalPedidosCount, label: 'Total Pedidos' },
-    { icon: '⏳', value: pendienteCount, label: 'Pedidos Pendientes' },
+    { Icon: Users, value: stats?.clientes?.total ?? 0, label: 'Total Clientes' },
+    { Icon: ShoppingCart, value: totalPedidosCount, label: 'Total Pedidos' },
+    { Icon: Clock, value: pendienteCount, label: 'Pedidos Pendientes' },
     {
-      icon: '💰',
+      Icon: DollarSign,
       value: `$${(stats?.ventas?.mes ?? 0).toLocaleString('es-CO')}`,
       label: 'Ingresos del Mes',
     },
@@ -70,12 +73,14 @@ export default function AdminDashboard() {
       </div>
 
       <div className="admin-stats-grid">
-        {cards.map((card) => (
-          <div key={card.label} className="admin-stat-card">
-            <div className="admin-stat-card__icon">{card.icon}</div>
+        {cards.map(({ Icon, value, label }) => (
+          <div key={label} className="admin-stat-card">
+            <div className="admin-stat-card__icon">
+              <Icon size={20} strokeWidth={1.75} />
+            </div>
             <div className="admin-stat-card__info">
-              <div className="admin-stat-card__value">{card.value}</div>
-              <div className="admin-stat-card__label">{card.label}</div>
+              <div className="admin-stat-card__value font-mono">{value}</div>
+              <div className="admin-stat-card__label">{label}</div>
             </div>
           </div>
         ))}

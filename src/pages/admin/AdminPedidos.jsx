@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { ShoppingCart, Eye, X } from 'lucide-react';
 import adminService from '../../services/admin.service';
 
 const ESTADOS = [
@@ -111,7 +112,9 @@ export default function AdminPedidos() {
         </div>
       ) : pedidos.length === 0 ? (
         <div className="admin-empty">
-          <div className="admin-empty__icon">📦</div>
+          <div className="admin-empty__icon">
+            <ShoppingCart size={24} strokeWidth={1.75} />
+          </div>
           <div className="admin-empty__text">No hay pedidos para mostrar</div>
         </div>
       ) : (
@@ -132,10 +135,10 @@ export default function AdminPedidos() {
               <tbody>
                 {pedidos.map((p) => (
                   <tr key={p.id || p.idPedido} className={p.estado === 'PENDIENTE' ? 'row-pending' : ''}>
-                    <td style={{ fontWeight: 600 }}>#{p.id || p.idPedido}</td>
+                    <td className="font-mono" style={{ fontWeight: 600 }}>#{p.id || p.idPedido}</td>
                     <td>{p.cliente?.nombres || p.nombreCliente || '-'} {p.cliente?.apellidos || ''}</td>
                     <td>{formatDate(p.fecha || p.createdAt)}</td>
-                    <td style={{ fontWeight: 600 }}>{formatMoney(p.total)}</td>
+                    <td className="font-mono" style={{ fontWeight: 600 }}>{formatMoney(p.total)}</td>
                     <td>
                       <span className={`admin-status admin-status--${(p.estado || '').toLowerCase()}`}>
                         {p.estado || '-'}
@@ -158,7 +161,7 @@ export default function AdminPedidos() {
                         className="admin-btn admin-btn--secondary admin-btn--sm"
                         onClick={() => handleVerDetalle(p.id || p.idPedido)}
                       >
-                        Ver detalle
+                        <Eye size={16} strokeWidth={1.75} /> Ver detalle
                       </button>
                     </td>
                   </tr>
@@ -189,8 +192,10 @@ export default function AdminPedidos() {
         <div className="admin-modal-overlay" onClick={() => setDetalle(null)}>
           <div className="admin-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 640 }}>
             <div className="admin-modal__header">
-              <h2>Pedido #{detalle.id || detalle.idPedido}</h2>
-              <button className="admin-modal__close" onClick={() => setDetalle(null)}>✕</button>
+              <h2 className="font-mono">Pedido #{detalle.id || detalle.idPedido}</h2>
+              <button className="admin-modal__close" onClick={() => setDetalle(null)} aria-label="Cerrar">
+                <X size={20} strokeWidth={1.75} />
+              </button>
             </div>
             <div className="admin-modal__body">
               {detalleLoading ? (
@@ -214,7 +219,7 @@ export default function AdminPedidos() {
                     </div>
                     <div>
                       <div style={{ fontSize: '0.78rem', color: 'var(--admin-text-secondary)' }}>Total</div>
-                      <div style={{ fontWeight: 700, fontSize: '1.1rem' }}>{formatMoney(detalle.total)}</div>
+                      <div className="font-mono" style={{ fontWeight: 700, fontSize: '1.1rem' }}>{formatMoney(detalle.total)}</div>
                     </div>
                   </div>
 
@@ -244,9 +249,9 @@ export default function AdminPedidos() {
                             {(detalle.items || detalle.detalles || []).map((item, i) => (
                               <tr key={i}>
                                 <td>{item.llanta?.modelo || item.nombre || '-'}</td>
-                                <td>{item.cantidad}</td>
-                                <td>{formatMoney(item.precioUnitario || item.precio)}</td>
-                                <td style={{ fontWeight: 600 }}>
+                                <td className="font-mono">{item.cantidad}</td>
+                                <td className="font-mono">{formatMoney(item.precioUnitario || item.precio)}</td>
+                                <td className="font-mono" style={{ fontWeight: 600 }}>
                                   {formatMoney((item.precioUnitario || item.precio) * item.cantidad)}
                                 </td>
                               </tr>

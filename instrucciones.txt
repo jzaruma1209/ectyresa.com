@@ -1,11 +1,53 @@
-Ejecuta solo esto, no toques nada más, no hagas commit:
+CONTEXTO
+Vas a rediseñar visualmente el panel admin de Ectyre (repo ectyrepage, 
+React 19 + Vite + Tailwind + shadcn/ui, React Router — NO es Next.js). 
+Este es un cambio de DISEÑO puro, cero backend.
 
-1. Corrige .agents/rules/.cursorrules línea 7: cambia la referencia de
-   plan_cloudinary_ectyre_frontend.md en la raíz a docs/plan_cloudinary_ectyre_frontend.md.
-   Muéstrame el diff.
+ARCHIVOS DE REFERENCIA (raíz del proyecto)
+- AdminPanelTemplate.tsx
+- ADMIN_PANEL_GUIDE.md
 
-2. Agrega "nul" al final de .gitignore (una línea nueva). Muéstrame el diff.
+Estos archivos son de otro proyecto (Next.js + Prisma). IGNORA por 
+completo cualquier mención a app/, Next.js, Prisma, o los endpoints de 
+la sección 6 de la guía — nada de eso aplica acá. El componente 
+AdminPanelTemplate.tsx en sí es JSX + Tailwind + hooks de React puro, 
+así que se puede extraer sin problema. Úsalo SOLO como referencia 
+visual: colores, tipografía, iconografía, estructura de sidebar, 
+estilo de cards/tablas/badges.
 
-3. Muéstrame de nuevo git status para confirmar cómo queda.
+REGLA ABSOLUTA: NO TOCAR LA API NI EL BACKEND
+- No implementes, no conectes, ni te preocupes por ningún endpoint 
+  faltante (por ejemplo /admin/reportes/ventas, que hoy muestra "no 
+  hay datos" — eso se queda exactamente igual).
+- No cambies llamadas a Axios, stores de Redux, ni el modelo de datos.
+- Si una vista muestra un estado vacío o un mensaje de "falta el 
+  backend", DÉJALO — solo aplícale el nuevo estilo visual (fondo, 
+  tipografía, iconos) sin cambiar su lógica ni su contenido.
 
-No agregues (git add) ni hagas commit de nada. Yo lo reviso primero.
+QUÉ SÍ HACER (paleta y tokens — sección 2 de la guía)
+- Fondo principal: #121212 (nunca #000000 puro)
+- Superficie de tarjetas/tablas/sidebar: #18181b
+- Bordes: #27272a / zinc-800
+- Texto primario: #FFFFFF / zinc-100
+- Texto secundario: #A1A1AA / zinc-400
+- Acento: mantener el color de marca actual de Ectyre (rojo), no el 
+  naranja/navy del template
+- Iconos: lucide-react, strokeWidth={1.75} fijo, cero emojis nativos 
+  en la interfaz (reemplazar emojis como 💰 en estados vacíos por el 
+  ícono equivalente de lucide-react)
+- font-mono para precios, cantidades, SKUs y valores numéricos
+- Restylear sidebar, cards de KPI, tablas y badges de estado con este 
+  sistema, conservando exactamente las mismas secciones de navegación 
+  que ya existen (Dashboard, Pedidos, Clientes, Productos, Inventario, 
+  Catálogos, Reportes)
+
+ALCANCE
+1. Tokens de color globales (Tailwind config / CSS variables)
+2. Restyle del sidebar
+3. Restyle de vistas existentes (incluyendo estados vacíos como el de 
+   Reportes) — solo visual, cero lógica nueva
+4. font-mono donde corresponda
+5. Verificar que npm run build siga compilando limpio al terminar
+
+No agregues llamadas nuevas a la API bajo ningún motivo, ni siquiera 
+para "completar" una vista que hoy se ve vacía por falta de datos.

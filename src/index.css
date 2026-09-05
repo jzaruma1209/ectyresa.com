@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 @import "@fontsource-variable/geist";
@@ -143,9 +143,9 @@ button:not([data-slot]):not([data-sidebar]):focus-visible {
     --ring: oklch(0.556 0 0);
     --sidebar: oklch(0.205 0 0);
     --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
+    --sidebar-primary: oklch(0.985 0 0);
     --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
+    --sidebar-accent: oklch(0.216 0 0);
     --sidebar-accent-foreground: oklch(0.985 0 0);
     --sidebar-border: oklch(1 0 0 / 10%);
     --sidebar-ring: oklch(0.556 0 0);
@@ -160,21 +160,4 @@ button:not([data-slot]):not([data-sidebar]):focus-visible {
   html {
     @apply font-sans;
   }
-}
-
-/* ============================================================
-   ADMIN PANEL - Sidebar Ectyre (negro + rojo)
-   Hex/rgba para maxima compatibilidad.
-   ============================================================ */
-.admin-panel {
-  --sidebar: #1A1A1A;
-  --sidebar-foreground: #CCCCCC;
-  --sidebar-primary: #E60000;
-  --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgba(230, 0, 0, 0.1);
-  --sidebar-accent-foreground: #E60000;
-  --sidebar-border: rgba(255, 255, 255, 0.06);
-  --sidebar-ring: #E60000;
-  --background: #F5F5F5;
-  --foreground: #1A1A1A;
 }

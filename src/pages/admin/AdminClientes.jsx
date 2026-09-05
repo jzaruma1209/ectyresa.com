@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { Search, Users, Eye, X } from 'lucide-react';
 import adminService from '../../services/admin.service';
 
 /**
@@ -81,7 +82,9 @@ export default function AdminClientes() {
       <div className="admin-toolbar">
         <div className="admin-toolbar__left">
           <div className="admin-search">
-            <span className="admin-search__icon">🔍</span>
+            <span className="admin-search__icon">
+              <Search size={14} strokeWidth={1.75} />
+            </span>
             <input
               className="admin-search__input"
               type="text"
@@ -101,7 +104,9 @@ export default function AdminClientes() {
         </div>
       ) : clientes.length === 0 ? (
         <div className="admin-empty">
-          <div className="admin-empty__icon">👥</div>
+          <div className="admin-empty__icon">
+            <Users size={24} strokeWidth={1.75} />
+          </div>
           <div className="admin-empty__text">
             {search ? 'No se encontraron clientes' : 'No hay clientes registrados'}
           </div>
@@ -127,7 +132,7 @@ export default function AdminClientes() {
                       {c.nombres || c.nombre || '-'} {c.apellidos || ''}
                     </td>
                     <td>{c.email}</td>
-                    <td>{c.telefono || '-'}</td>
+                    <td className="font-mono">{c.telefono || '-'}</td>
                     <td>
                       <span
                         className={`admin-status ${
@@ -145,7 +150,7 @@ export default function AdminClientes() {
                         className="admin-btn admin-btn--secondary admin-btn--sm"
                         onClick={() => handleVerDetalle(c.id || c.idCliente)}
                       >
-                        Ver
+                        <Eye size={16} strokeWidth={1.75} /> Ver
                       </button>
                       <button
                         className={`admin-btn admin-btn--sm ${
@@ -184,7 +189,9 @@ export default function AdminClientes() {
           <div className="admin-modal" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 640 }}>
             <div className="admin-modal__header">
               <h2>Cliente: {detalle.nombres || detalle.nombre} {detalle.apellidos || ''}</h2>
-              <button className="admin-modal__close" onClick={() => { setDetalle(null); setDetallePedidos([]); }}>✕</button>
+              <button className="admin-modal__close" onClick={() => { setDetalle(null); setDetallePedidos([]); }} aria-label="Cerrar">
+                <X size={20} strokeWidth={1.75} />
+              </button>
             </div>
             <div className="admin-modal__body">
               {detalleLoading ? (
@@ -230,9 +237,9 @@ export default function AdminClientes() {
                           <tbody>
                             {detallePedidos.map((p) => (
                               <tr key={p.id || p.idPedido}>
-                                <td>#{p.id || p.idPedido}</td>
+                                <td className="font-mono">#{p.id || p.idPedido}</td>
                                 <td>{formatDate(p.fecha || p.createdAt)}</td>
-                                <td style={{ fontWeight: 600 }}>${Number(p.total || 0).toLocaleString('es-CO')}</td>
+                                <td className="font-mono" style={{ fontWeight: 600 }}>${Number(p.total || 0).toLocaleString('es-CO')}</td>
                                 <td>
                                   <span className={`admin-status admin-status--${(p.estado || '').toLowerCase()}`}>
                                     {p.estado}

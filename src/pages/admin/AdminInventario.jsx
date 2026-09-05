@@ -1,4 +1,14 @@
 import { useState, useEffect, useCallback } from 'react';
+import {
+  Package,
+  Boxes,
+  XCircle,
+  TriangleAlert,
+  CheckCircle2,
+  Pencil,
+  Check,
+  X,
+} from 'lucide-react';
 import adminService from '../../services/admin.service';
 
 /**
@@ -39,9 +49,9 @@ export default function AdminInventario() {
   };
 
   const getStockIndicator = (stock) => {
-    if (stock === 0) return '🔴';
-    if (stock <= 10) return '🟡';
-    return '🟢';
+    if (stock === 0) return <XCircle size={18} strokeWidth={1.75} style={{ color: '#C62828' }} />;
+    if (stock <= 10) return <TriangleAlert size={18} strokeWidth={1.75} style={{ color: '#E65100' }} />;
+    return <CheckCircle2 size={18} strokeWidth={1.75} style={{ color: '#2E7D32' }} />;
   };
 
   const handleEditStart = (llanta) => {
@@ -102,23 +112,29 @@ export default function AdminInventario() {
       {/* Resumen rápido */}
       <div className="admin-stats-grid" style={{ marginBottom: 20 }}>
         <div className="admin-stat-card">
-          <div className="admin-stat-card__icon">📦</div>
+          <div className="admin-stat-card__icon">
+            <Package size={20} strokeWidth={1.75} />
+          </div>
           <div className="admin-stat-card__info">
-            <div className="admin-stat-card__value">{totalItems}</div>
+            <div className="admin-stat-card__value font-mono">{totalItems}</div>
             <div className="admin-stat-card__label">Productos totales</div>
           </div>
         </div>
         <div className="admin-stat-card">
-          <div className="admin-stat-card__icon">🔴</div>
+          <div className="admin-stat-card__icon">
+            <XCircle size={20} strokeWidth={1.75} style={{ color: '#C62828' }} />
+          </div>
           <div className="admin-stat-card__info">
-            <div className="admin-stat-card__value" style={{ color: '#C62828' }}>{outOfStock}</div>
+            <div className="admin-stat-card__value font-mono" style={{ color: '#C62828' }}>{outOfStock}</div>
             <div className="admin-stat-card__label">Agotados</div>
           </div>
         </div>
         <div className="admin-stat-card">
-          <div className="admin-stat-card__icon">🟡</div>
+          <div className="admin-stat-card__icon">
+            <TriangleAlert size={20} strokeWidth={1.75} style={{ color: '#E65100' }} />
+          </div>
           <div className="admin-stat-card__info">
-            <div className="admin-stat-card__value" style={{ color: '#E65100' }}>{lowStock}</div>
+            <div className="admin-stat-card__value font-mono" style={{ color: '#E65100' }}>{lowStock}</div>
             <div className="admin-stat-card__label">Stock bajo (≤10)</div>
           </div>
         </div>
@@ -128,7 +144,9 @@ export default function AdminInventario() {
         <div className="admin-loading"><div className="admin-spinner" /> Cargando inventario…</div>
       ) : llantas.length === 0 ? (
         <div className="admin-empty">
-          <div className="admin-empty__icon">📊</div>
+          <div className="admin-empty__icon">
+            <Boxes size={24} strokeWidth={1.75} />
+          </div>
           <div className="admin-empty__text">No hay productos en el inventario</div>
         </div>
       ) : (
@@ -150,13 +168,13 @@ export default function AdminInventario() {
                 const isEditing = editingId === id;
 
                 return (
-                  <tr key={id} style={ll.stock === 0 ? { background: '#FFF5F5' } : {}}>
-                    <td style={{ fontSize: '1.2rem', textAlign: 'center' }}>
+                  <tr key={id} style={ll.stock === 0 ? { background: 'rgba(227, 30, 36, 0.07)' } : {}}>
+                    <td style={{ textAlign: 'center' }}>
                       {getStockIndicator(ll.stock || 0)}
                     </td>
                     <td style={{ fontWeight: 600 }}>{ll.modelo}</td>
                     <td>{ll.marca?.nombre || ll.nombreMarca || '-'}</td>
-                    <td>{ll.ancho}/{ll.perfil} R{ll.rin}</td>
+                    <td className="font-mono">{ll.ancho}/{ll.perfil} R{ll.rin}</td>
                     <td>
                       {isEditing ? (
                         <input
@@ -166,13 +184,15 @@ export default function AdminInventario() {
                           onChange={(e) => setEditValue(e.target.value)}
                           onKeyDown={(e) => handleKeyDown(e, ll)}
                           autoFocus
+                          className="font-mono"
                           style={{
                             width: 80, padding: '6px 8px', border: '2px solid var(--admin-accent)',
                             borderRadius: 4, fontSize: '0.88rem', fontWeight: 700, textAlign: 'center',
+                            background: 'var(--admin-bg)', color: 'var(--admin-text)',
                           }}
                         />
                       ) : (
-                        <span className={getStockClass(ll.stock || 0)} style={{ fontSize: '1rem' }}>
+                        <span className={`font-mono ${getStockClass(ll.stock || 0)}`} style={{ fontSize: '1rem' }}>
                           {ll.stock ?? 0}
                         </span>
                       )}
@@ -185,13 +205,14 @@ export default function AdminInventario() {
                             onClick={() => handleEditSave(ll)}
                             disabled={saving}
                           >
-                            {saving ? '…' : '✓ Guardar'}
+                            {saving ? '…' : <><Check size={16} strokeWidth={1.75} /> Guardar</>}
                           </button>
                           <button
                             className="admin-btn admin-btn--secondary admin-btn--sm"
                             onClick={handleEditCancel}
+                            aria-label="Cancelar"
                           >
-                            ✕
+                            <X size={16} strokeWidth={1.75} />
                           </button>
                         </div>
                       ) : (
@@ -199,7 +220,7 @@ export default function AdminInventario() {
                           className="admin-btn admin-btn--secondary admin-btn--sm"
                           onClick={() => handleEditStart(ll)}
                         >
-                          ✏️ Editar stock
+                          <Pencil size={16} strokeWidth={1.75} /> Editar stock
                         </button>
                       )}
                     </td>

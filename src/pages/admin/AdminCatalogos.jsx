@@ -12,17 +12,32 @@
    ═══════════════════════════════════════════════════════════════ */
 
 import { useState, useEffect, useCallback } from 'react';
+import {
+  CircleDot,
+  Car,
+  CarFront,
+  MoveHorizontal,
+  MoveVertical,
+  Circle,
+  Pencil,
+  Trash2,
+  Plus,
+  X,
+  CheckCircle2,
+  XCircle,
+  TriangleAlert,
+} from 'lucide-react';
 import catalogoService from '../../services/catalogo.service';
 import '../../components/admin/AdminLayout.css';
 
 /* ── Definición de las pestañas ──────────────────────────────── */
 const TABS = [
-  { key: 'marcasLlanta',  label: 'Marcas de Llanta',  icon: '🛞', singular: 'marca de llanta'  },
-  { key: 'marcasAuto',    label: 'Marcas de Auto',     icon: '🚗', singular: 'marca de auto'    },
-  { key: 'modelosAuto',   label: 'Modelos de Auto',    icon: '🚙', singular: 'modelo de auto'   },
-  { key: 'anchos',        label: 'Anchos',             icon: '↔️',  singular: 'ancho'            },
-  { key: 'perfiles',      label: 'Altos (Perfil)',     icon: '↕️',  singular: 'perfil'           },
-  { key: 'aros',          label: 'Aros (Rin)',         icon: '⭕',  singular: 'aro'              },
+  { key: 'marcasLlanta',  label: 'Marcas de Llanta',  Icon: CircleDot,     singular: 'marca de llanta'  },
+  { key: 'marcasAuto',    label: 'Marcas de Auto',     Icon: Car,           singular: 'marca de auto'    },
+  { key: 'modelosAuto',   label: 'Modelos de Auto',    Icon: CarFront,      singular: 'modelo de auto'   },
+  { key: 'anchos',        label: 'Anchos',             Icon: MoveHorizontal, singular: 'ancho'            },
+  { key: 'perfiles',      label: 'Altos (Perfil)',     Icon: MoveVertical,   singular: 'perfil'           },
+  { key: 'aros',          label: 'Aros (Rin)',         Icon: Circle,         singular: 'aro'              },
 ];
 
 /* ── Campos por pestaña ───────────────────────────────────────── */
@@ -152,7 +167,7 @@ export default function AdminCatalogos() {
         return (
           <>
             <td style={{ fontWeight: 600 }}>{item.nombre}</td>
-            <td style={{ color: 'var(--admin-muted)' }}>{item.pais || '—'}</td>
+            <td style={{ color: 'var(--admin-text-secondary)' }}>{item.pais || '—'}</td>
           </>
         );
       case 'modelosAuto':
@@ -160,15 +175,15 @@ export default function AdminCatalogos() {
           <>
             <td style={{ fontWeight: 600 }}>{item.nombre}</td>
             <td>{item.marcaAuto || '—'}</td>
-            <td style={{ color: 'var(--admin-muted)' }}>{item.anio || '—'}</td>
+            <td style={{ color: 'var(--admin-text-secondary)' }}>{item.anio || '—'}</td>
           </>
         );
       case 'anchos':
-        return <td style={{ fontWeight: 700, fontSize: '1.05rem' }}>{item.valor} mm</td>;
+        return <td className="font-mono" style={{ fontWeight: 700, fontSize: '1.05rem' }}>{item.valor} mm</td>;
       case 'perfiles':
-        return <td style={{ fontWeight: 700, fontSize: '1.05rem' }}>{item.valor}%</td>;
+        return <td className="font-mono" style={{ fontWeight: 700, fontSize: '1.05rem' }}>{item.valor}%</td>;
       case 'aros':
-        return <td style={{ fontWeight: 700, fontSize: '1.05rem' }}>R{item.valor}</td>;
+        return <td className="font-mono" style={{ fontWeight: 700, fontSize: '1.05rem' }}>R{item.valor}</td>;
       default:
         return <td>{item.nombre || item.valor}</td>;
     }
@@ -204,8 +219,12 @@ export default function AdminCatalogos() {
           color: '#fff', fontWeight: 600, fontSize: '0.9rem',
           boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
           animation: 'fadeIn 0.2s ease',
+          display: 'flex', alignItems: 'center', gap: 8,
         }}>
-          {toast.type === 'error' ? '❌' : '✅'} {toast.msg}
+          {toast.type === 'error'
+            ? <XCircle size={16} strokeWidth={1.75} />
+            : <CheckCircle2 size={16} strokeWidth={1.75} />}
+          {toast.msg}
         </div>
       )}
 
@@ -221,27 +240,27 @@ export default function AdminCatalogos() {
         marginBottom: 24, borderBottom: '2px solid var(--admin-border)',
         paddingBottom: 0,
       }}>
-        {TABS.map(tab => (
+        {TABS.map(({ key, label, Icon }) => (
           <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
+            key={key}
+            onClick={() => setActiveTab(key)}
             style={{
               padding: '9px 16px',
               borderRadius: '8px 8px 0 0',
               border: 'none',
-              background: activeTab === tab.key ? 'var(--admin-card)' : 'transparent',
-              color: activeTab === tab.key ? 'var(--admin-red)' : 'var(--admin-muted)',
-              fontWeight: activeTab === tab.key ? 700 : 500,
+              background: activeTab === key ? 'var(--admin-surface)' : 'transparent',
+              color: activeTab === key ? 'var(--admin-accent)' : 'var(--admin-text-secondary)',
+              fontWeight: activeTab === key ? 700 : 500,
               cursor: 'pointer',
-              borderBottom: activeTab === tab.key ? '2px solid var(--admin-red)' : '2px solid transparent',
+              borderBottom: activeTab === key ? '2px solid var(--admin-accent)' : '2px solid transparent',
               marginBottom: '-2px',
               fontSize: '0.88rem',
               transition: 'all 0.2s',
               display: 'flex', alignItems: 'center', gap: 6,
             }}
           >
-            <span>{tab.icon}</span>
-            <span>{tab.label}</span>
+            <Icon size={16} strokeWidth={1.75} />
+            <span>{label}</span>
           </button>
         ))}
       </div>
@@ -249,13 +268,13 @@ export default function AdminCatalogos() {
       {/* Toolbar */}
       <div className="admin-toolbar">
         <div className="admin-toolbar__left">
-          <span style={{ color: 'var(--admin-muted)', fontSize: '0.9rem' }}>
-            {items.length} {currentTab?.label?.toLowerCase()} registradas
+          <span style={{ color: 'var(--admin-text-secondary)', fontSize: '0.9rem' }}>
+            <span className="font-mono">{items.length}</span> {currentTab?.label?.toLowerCase()} registradas
           </span>
         </div>
         <div className="admin-toolbar__right">
           <button className="admin-btn admin-btn--primary" onClick={handleNuevo}>
-            + Agregar {currentTab?.singular}
+            <Plus size={16} strokeWidth={1.75} /> Agregar {currentTab?.singular}
           </button>
         </div>
       </div>
@@ -267,9 +286,14 @@ export default function AdminCatalogos() {
         </div>
       ) : items.length === 0 ? (
         <div className="admin-empty">
-          <div className="admin-empty__icon">{currentTab?.icon}</div>
+          <div className="admin-empty__icon">
+            {(() => {
+              const TabIcon = currentTab?.Icon;
+              return TabIcon ? <TabIcon size={24} strokeWidth={1.75} /> : null;
+            })()}
+          </div>
           <div className="admin-empty__text">No hay {currentTab?.label?.toLowerCase()} registradas</div>
-          <div className="admin-empty__sub" style={{ marginTop: 8, color: 'var(--admin-muted)', fontSize: '0.85rem' }}>
+          <div className="admin-empty__sub" style={{ marginTop: 8, color: 'var(--admin-text-secondary)', fontSize: '0.85rem' }}>
             Haz clic en "+ Agregar {currentTab?.singular}" para comenzar
           </div>
         </div>
@@ -286,7 +310,7 @@ export default function AdminCatalogos() {
             <tbody>
               {items.map((item, idx) => (
                 <tr key={item.id || idx}>
-                  <td style={{ color: 'var(--admin-muted)', fontSize: '0.82rem' }}>
+                  <td className="font-mono" style={{ color: 'var(--admin-text-secondary)', fontSize: '0.82rem' }}>
                     {idx + 1}
                   </td>
                   {renderRow(item)}
@@ -296,13 +320,14 @@ export default function AdminCatalogos() {
                         className="admin-btn admin-btn--secondary admin-btn--sm"
                         onClick={() => handleEditar(item)}
                       >
-                        ✏️ Editar
+                        <Pencil size={16} strokeWidth={1.75} /> Editar
                       </button>
                       <button
                         className="admin-btn admin-btn--danger admin-btn--sm"
                         onClick={() => setConfirmDelete(item)}
+                        aria-label="Eliminar"
                       >
-                        🗑️
+                        <Trash2 size={16} strokeWidth={1.75} />
                       </button>
                     </div>
                   </td>
@@ -321,7 +346,9 @@ export default function AdminCatalogos() {
               <h2>
                 {editando ? `Editar ${currentTab?.singular}` : `Nueva ${currentTab?.singular}`}
               </h2>
-              <button className="admin-modal__close" onClick={() => setShowForm(false)}>✕</button>
+              <button className="admin-modal__close" onClick={() => setShowForm(false)} aria-label="Cerrar">
+                <X size={20} strokeWidth={1.75} />
+              </button>
             </div>
             <form onSubmit={handleSubmit}>
               <div className="admin-modal__body">
@@ -329,7 +356,7 @@ export default function AdminCatalogos() {
                   <div className="admin-form-group" key={field.name}>
                     <label>
                       {field.label}
-                      {field.required && <span style={{ color: 'var(--admin-red)' }}> *</span>}
+                      {field.required && <span style={{ color: 'var(--admin-accent)' }}> *</span>}
                     </label>
                     <input
                       name={field.name}
@@ -370,11 +397,15 @@ export default function AdminCatalogos() {
           <div className="admin-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 420 }}>
             <div className="admin-modal__header">
               <h2>Confirmar Eliminación</h2>
-              <button className="admin-modal__close" onClick={() => setConfirmDelete(null)}>✕</button>
+              <button className="admin-modal__close" onClick={() => setConfirmDelete(null)} aria-label="Cerrar">
+                <X size={20} strokeWidth={1.75} />
+              </button>
             </div>
             <div className="admin-modal__body">
               <div className="admin-confirm">
-                <div className="admin-confirm__icon">⚠️</div>
+                <div className="admin-confirm__icon">
+                  <TriangleAlert size={24} strokeWidth={1.75} />
+                </div>
                 <div className="admin-confirm__text">
                   ¿Eliminar <strong>{confirmDelete.nombre || `${currentTab?.singular} ${confirmDelete.valor}`}</strong>?
                 </div>

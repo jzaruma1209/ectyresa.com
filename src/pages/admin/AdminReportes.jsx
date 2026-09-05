@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { DollarSign, Trophy, ShoppingCart, Wind, CheckCircle2 } from 'lucide-react';
 import adminService from '../../services/admin.service';
 
 /**
@@ -51,9 +52,9 @@ export default function AdminReportes() {
   const formatMoney = (val) => `$${Number(val || 0).toLocaleString('es-CO')}`;
 
   const tabs = [
-    { id: 'ventas', label: '💰 Ventas', icon: '💰' },
-    { id: 'top', label: '🏆 Más Vendidos', icon: '🏆' },
-    { id: 'carritos', label: '🛒 Carritos', icon: '🛒' },
+    { id: 'ventas', label: 'Ventas', Icon: DollarSign },
+    { id: 'top', label: 'Más Vendidos', Icon: Trophy },
+    { id: 'carritos', label: 'Carritos', Icon: ShoppingCart },
   ];
 
   return (
@@ -68,24 +69,28 @@ export default function AdminReportes() {
         display: 'flex', gap: 4, marginBottom: 20, borderBottom: '2px solid var(--admin-border)',
         paddingBottom: 0,
       }}>
-        {tabs.map((tab) => (
+        {tabs.map(({ id, label, Icon }) => (
           <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            key={id}
+            onClick={() => setActiveTab(id)}
             style={{
               padding: '10px 20px',
               border: 'none',
-              background: activeTab === tab.id ? 'var(--admin-surface)' : 'transparent',
-              borderBottom: activeTab === tab.id ? '2px solid var(--admin-accent)' : '2px solid transparent',
-              color: activeTab === tab.id ? 'var(--admin-accent)' : 'var(--admin-text-secondary)',
-              fontWeight: activeTab === tab.id ? 700 : 500,
+              background: activeTab === id ? 'var(--admin-surface)' : 'transparent',
+              borderBottom: activeTab === id ? '2px solid var(--admin-accent)' : '2px solid transparent',
+              color: activeTab === id ? 'var(--admin-accent)' : 'var(--admin-text-secondary)',
+              fontWeight: activeTab === id ? 700 : 500,
               fontSize: '0.88rem',
               cursor: 'pointer',
               transition: 'all 0.2s',
               marginBottom: -2,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: 8,
             }}
           >
-            {tab.label}
+            <Icon size={16} strokeWidth={1.75} />
+            {label}
           </button>
         ))}
       </div>
@@ -113,7 +118,9 @@ export default function AdminReportes() {
 
               {ventas.length === 0 ? (
                 <div className="admin-empty">
-                  <div className="admin-empty__icon">💰</div>
+                  <div className="admin-empty__icon">
+                    <DollarSign size={24} strokeWidth={1.75} />
+                  </div>
                   <div className="admin-empty__text">No hay datos de ventas disponibles para este período</div>
                   <div style={{ fontSize: '0.82rem', color: 'var(--admin-text-secondary)', marginTop: 8 }}>
                     Este reporte requiere el endpoint <code>GET /admin/reportes/ventas</code> en el backend
@@ -133,8 +140,8 @@ export default function AdminReportes() {
                       {ventas.map((v, i) => (
                         <tr key={i}>
                           <td>{v.fecha || v.date || '-'}</td>
-                          <td>{v.totalPedidos || v.count || 0}</td>
-                          <td style={{ fontWeight: 600 }}>{formatMoney(v.ingresos || v.total)}</td>
+                          <td className="font-mono">{v.totalPedidos || v.count || 0}</td>
+                          <td className="font-mono" style={{ fontWeight: 600 }}>{formatMoney(v.ingresos || v.total)}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -186,7 +193,9 @@ export default function AdminReportes() {
             <div>
               {topProductos.length === 0 ? (
                 <div className="admin-empty">
-                  <div className="admin-empty__icon">🏆</div>
+                  <div className="admin-empty__icon">
+                    <Trophy size={24} strokeWidth={1.75} />
+                  </div>
                   <div className="admin-empty__text">No hay datos de productos más vendidos</div>
                   <div style={{ fontSize: '0.82rem', color: 'var(--admin-text-secondary)', marginTop: 8 }}>
                     Este reporte requiere el endpoint <code>GET /admin/reportes/productos-top</code> en el backend
@@ -207,17 +216,17 @@ export default function AdminReportes() {
                     <tbody>
                       {topProductos.map((p, i) => (
                         <tr key={i}>
-                          <td style={{
+                          <td className="font-mono" style={{
                             fontWeight: 700,
                             color: i < 3 ? 'var(--admin-accent)' : 'var(--admin-text)',
                             fontSize: i < 3 ? '1rem' : '0.88rem',
                           }}>
-                            {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`}
+                            {i + 1}
                           </td>
                           <td style={{ fontWeight: 600 }}>{p.modelo || p.nombre || '-'}</td>
                           <td>{p.marca || '-'}</td>
-                          <td>{p.cantidadVendida || p.cantidad || 0} unidades</td>
-                          <td style={{ fontWeight: 600 }}>
+                          <td className="font-mono">{p.cantidadVendida || p.cantidad || 0} unidades</td>
+                          <td className="font-mono" style={{ fontWeight: 600 }}>
                             {formatMoney(p.ingresosTotales || p.ingresos || 0)}
                           </td>
                         </tr>
@@ -234,7 +243,9 @@ export default function AdminReportes() {
             <div>
               {!statsCarritos ? (
                 <div className="admin-empty">
-                  <div className="admin-empty__icon">🛒</div>
+                  <div className="admin-empty__icon">
+                    <ShoppingCart size={24} strokeWidth={1.75} />
+                  </div>
                   <div className="admin-empty__text">No hay estadísticas de carritos disponibles</div>
                   <div style={{ fontSize: '0.82rem', color: 'var(--admin-text-secondary)', marginTop: 8 }}>
                     Este reporte requiere el endpoint <code>GET /admin/stats/carritos</code> en el backend
@@ -243,27 +254,33 @@ export default function AdminReportes() {
               ) : (
                 <div className="admin-stats-grid">
                   <div className="admin-stat-card">
-                    <div className="admin-stat-card__icon">🛒</div>
+                    <div className="admin-stat-card__icon">
+                      <ShoppingCart size={20} strokeWidth={1.75} />
+                    </div>
                     <div className="admin-stat-card__info">
-                      <div className="admin-stat-card__value">
+                      <div className="admin-stat-card__value font-mono">
                         {statsCarritos.activos || 0}
                       </div>
                       <div className="admin-stat-card__label">Carritos activos</div>
                     </div>
                   </div>
                   <div className="admin-stat-card">
-                    <div className="admin-stat-card__icon">💨</div>
+                    <div className="admin-stat-card__icon">
+                      <Wind size={20} strokeWidth={1.75} />
+                    </div>
                     <div className="admin-stat-card__info">
-                      <div className="admin-stat-card__value" style={{ color: '#E65100' }}>
+                      <div className="admin-stat-card__value font-mono" style={{ color: '#E65100' }}>
                         {statsCarritos.abandonados || 0}
                       </div>
                       <div className="admin-stat-card__label">Carritos abandonados</div>
                     </div>
                   </div>
                   <div className="admin-stat-card">
-                    <div className="admin-stat-card__icon">✅</div>
+                    <div className="admin-stat-card__icon">
+                      <CheckCircle2 size={20} strokeWidth={1.75} />
+                    </div>
                     <div className="admin-stat-card__info">
-                      <div className="admin-stat-card__value" style={{ color: '#2E7D32' }}>
+                      <div className="admin-stat-card__value font-mono" style={{ color: '#2E7D32' }}>
                         {statsCarritos.convertidos || 0}
                       </div>
                       <div className="admin-stat-card__label">Convertidos en pedido</div>
