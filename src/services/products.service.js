@@ -9,212 +9,154 @@ const CACHE_TTL = {
 };
 
 /**
- * Mapea un objeto "llanta" del backend al formato "product" que espera la UI.
- * Esto permite que los componentes existentes (ProductCard, ProductInfo, etc.)
- * sigan funcionando sin cambios.
+ * Mapea el contrato de producto del backend (GET /productos) al formato "product"
+ * que ya usan los componentes de la tienda (TireCard, ProductCard, PDP, carrito…).
+ * Modelo, medidas y especificaciones pueden venir en null / vacíos (baterías, accesorios).
  */
-const mapLlantaToProduct = (llanta) => {
-  const price = Number(llanta.precio) || 0;
-  const finalPrice = llanta.precioOferta ? Number(llanta.precioOferta) : price;
-  const discount = price > 0 && finalPrice < price
-    ? Math.round(((price - finalPrice) / price) * 100)
-    : 0;
+const mapProducto = (p) => {
+  const finalPrice = Number(p.precio) || 0;
+  const precioAnterior = p.precioAnterior != null ? Number(p.precioAnterior) : null;
+  const imagenes = Array.isArray(p.imagenes) ? p.imagenes : [];
+  const principal = imagenes.find((img) => img.esPrincipal) || imagenes[0];
+  // Galería: la principal primero y luego el resto en su orden
+  const images = principal
+    ? [principal.urlImagen, ...imagenes.filter((img) => img !== principal).map((img) => img.urlImagen)]
+    : [];
 
   return {
-    id: llanta.idLlanta || llanta.id,
-    name: llanta.modelo || llanta.nombre || 'Sin nombre',
-    brand: llanta.marca?.nombre || llanta.marcaNombre || '',
-    price,
+    fromApi: true,
+    // id del producto — se usa en /product/:id y en el carrito
+    id: p.idProducto,
+    productId: p.idProducto,
+    name: p.nombre || 'Sin nombre',
+    description: p.descripcion || '',
+    category: p.tipoProducto?.nombre || '',
+    brand: p.marca?.nombre || '',
+    brandLogo: p.marca?.logoUrl || null,
+    brandBanner: p.marca?.bannerUrl || null,
+    model: p.modelo?.nombre || null,
+    modelUse: p.modelo?.tipoUso || null, // { codigo: "AT", descripcion: "All Terrain" }
+    measure: p.medidas?.texto || '',
+    width: p.medidas?.ancho ?? null,
+    height: p.medidas?.alto ?? null,
+    rim: p.medidas?.aro ?? null,
+    // price = precio de referencia (tachado si hay descuento); finalPrice = lo que paga el cliente
+    price: precioAnterior && precioAnterior > finalPrice ? precioAnterior : finalPrice,
     finalPrice,
-    discount,
-    image: llanta.imagenes?.[0]?.urlImagen || llanta.imagenUrl || '/placeholder-tire.png',
-    images: llanta.imagenes?.map(img => img.urlImagen) || [],
-    stock: llanta.stock ?? 0,
-    inStock: (llanta.stock ?? 0) > 0,
-    description: llanta.descripcion || '',
-    measure: llanta.medida || `${llanta.ancho || ''}/${llanta.perfil || ''}R${llanta.rin || ''}`,
-    width: llanta.ancho,
-    height: llanta.perfil,
-    rim: llanta.rin,
-    category: llanta.categoria || '',
-    featured: llanta.destacado || false,
-    active: llanta.activo !== false,
-    // Campos adicionales del backend que pueden ser útiles
-    _raw: llanta,
+    discount: p.descuentoPorcentaje || 0,
+    image: p.imagenPrincipal || principal?.urlImagen || '/placeholder-tire.png',
+    images,
+    stock: p.stock ?? 0,
+    inStock: Boolean(p.disponible),
+    specs: (p.especificaciones || []).map((e) => ({
+      id: e.idEspecificacion,
+      name: e.nombre,
+      icon: e.iconoUrl,
+      value: e.valor,
+    })),
+    isNew: Boolean(p.esNuevo),
+    onSale: Boolean(p.enOferta),
+    freeShipping: Boolean(p.envioGratis),
+    returns: Boolean(p.aplicaDevoluciones),
+    warranty: Boolean(p.aplicaGarantia),
+    featured: Boolean(p.destacado),
+    active: p.activo !== false,
+    sash: p.imagenPromocion?.urlImagen || null,
+    _raw: p,
   };
 };
 
-/**
- * Mapea un array de llantas
- */
-const mapLlantasToProducts = (llantas) => {
-  if (!Array.isArray(llantas)) return [];
-  return llantas.map(mapLlantaToProduct);
+const mapProductos = (lista) => (Array.isArray(lista) ? lista.map(mapProducto) : []);
+
+const conCache = async (clave, ttl, cargar) => {
+  const cached = apiCache.get(clave);
+  if (cached) return cached;
+  const resultado = await cargar();
+  apiCache.set(clave, resultado, ttl);
+  return resultado;
 };
 
 export const productsService = {
   /**
-   * Obtener todas las llantas (catálogo)
-   * Backend: GET /llantas
-   * Caché: 5 minutos
+   * Catálogo completo — GET /productos
    */
-  getAllProducts: async (params = {}) => {
-    const cacheKey = `all-products:${JSON.stringify(params)}`;
-    const cached = apiCache.get(cacheKey);
-    if (cached) return cached;
-
-    const response = await api.get('/llantas', { params });
-    const llantas = response.data.data || response.data;
-    const products = mapLlantasToProducts(Array.isArray(llantas) ? llantas : llantas.llantas || []);
-
-    apiCache.set(cacheKey, products, CACHE_TTL.ALL_PRODUCTS);
-    return products;
-  },
+  getAllProducts: (params = {}) =>
+    conCache(`all-products:${JSON.stringify(params)}`, CACHE_TTL.ALL_PRODUCTS, async () => {
+      const response = await api.get('/productos', { params });
+      return mapProductos(response.data.data);
+    }),
 
   /**
-   * Obtener una llanta por ID
-   * Backend: GET /llantas/:id
-   * Caché: 10 minutos
+   * Detalle — GET /productos/:id
    */
-  getProductById: async (id) => {
-    const cacheKey = `product:${id}`;
-    const cached = apiCache.get(cacheKey);
-    if (cached) return cached;
-
-    const response = await api.get(`/llantas/${id}`);
-    const llanta = response.data.data || response.data;
-    const product = mapLlantaToProduct(llanta);
-
-    apiCache.set(cacheKey, product, CACHE_TTL.PRODUCT_DETAIL);
-    return product;
-  },
+  getProductById: (id) =>
+    conCache(`product:${id}`, CACHE_TTL.PRODUCT_DETAIL, async () => {
+      const response = await api.get(`/productos/${id}`);
+      return mapProducto(response.data.data);
+    }),
 
   /**
-   * Buscar llantas por medida
-   * Backend: GET /llantas/buscar-medida?ancho=X&perfil=Y&rin=Z
-   * Caché: 2 minutos
+   * Búsqueda por medida — GET /productos/buscar-medida?ancho=&alto=&aro=
    */
-  searchByMeasure: async ({ ancho, perfil, rin }) => {
+  searchByMeasure: ({ ancho, perfil, rin }) => {
     const params = {};
     if (ancho) params.ancho = ancho;
-    if (perfil) params.perfil = perfil;
-    if (rin) params.rin = rin;
-
-    const cacheKey = `search-measure:${ancho}-${perfil}-${rin}`;
-    const cached = apiCache.get(cacheKey);
-    if (cached) return cached;
-
-    const response = await api.get('/llantas/buscar-medida', { params });
-    const llantas = response.data.data || response.data;
-    const products = mapLlantasToProducts(Array.isArray(llantas) ? llantas : []);
-
-    apiCache.set(cacheKey, products, CACHE_TTL.SEARCH_RESULTS);
-    return products;
+    if (perfil) params.alto = perfil;
+    if (rin) params.aro = rin;
+    return conCache(`search-measure:${ancho}-${perfil}-${rin}`, CACHE_TTL.SEARCH_RESULTS, async () => {
+      const response = await api.get('/productos/buscar-medida', { params });
+      return mapProductos(response.data.data);
+    });
   },
 
   /**
-   * Buscar llantas por vehículo
-   * Backend: GET /llantas/buscar-vehiculo?marca=X&modelo=Y&anio=Z
-   * Caché: 2 minutos
+   * Búsqueda por vehículo — GET /productos/buscar-vehiculo?marca=&modelo=&anio=
    */
-  searchByVehicle: async ({ marca, modelo, anio }) => {
+  searchByVehicle: ({ marca, modelo, anio }) => {
     const params = {};
     if (marca) params.marca = marca;
     if (modelo) params.modelo = modelo;
     if (anio) params.anio = anio;
-
-    const cacheKey = `search-vehicle:${marca}-${modelo}-${anio}`;
-    const cached = apiCache.get(cacheKey);
-    if (cached) return cached;
-
-    const response = await api.get('/llantas/buscar-vehiculo', { params });
-    const llantas = response.data.data || response.data;
-    const products = mapLlantasToProducts(Array.isArray(llantas) ? llantas : []);
-
-    apiCache.set(cacheKey, products, CACHE_TTL.SEARCH_RESULTS);
-    return products;
+    return conCache(`search-vehicle:${marca}-${modelo}-${anio}`, CACHE_TTL.SEARCH_RESULTS, async () => {
+      const response = await api.get('/productos/buscar-vehiculo', { params });
+      return mapProductos(response.data.data);
+    });
   },
 
   /**
-   * Búsqueda general unificada (medida, modelo, texto, etc.)
-   * Backend: GET /llantas/buscar-general?q=texto
-   * Retorna resultados y recomendaciones
+   * Búsqueda general (medida "225/75R15", marca, modelo o texto)
+   * GET /productos/buscar-general?q=texto — devuelve resultados y recomendaciones
    */
   buscarGeneral: async (q) => {
     if (!q) return { resultados: [], recomendaciones: [], tipo: 'vacio' };
-    
-    const cacheKey = `search-general-text:${q}`;
-    const cached = apiCache.get(cacheKey);
-    if (cached) return cached;
-
-    const response = await api.get('/llantas/buscar-general', { params: { q } });
-    const { resultados, recomendaciones, tipo, parsedMedida, marcaBuscada } = response.data.data;
-    
-    const result = {
-      resultados: mapLlantasToProducts(resultados || []),
-      recomendaciones: mapLlantasToProducts(recomendaciones || []),
-      tipo,
-      parsedMedida,
-      marcaBuscada
-    };
-
-    apiCache.set(cacheKey, result, CACHE_TTL.SEARCH_RESULTS);
-    return result;
+    return conCache(`search-general-text:${q}`, CACHE_TTL.SEARCH_RESULTS, async () => {
+      const response = await api.get('/productos/buscar-general', { params: { q } });
+      const { resultados, recomendaciones, tipo, parsedMedida, marcaBuscada } = response.data.data;
+      return {
+        resultados: mapProductos(resultados),
+        recomendaciones: mapProductos(recomendaciones),
+        tipo,
+        parsedMedida,
+        marcaBuscada,
+      };
+    });
   },
 
   /**
-   * Buscar productos con filtros genéricos
-   * Traduce los filtros del frontend a los params del backend
+   * Buscar productos con filtros genéricos del frontend
    */
   searchProducts: async (filters = {}) => {
+    if (filters.width || filters.height || filters.rim) {
+      return productsService.searchByMeasure({ ancho: filters.width, perfil: filters.height, rin: filters.rim });
+    }
+    if (filters.brand || filters.model || filters.year) {
+      return productsService.searchByVehicle({ marca: filters.brand, modelo: filters.model, anio: filters.year });
+    }
     const params = {};
-
-    // Traducir filtros de medida
-    if (filters.width) params.ancho = filters.width;
-    if (filters.height) params.perfil = filters.height;
-    if (filters.rim) params.rin = filters.rim;
-
-    // Traducir filtros de vehículo
-    if (filters.brand) params.marca = filters.brand;
-    if (filters.model) params.modelo = filters.model;
-    if (filters.year) params.anio = filters.year;
-
-    // Filtros directos
-    if (filters.category) params.categoria = filters.category;
-    if (filters.minPrice) params.precioMin = filters.minPrice;
-    if (filters.maxPrice) params.precioMax = filters.maxPrice;
-    if (filters.sortBy) params.ordenar = filters.sortBy;
-
-    // Determinar qué endpoint usar según los filtros
-    if (params.ancho || params.perfil || params.rin) {
-      return productsService.searchByMeasure({
-        ancho: params.ancho,
-        perfil: params.perfil,
-        rin: params.rin,
-      });
-    }
-
-    if (params.marca || params.modelo || params.anio) {
-      return productsService.searchByVehicle({
-        marca: params.marca,
-        modelo: params.modelo,
-        anio: params.anio,
-      });
-    }
-
-    // Búsqueda general antigua (si se usan otros filtros)
-    const cacheKey = `search-general:${JSON.stringify(params)}`;
-    const cached = apiCache.get(cacheKey);
-    if (cached) return cached;
-
-    const response = await api.get('/llantas', { params });
-    const llantas = response.data.data || response.data;
-    const products = mapLlantasToProducts(Array.isArray(llantas) ? llantas : llantas.llantas || []);
-
-    apiCache.set(cacheKey, products, CACHE_TTL.SEARCH_RESULTS);
-    return products;
+    if (filters.category) params.idTipoProducto = filters.category;
+    return productsService.getAllProducts(params);
   },
 };
 
-export { mapLlantaToProduct, mapLlantasToProducts };
+export { mapProducto, mapProductos };
 export default productsService;

@@ -18,20 +18,30 @@ const TireCard = ({
 }) => {
   const [qty, setQty] = useState(1);
 
+  // Producto real de la API (contrato de /productos) vs. datos de ejemplo del home
+  const fromApi = Boolean(product?.fromApi);
+  const agotado = fromApi && product?.inStock === false;
+
   // ----------------------------------------------------
   // PLACEHOLDERS & REGULARIZACIÓN DE PROPS DESDE LA BD
   // ----------------------------------------------------
   const altImage = (product?.name?.length || 0) % 2 === 0 ? "/llanta1.png" : "/llanta2.png";
   const finalTireSrc = tireSrc || product?.image || altImage;
+  const finalBrandLogo = brandLogoSrc || product?.brandLogo || null;
+  const finalSash = sashSrc ?? product?.sash ?? null;
 
   // 2. Especificaciones de Terreno y Físicas
   const finalSpecs = specs || { wet: 0, dry: 0, noise: "109S" };
-  const finalTerrain = terrainType || "AT";
+  // En productos reales el terreno viene del tipo de uso del modelo (se oculta si no tiene)
+  const finalTerrain = terrainType || (fromApi ? product?.modelUse?.codigo || null : "AT");
 
   // 3. Extracción Segura de Precio
   const tempPrice = product?.finalPrice || product?.price || 0;
-  // PVP fake (si no hay pvp mandado) -> Le suma un % referencial
-  const originalPrice = pvp || product?.price || (tempPrice * 1.15);
+  // PVP fake (si no hay pvp mandado) -> Le suma un % referencial. En productos reales solo
+  // se muestra el precio anterior cuando existe un descuento real.
+  const originalPrice = fromApi
+    ? (product?.discount > 0 ? product.price : null)
+    : pvp || product?.price || (tempPrice * 1.15);
 
   const formatPrice = (val) => {
     const safeVal = Number(val) || 0;
@@ -42,16 +52,31 @@ const TireCard = ({
 
   const name = product?.name || "Producto sin nombre";
 
-  // 4. Badges (máximo 2): terreno activo + descuento cuando aplica
-  const hasDiscount =
-    pvp && Number(originalPrice) > tempPrice && Number(originalPrice) > 0;
-  const discountPct = hasDiscount
-    ? Math.round(((Number(originalPrice) - tempPrice) / Number(originalPrice)) * 100)
-    : 0;
+  // 4. Badges (máximo 2): terreno activo + descuento cuando aplica (+ "Nuevo" en productos reales)
+  const hasDiscount = fromApi
+    ? product?.discount > 0
+    : pvp && Number(originalPrice) > tempPrice && Number(originalPrice) > 0;
+  const discountPct = fromApi
+    ? product?.discount || 0
+    : hasDiscount
+      ? Math.round(((Number(originalPrice) - tempPrice) / Number(originalPrice)) * 100)
+      : 0;
   const badges = [
-    finalTerrain,
+    ...(finalTerrain ? [finalTerrain] : []),
     ...(hasDiscount ? [{ type: "discount", label: `${discountPct}%` }] : []),
+    ...(fromApi && product?.isNew ? [{ type: "new", label: "NUEVO" }] : []),
   ];
+
+  // Modelo y medida (solo productos que los usan, ej: llantas)
+  const modelLine = fromApi ? [product?.model, product?.measure].filter(Boolean).join(" · ") : "";
+  // Beneficios del producto
+  const perks = fromApi
+    ? [
+        product?.freeShipping && "Envío gratis",
+        product?.warranty && "Garantía",
+        product?.returns && "Devoluciones",
+      ].filter(Boolean)
+    : [];
 
   const terrainStyles = {
     AT: "bg-[#e8f0fe] text-[#1a3a8f] border-[#a8c0f0]",
@@ -59,7 +84,24 @@ const TireCard = ({
     LT: "bg-[#eaf3de] text-[#27500a] border-[#a0cc6a]",
   };
 
-  const specItems = [
+  // Especificaciones reales (ícono + valor) o las de ejemplo del diseño original
+  const apiSpecItems = fromApi
+    ? (product?.specs || []).slice(0, 3).map((spec) => ({
+        key: spec.id,
+        value: spec.value,
+        title: spec.name,
+        iconBg: "bg-[#f0f0f0]",
+        icon: spec.icon ? (
+          <img src={spec.icon} alt="" className="h-[10px] w-[10px] object-contain" />
+        ) : (
+          <svg width="10" height="10" viewBox="0 0 16 16">
+            <circle cx="8" cy="8" r="4" fill="#888" />
+          </svg>
+        ),
+      }))
+    : null;
+
+  const specItems = apiSpecItems || [
     {
       key: "wet",
       value: finalSpecs.wet,
@@ -100,6 +142,7 @@ const TireCard = ({
   const handleBuy = (e) => {
     e.preventDefault();
     e.stopPropagation();
+    if (agotado) return;
 
     const phoneNumber = "593999601748";
     const message = `Hola, estoy interesado en el producto: ${name} y la cantidad: ${qty} por ahora.`;
@@ -123,14 +166,14 @@ const TireCard = ({
   return (
     <div className="tire-card flex w-full flex-col overflow-hidden rounded-xl border border-black/5 bg-white font-sans shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-md">
       {/* --- SASH BANDA PROMOCIONAL (solo cuando existe banner real) --- */}
-      {sashSrc && (
-        <img src={sashSrc} alt="Promoción" className="block h-9 w-full object-cover" loading="lazy" decoding="async" />
+      {finalSash && (
+        <img src={finalSash} alt="Promoción" className="block h-9 w-full object-cover" loading="lazy" decoding="async" />
       )}
 
       {/* --- LOGO DE MARCA --- */}
       <div className="flex justify-center px-3 pb-1.5 pt-3">
-        {brandLogoSrc ? (
-          <img src={brandLogoSrc} alt="Marca" className="h-7 object-contain" loading="lazy" decoding="async" />
+        {finalBrandLogo ? (
+          <img src={finalBrandLogo} alt={product?.brand || "Marca"} className="h-7 object-contain" loading="lazy" decoding="async" />
         ) : (
           <span className="text-[11px] font-black uppercase tracking-wide text-gray-500">
             {product?.brand || "MARCA C.A."}
@@ -170,11 +213,17 @@ const TireCard = ({
                 key={i}
                 className="rounded-md bg-[#e83a2b] px-1.5 py-0.5 text-[9px] font-bold leading-tight text-white shadow-sm"
               >
-                -{badge.label}
+                {badge.type === "discount" ? `-${badge.label}` : badge.label}
               </span>
             )
           )}
         </div>
+
+        {agotado && (
+          <span className="absolute inset-x-0 bottom-2 mx-auto w-fit rounded-md bg-[#222]/85 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-white">
+            Agotado
+          </span>
+        )}
       </Link>
 
       {/* --- PRECIO --- */}
@@ -185,9 +234,13 @@ const TireCard = ({
             <sup className="text-[11px] font-bold text-[#e83a2b]">.{dec}</sup>
             <span className="ml-0.5 text-[10px] font-medium text-gray-400">+ IVA</span>
           </div>
-          <span className="text-[10px] text-gray-400 line-through">
-            PVP ${Number(originalPrice).toFixed(2)}
-          </span>
+          {originalPrice ? (
+            <span className="text-[10px] text-gray-400 line-through">
+              PVP ${Number(originalPrice).toFixed(2)}
+            </span>
+          ) : (
+            <span className="text-[10px] text-transparent select-none">.</span>
+          )}
         </div>
         {show247 && (
           <img
@@ -207,19 +260,30 @@ const TireCard = ({
         >
           {name}
         </p>
+        {modelLine && (
+          <p className="my-0 truncate text-[10px] font-medium text-gray-500" title={modelLine}>
+            {modelLine}
+          </p>
+        )}
       </div>
 
-      {/* --- SPECS COMPACTAS --- */}
-      <div className="flex items-center gap-3 px-3 pt-1.5">
-        {specItems.map((spec) => (
-          <div key={spec.key} className="flex items-center gap-1" title={spec.title}>
-            <span className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full ${spec.iconBg}`}>
-              {spec.icon}
-            </span>
-            <span className="text-[10px] font-semibold text-gray-500">{spec.value}</span>
-          </div>
-        ))}
-      </div>
+      {/* --- SPECS COMPACTAS (se ocultan si el producto no tiene) --- */}
+      {specItems.length > 0 && (
+        <div className="flex items-center gap-3 px-3 pt-1.5">
+          {specItems.map((spec) => (
+            <div key={spec.key} className="flex min-w-0 items-center gap-1" title={spec.title}>
+              <span className={`flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full ${spec.iconBg}`}>
+                {spec.icon}
+              </span>
+              <span className="truncate text-[10px] font-semibold text-gray-500">{spec.value}</span>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {perks.length > 0 && (
+        <p className="my-0 px-3 pt-1 text-[10px] font-medium text-gray-400">{perks.join(" · ")}</p>
+      )}
 
       {/* --- ACCIONES: botón alineado al fondo en todas las tarjetas --- */}
       <div className="mt-auto flex items-center gap-2 px-3 pb-2 pt-1.5">
@@ -246,15 +310,16 @@ const TireCard = ({
         {/* Botón principal */}
         <button
           data-slot="action-btn"
-          className="flex h-8 flex-1 items-center justify-center gap-1 rounded-[10px] border-none bg-[#e83a2b] p-0 text-xs font-bold text-white transition-colors hover:bg-[#d0281b] active:scale-[0.98] min-[440px]:text-[13px]"
+          className="flex h-8 flex-1 items-center justify-center gap-1 rounded-[10px] border-none bg-[#e83a2b] p-0 text-xs font-bold text-white transition-colors hover:bg-[#d0281b] active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-gray-300 min-[440px]:text-[13px]"
           onClick={handleBuy}
+          disabled={agotado}
         >
           <svg className="hidden min-[440px]:block" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="9" cy="21" r="1" />
             <circle cx="20" cy="21" r="1" />
             <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
           </svg>
-          Agregar
+          {agotado ? "Agotado" : "Agregar"}
         </button>
       </div>
     </div>

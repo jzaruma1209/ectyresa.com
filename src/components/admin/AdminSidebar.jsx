@@ -1,3 +1,4 @@
+import { useSelector } from "react-redux";
 import {
   Sidebar,
   SidebarContent,
@@ -14,32 +15,45 @@ import {
 } from "@/components/ui/sidebar";
 import {
   LayoutDashboard,
-  Package,
-  FolderTree,
-  Tag,
+  Disc,
   ShoppingCart,
   CreditCard,
   Users,
   Settings,
   ChevronsUpDown,
-  Building2,
+  Car,
+  Boxes,
+  Image as ImageIcon,
 } from "lucide-react";
 
 export function AdminSidebar({ currentTab, onSelectTab, pendingOrdersCount = 0, ...props }) {
+  // Usuario autenticado desde Redux
+  const authUser = useSelector((state) => state.auth?.user);
+  const displayName = authUser?.nombre || authUser?.name || "ECTYRE Admin";
+  const displayEmail = authUser?.email || "admin@ectyre.com";
+
+  // Iniciales para el avatar corporativo
+  const initials = displayName
+    .split(" ")
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase())
+    .join("") || "EC";
+
   const navigationItems = [
     { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-    { id: "products", label: "Productos", icon: Package },
-    { id: "categories", label: "Categorías", icon: FolderTree },
-    { id: "brands", label: "Marcas", icon: Tag },
-    { id: "orders", label: "Órdenes", icon: ShoppingCart, badge: pendingOrdersCount > 0 ? pendingOrdersCount : null },
-    { id: "payments", label: "Pagos", icon: CreditCard },
-    { id: "users", label: "Usuarios", icon: Users },
+    { id: "products", label: "Inventario", icon: Disc },
+    { id: "inventory-levels", label: "Niveles de Inventario", icon: Boxes },
+    { id: "media", label: "Media", icon: ImageIcon },
+    { id: "orders", label: "Órdenes y Pedidos", icon: ShoppingCart, badge: pendingOrdersCount > 0 ? pendingOrdersCount : null },
+    { id: "payments", label: "Liquidaciones", icon: CreditCard },
+    { id: "users", label: "Clientes Registrados", icon: Users },
     { id: "settings", label: "Configuración", icon: Settings },
   ];
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      {/* ── Header: Selector de Empresa / Tienda ── */}
+      {/* ── Header: Marca Automotriz ── */}
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -48,11 +62,11 @@ export function AdminSidebar({ currentTab, onSelectTab, pendingOrdersCount = 0, 
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground shadow-sm">
-                <Building2 className="size-4" />
+                <Car className="size-4" />
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold text-sidebar-foreground">ECTYRE</span>
-                <span className="truncate text-xs text-muted-foreground">Admin Portal</span>
+                <span className="truncate text-xs text-muted-foreground">Llantas & Servicios</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
             </SidebarMenuButton>
@@ -60,10 +74,10 @@ export function AdminSidebar({ currentTab, onSelectTab, pendingOrdersCount = 0, 
         </SidebarMenu>
       </SidebarHeader>
 
-      {/* ── Contenido de Navegación (8 Módulos) ── */}
+      {/* ── Contenido de Navegación ── */}
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Administración</SidebarGroupLabel>
+          <SidebarGroupLabel>Administración Automotriz</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {navigationItems.map((item) => {
@@ -93,7 +107,7 @@ export function AdminSidebar({ currentTab, onSelectTab, pendingOrdersCount = 0, 
         </SidebarGroup>
       </SidebarContent>
 
-      {/* ── Footer: Perfil de Usuario ── */}
+      {/* ── Footer: Perfil de Administrador ── */}
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
@@ -101,19 +115,12 @@ export function AdminSidebar({ currentTab, onSelectTab, pendingOrdersCount = 0, 
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <div className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-muted text-foreground text-xs font-semibold border border-border">
-                <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=64&h=64&fit=crop&crop=faces"
-                  alt="admin"
-                  className="size-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.display = "none";
-                  }}
-                />
+              <div className="flex size-8 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-primary text-primary-foreground text-xs font-semibold">
+                {initials}
               </div>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-semibold text-sidebar-foreground">Antony Zumba</span>
-                <span className="truncate text-xs text-muted-foreground">admin@ectyre.com</span>
+                <span className="truncate font-semibold text-sidebar-foreground">{displayName}</span>
+                <span className="truncate text-xs text-muted-foreground">{displayEmail}</span>
               </div>
               <ChevronsUpDown className="ml-auto size-4 text-muted-foreground" />
             </SidebarMenuButton>

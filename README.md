@@ -49,11 +49,15 @@ El frontend está **completamente integrado con el backend API** (`https://ectyr
 - **Listado de Llantas:** Consumo dinámico con paginación desde la API
 - **Búsqueda por Vehículo:** Filtros Marca/Modelo/Año con metadatos reales del backend
 - **Búsqueda por Medida:** Filtro por ancho, perfil y rin
+- **Compatibilidad Bidireccional:** Consulta de llantas por vehículo (`/api/v1/compatibilidad/vehiculo`) y vehículos por llanta (`/api/v1/compatibilidad/llanta/:id`)
+- **Catálogos Maestros:** Gestión de modelos de llanta, tipos, sentidos de rotación, e índices de carga/velocidad (`/api/v1/catalogos`)
 
-### 🖼️ Imágenes con Cloudinary
+### 🖼️ Imágenes con Cloudinary y Promociones
 - Subida de imágenes vía backend (nunca directo a Cloudinary)
-- Soporte para imágenes múltiples por producto
-- Marcado de imagen principal
+- Soporte para imágenes múltiples por producto (hasta 5) y asignación de imagen principal
+- Gestión de banners promocionales (`/api/v1/admin/promociones`) con toggle activo/inactivo
+
+> 💡 *La API cuenta con **86 endpoints reales** documentados en `backend/apiectyre/API_DOCUMENTATION.md` y `POSTMAN_TESTING_GUIDE.md`.*
 
 ## 🏗️ Estructura del proyecto
 

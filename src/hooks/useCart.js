@@ -17,11 +17,13 @@ export const useCart = () => {
 
   /**
    * Agrega un producto al carrito.
-   * Internamente llama al backend con { idLlanta, cantidad }.
-   * product.id ES el idLlanta del backend (Regla RG-6).
+   * Internamente llama al backend con { idProducto, cantidad }.
+   * El carrito referencia la fila de la tabla `productos` (product.productId,
+   * que es el mismo id usado en la ruta de detalle /product/:id).
    */
   const handleAddToCart = async (product, quantity = 1) => {
-    await dispatch(addToCartAsync({ idLlanta: product.id, cantidad: quantity }));
+    const idProducto = product.productId ?? product.id;
+    await dispatch(addToCartAsync({ idProducto, cantidad: quantity }));
   };
 
   /**

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import vehicleData from '../../data/vehicle-data.json';
+import productsService from '../../services/products.service';
 import './VehicleSearcher.css';
 
 const STEPS = ['marca', 'anio', 'modelo'];
@@ -84,12 +85,8 @@ const VehicleSearcher = () => {
     setShowResultModal(true);
 
     try {
-      const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1';
-      const res  = await fetch(
-        `${baseUrl}/llantas/buscar-vehiculo?marca=${encodeURIComponent(marca)}&anio=${anio}&modelo=${encodeURIComponent(modeloValue)}`
-      );
-      const data = await res.json();
-      setResults(Array.isArray(data?.data) ? data.data : []);
+      const productos = await productsService.searchByVehicle({ marca, modelo: modeloValue, anio });
+      setResults(productos);
     } catch (err) {
       console.error('Error al buscar llantas por vehículo:', err);
       setError('No se pudo conectar con el servidor. Intenta de nuevo.');
@@ -248,42 +245,36 @@ const VehicleSearcher = () => {
                 {results.length} llanta{results.length !== 1 ? 's' : ''} para {vehicleLabel}
               </h3>
               <div className="vs-results-grid">
-                {results.map((llanta) => {
-                  const img = llanta.imagenes?.find((i) => i.tipo === 'PRINCIPAL')?.urlImagen
-                    ?? '/placeholder-tire.png';
-                  const precioFinal    = llanta.precioOferta || llanta.precio;
-                  const precioOriginal = llanta.precioOferta ? llanta.precio : null;
+                {results.map((producto) => {
+                  const precioOriginal = producto.discount > 0 ? producto.price : null;
 
                   return (
-                    <div key={llanta.idLlanta} className="vs-result-card">
-                      {llanta.marca?.logoUrl && (
-                        <img src={llanta.marca.logoUrl} alt={llanta.marca.nombre} className="vs-card-logo" />
+                    <div key={producto.id} className="vs-result-card">
+                      {producto.brandLogo && (
+                        <img src={producto.brandLogo} alt={producto.brand} className="vs-card-logo" />
                       )}
                       <img
-                        src={img}
-                        alt={llanta.modelo}
+                        src={producto.image}
+                        alt={producto.name}
                         className="vs-card-img"
                         onError={(e) => { e.target.src = '/placeholder-tire.png'; }}
                       />
-                      <p className="vs-card-model">{llanta.modelo}</p>
-                      <p className="vs-card-measure">{llanta.ancho}/{llanta.perfil}R{llanta.rin}</p>
-                      {llanta.procedencia && (
-                        <p className="vs-card-origin">Procedencia: {llanta.procedencia}</p>
-                      )}
+                      <p className="vs-card-model">{producto.model || producto.name}</p>
+                      {producto.measure && <p className="vs-card-measure">{producto.measure}</p>}
                       <div className="vs-card-price">
                         {precioOriginal && (
                           <span className="vs-card-original">${Number(precioOriginal).toFixed(2)}</span>
                         )}
-                        <span className="vs-card-final">${Number(precioFinal).toFixed(2)}</span>
+                        <span className="vs-card-final">${Number(producto.finalPrice).toFixed(2)}</span>
                       </div>
-                      {llanta.stock > 0
-                        ? <p className="vs-card-stock">✓ {llanta.stock} en stock</p>
-                        : <p className="vs-card-stock vs-card-stock--out">Sin stock</p>
+                      {producto.inStock
+                        ? <p className="vs-card-stock">✓ {producto.stock} en stock</p>
+                        : <p className="vs-card-stock vs-card-stock--out">Agotado</p>
                       }
                       <button
                         data-slot="vs-card-btn"
                         className="vs-card-btn"
-                        onClick={() => navigate(`/producto/${llanta.idLlanta}`)}
+                        onClick={() => navigate(`/product/${producto.id}`)}
                       >
                         Ver Detalle
                       </button>

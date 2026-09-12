@@ -242,7 +242,7 @@ export const INITIAL_PAYMENTS = [
 export const INITIAL_USERS = [
   {
     id: "usr-1",
-    name: "Antony Zumba (Super Admin)",
+    name: "ECTYRE S.A. (Super Admin)",
     email: "admin@ectyre.com",
     role: "ADMIN",
     status: "ACTIVE",

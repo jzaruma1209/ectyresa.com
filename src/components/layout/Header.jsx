@@ -174,15 +174,6 @@ const Header = () => {
 
           {/* Right actions */}
           <div className="header-actions">
-            {/* Chat */}
-            <div className="action-chat desktop-only">
-              <div className="chat-icon-wrap">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="action-svg">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
-                </svg>
-                <span className="online-dot"></span>
-              </div>
-            </div>
 
             {/* Mi Cuenta — cambia según estado de autenticación */}
             {isAuthenticated ? (

@@ -7,11 +7,20 @@ export const pedidosService = {
   /**
    * Procesar el pago y convertir el carrito en un pedido.
    * POST /pedidos/checkout
-   * Body: { idDireccionEntrega, requiereInstalacion }
+   * Body: { idDireccionEntrega, idMetodoPago, requiereInstalacion }
    */
   checkout: async (checkoutData) => {
     const response = await api.post('/pedidos/checkout', checkoutData);
-    return response.data.data; 
+    return response.data.data;
+  },
+
+  /**
+   * Obtener los métodos de pago disponibles.
+   * GET /catalogos/metodos-pago
+   */
+  getMetodosPago: async () => {
+    const response = await api.get('/catalogos/metodos-pago');
+    return response.data.data; // Array de métodos de pago
   },
 
   /**

@@ -23,6 +23,7 @@ const ProductCard = ({ product }) => {
 
   const finalPrice = product.finalPrice || product.price;
   const hasDiscount = product.discount && product.discount > 0;
+  const agotado = product.inStock === false;
 
   return (
     <Link to={`/product/${product.id}`} className="product-card" target="_blank" rel="noopener noreferrer">
@@ -45,7 +46,9 @@ const ProductCard = ({ product }) => {
       <div className="product-card-info">
         <h3 className="product-card-name">{product.name}</h3>
         <p className="product-card-brand">{product.brand}</p>
-        <p className="product-card-measure">{product.measure}</p>
+        {(product.model || product.measure) && (
+          <p className="product-card-measure">{[product.model, product.measure].filter(Boolean).join(" · ")}</p>
+        )}
         <div className="product-card-price">
           {hasDiscount && (
             <span className="product-card-original-price">
@@ -59,8 +62,9 @@ const ProductCard = ({ product }) => {
         <button
           className="product-card-button"
           onClick={handleAddToCart}
+          disabled={agotado}
         >
-          Agregar al Carrito
+          {agotado ? "Agotado" : "Agregar al Carrito"}
         </button>
       </div>
     </Link>

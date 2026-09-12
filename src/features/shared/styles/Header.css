@@ -180,27 +180,6 @@
   color: #1A1A1A;
 }
 
-/* Chat */
-.action-chat {
-  position: relative;
-  cursor: pointer;
-}
-
-.chat-icon-wrap {
-  position: relative;
-  display: flex;
-}
-
-.online-dot {
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 9px;
-  height: 9px;
-  background-color: #4CAF50;
-  border-radius: 50%;
-  border: 2px solid white;
-}
 
 /* Account */
 .action-account {

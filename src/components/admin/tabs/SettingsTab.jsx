@@ -1,8 +1,20 @@
 import { useState } from "react";
-import { Save, CheckCircle2 } from "lucide-react";
+import { Save } from "lucide-react";
 
 export function SettingsTab({ settings, onSaveSettings }) {
-  const [form, setForm] = useState(settings);
+  const [form, setForm] = useState(
+    settings || {
+      storeName: "ECTYRE Llantas & Servicios",
+      businessName: "ECTYRE S.A.",
+      commercialName: "ECTYRE Neumáticos y Servicios Automotrices",
+      taxId: "1790012345001",
+      physicalAddress: "Av. Principal y Panamericana Norte, Quito, Ecuador",
+      dispatchEmail: "despachos@ectyre.com",
+      whatsappNumber: "+593 99 999 9999",
+      currency: "USD ($)",
+      timeZone: "America/Guayaquil (GMT-5)",
+    }
+  );
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -12,22 +24,24 @@ export function SettingsTab({ settings, onSaveSettings }) {
   return (
     <div className="max-w-4xl space-y-6">
       <div>
-        <h2 className="text-lg font-semibold text-foreground">Configuración Global</h2>
-        <p className="text-xs text-muted-foreground">Parámetros comerciales, fiscales y de despacho de la tienda</p>
+        <h2 className="text-lg font-semibold text-foreground">Configuración de la Tienda</h2>
+        <p className="text-xs text-muted-foreground">
+          Parámetros comerciales, facturación y canales de despacho de ECTYRE
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Información Comercial */}
         <div className="rounded-xl border border-border bg-card p-6 shadow-xs space-y-4">
           <h3 className="text-sm font-semibold text-foreground border-b border-border pb-3">
-            Datos Comerciales y Fiscales
+            Datos Comerciales y Facturación
           </h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <label className="block text-xs font-medium text-foreground mb-1">Razón Social</label>
               <input
                 type="text"
-                value={form.businessName}
+                value={form.businessName || ""}
                 onChange={(e) => setForm({ ...form, businessName: e.target.value })}
                 className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
               />
@@ -36,7 +50,7 @@ export function SettingsTab({ settings, onSaveSettings }) {
               <label className="block text-xs font-medium text-foreground mb-1">Nombre Comercial</label>
               <input
                 type="text"
-                value={form.commercialName}
+                value={form.commercialName || ""}
                 onChange={(e) => setForm({ ...form, commercialName: e.target.value })}
                 className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
               />
@@ -45,16 +59,16 @@ export function SettingsTab({ settings, onSaveSettings }) {
               <label className="block text-xs font-medium text-foreground mb-1">RUC / Identificación Fiscal</label>
               <input
                 type="text"
-                value={form.taxId}
+                value={form.taxId || ""}
                 onChange={(e) => setForm({ ...form, taxId: e.target.value })}
                 className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground font-mono focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
               />
             </div>
             <div>
-              <label className="block text-xs font-medium text-foreground mb-1">Dirección Física</label>
+              <label className="block text-xs font-medium text-foreground mb-1">Dirección Principal / Taller</label>
               <input
                 type="text"
-                value={form.physicalAddress}
+                value={form.physicalAddress || ""}
                 onChange={(e) => setForm({ ...form, physicalAddress: e.target.value })}
                 className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
               />
@@ -65,14 +79,14 @@ export function SettingsTab({ settings, onSaveSettings }) {
         {/* Canales de Contacto */}
         <div className="rounded-xl border border-border bg-card p-6 shadow-xs space-y-4">
           <h3 className="text-sm font-semibold text-foreground border-b border-border pb-3">
-            Canales de Notificación y Soporte
+            Canales de Despacho y Atención
           </h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
-              <label className="block text-xs font-medium text-foreground mb-1">Correo de Despachos</label>
+              <label className="block text-xs font-medium text-foreground mb-1">Correo de Notificaciones</label>
               <input
                 type="email"
-                value={form.dispatchEmail}
+                value={form.dispatchEmail || ""}
                 onChange={(e) => setForm({ ...form, dispatchEmail: e.target.value })}
                 className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
               />
@@ -81,7 +95,7 @@ export function SettingsTab({ settings, onSaveSettings }) {
               <label className="block text-xs font-medium text-foreground mb-1">WhatsApp de Pedidos</label>
               <input
                 type="text"
-                value={form.whatsappNumber}
+                value={form.whatsappNumber || ""}
                 onChange={(e) => setForm({ ...form, whatsappNumber: e.target.value })}
                 className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground font-mono focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
               />
@@ -89,10 +103,10 @@ export function SettingsTab({ settings, onSaveSettings }) {
           </div>
         </div>
 
-        {/* Moneda y Pasarelas */}
+        {/* Moneda y Región */}
         <div className="rounded-xl border border-border bg-card p-6 shadow-xs space-y-4">
           <h3 className="text-sm font-semibold text-foreground border-b border-border pb-3">
-            Parámetros de Cobro
+            Parámetros Regionales
           </h3>
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
@@ -100,7 +114,7 @@ export function SettingsTab({ settings, onSaveSettings }) {
               <input
                 type="text"
                 disabled
-                value={form.currency}
+                value={form.currency || "USD ($)"}
                 className="h-9 w-full rounded-md border border-input bg-muted px-3 text-sm text-muted-foreground font-mono"
               />
             </div>
@@ -109,17 +123,8 @@ export function SettingsTab({ settings, onSaveSettings }) {
               <input
                 type="text"
                 disabled
-                value={form.timeZone}
+                value={form.timeZone || "America/Guayaquil (GMT-5)"}
                 className="h-9 w-full rounded-md border border-input bg-muted px-3 text-sm text-muted-foreground font-mono"
-              />
-            </div>
-            <div className="sm:col-span-2">
-              <label className="block text-xs font-medium text-foreground mb-1">Llave Pública Pasarela (Stripe)</label>
-              <input
-                type="text"
-                value={form.stripePublishableKey}
-                onChange={(e) => setForm({ ...form, stripePublishableKey: e.target.value })}
-                className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground font-mono focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
               />
             </div>
           </div>

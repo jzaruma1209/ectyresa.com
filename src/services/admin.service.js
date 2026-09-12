@@ -57,74 +57,47 @@ const adminService = {
   },
 
   // ──────────────────────────────────────────
-  // PRODUCTOS (LLANTAS)
+  // PRODUCTOS (todos los tipos: llantas, baterías, accesorios…)
   // ──────────────────────────────────────────
-  getLlantas: async (params = {}) => {
-    const response = await api.get('/llantas', { params });
+  getProductos: async (params = {}) => {
+    const response = await api.get('/admin/productos', { params });
     return response.data;
   },
 
-  createLlanta: async (data) => {
-    const response = await api.post('/llantas', data);
+  getProducto: async (id) => {
+    const response = await api.get(`/admin/productos/${id}`);
     return response.data;
   },
 
-  updateLlanta: async (id, data) => {
-    const response = await api.put(`/llantas/${id}`, data);
-    return response.data;
-  },
-
-  deleteLlanta: async (id) => {
-    const response = await api.delete(`/llantas/${id}`);
-    return response.data;
-  },
-
-  // ──────────────────────────────────────────
-  // IMÁGENES DE LLANTAS (Cloudinary via backend)
-  // ──────────────────────────────────────────
   /**
-   * Sube una imagen a una llanta existente.
-   * Usa multipart/form-data — NO agregar Content-Type manualmente.
-   * @param {number} idLlanta
-   * @param {File} archivo
-   * @param {string} tipoImagen - 'PRINCIPAL' | 'LATERAL' | 'DETALLE'
+   * Crea o edita un producto con sus fotos en una sola petición (multipart).
+   * @param {object} datos  campos del producto (se envían como JSON en el campo "datos")
+   * @param {File[]} imagenes  fotos nuevas (máx 5 en total, lo valida también el backend)
    */
-  subirImagenLlanta: async (idLlanta, archivo, tipoImagen = 'PRINCIPAL') => {
+  guardarProducto: async (id, datos, imagenes = []) => {
     const formData = new FormData();
-    formData.append('imagen', archivo);
-    formData.append('tipoImagen', tipoImagen);
-
-    const response = await api.post(
-      `/admin/llantas/${idLlanta}/imagenes`,
-      formData,
-      {
-        headers: {
-          // Dejar que axios/browser pongan el Content-Type con boundary correcto
-          'Content-Type': undefined,
-        },
-      }
-    );
+    formData.append('datos', JSON.stringify(datos));
+    imagenes.forEach((archivo) => formData.append('imagenes', archivo));
+    const config = { headers: { 'Content-Type': undefined }, timeout: 90000 };
+    const response = id
+      ? await api.put(`/admin/productos/${id}`, formData, config)
+      : await api.post('/admin/productos', formData, config);
     return response.data;
   },
 
-  /**
-   * Obtiene todas las imágenes de una llanta.
-   * @param {number} idLlanta
-   */
-  getImagenesLlanta: async (idLlanta) => {
-    const response = await api.get(`/admin/llantas/${idLlanta}/imagenes`);
+  cambiarEstadoProducto: async (id, activo) => {
+    const response = await api.patch(`/admin/productos/${id}/estado`, { activo });
+    return response.data;
+  },
+
+  // Borrado lógico: el producto deja de mostrarse en la tienda
+  desactivarProducto: async (id) => {
+    const response = await api.delete(`/admin/productos/${id}`);
     return response.data;
   },
 
   updateStock: async (id, stock) => {
-    // Endpoint dedicado cuando se cree en el backend
-    // Por ahora usa el PUT general
-    const response = await api.patch(`/admin/llantas/${id}/stock`, { stock });
-    return response.data;
-  },
-
-  getMarcas: async () => {
-    const response = await api.get('/vehiculos/marcas');
+    const response = await api.patch(`/admin/productos/${id}/stock`, { stock });
     return response.data;
   },
 

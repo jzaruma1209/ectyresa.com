@@ -22,9 +22,9 @@ export const fetchCarrito = createAsyncThunk(
 /** Agrega un producto al carrito en el backend */
 export const addToCartAsync = createAsyncThunk(
   'cart/addToCartAsync',
-  async ({ idLlanta, cantidad = 1 }, { rejectWithValue }) => {
+  async ({ idProducto, cantidad = 1 }, { rejectWithValue }) => {
     try {
-      return await carritoService.agregarItem(idLlanta, cantidad);
+      return await carritoService.agregarItem(idProducto, cantidad);
     } catch (error) {
       return rejectWithValue(error.response?.data?.message || 'Error al agregar al carrito');
     }

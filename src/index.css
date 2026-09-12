@@ -52,9 +52,8 @@ a:hover {
   color: var(--color-primary-dark);
 }
 
-/* Estilos de button SOLO para botones de la tienda (shop),
-   NO dentro de componentes shadcn ([data-slot] o [data-sidebar]) */
-button:not([data-slot]):not([data-sidebar]) {
+/* Estilos de botones por defecto para la tienda */
+button.btn-primary-action {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -67,18 +66,18 @@ button:not([data-slot]):not([data-sidebar]) {
   color: var(--color-white);
 }
 
-button:not([data-slot]):not([data-sidebar]):hover {
+button.btn-primary-action:hover {
   background-color: var(--color-primary-dark);
   transform: translateY(-1px);
   box-shadow: 0 4px 8px rgba(227, 30, 36, 0.3);
 }
 
-button:not([data-slot]):not([data-sidebar]):active {
+button.btn-primary-action:active {
   transform: translateY(0);
 }
 
-button:not([data-slot]):not([data-sidebar]):focus,
-button:not([data-slot]):not([data-sidebar]):focus-visible {
+button.btn-primary-action:focus,
+button.btn-primary-action:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
 }

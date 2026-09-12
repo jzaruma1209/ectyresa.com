@@ -67,11 +67,11 @@ const OrderDetailPage = () => {
           {(pedido.detalles || []).map((detalle) => (
             <div key={detalle.idDetalle} className="order-detail-item">
               <div className="order-item-info">
-                <h4>{detalle.llanta?.modelo || 'Llanta'}</h4>
+                <h4>{detalle.producto?.nombre || 'Producto'}</h4>
                 <p>
-                  {detalle.llanta?.marca?.nombre && `${detalle.llanta.marca.nombre} · `}
+                  {detalle.producto?.marca?.nombre && `${detalle.producto.marca.nombre} · `}
                   Cantidad: {detalle.cantidad}
-                  {detalle.llanta?.ancho && ` · ${detalle.llanta.ancho}/${detalle.llanta.perfil}R${detalle.llanta.rin}`}
+                  {detalle.producto?.medidas?.texto && ` · ${detalle.producto.medidas.texto}`}
                 </p>
               </div>
               <span className="order-item-subtotal">

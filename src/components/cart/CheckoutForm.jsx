@@ -12,6 +12,8 @@ const CheckoutForm = () => {
   
   const [direcciones, setDirecciones] = useState([]);
   const [selectedDireccionId, setSelectedDireccionId] = useState('');
+  const [metodosPago, setMetodosPago] = useState([]);
+  const [selectedMetodoPagoId, setSelectedMetodoPagoId] = useState('');
   const [requiereInstalacion, setRequiereInstalacion] = useState(false);
   const [showNewAddressForm, setShowNewAddressForm] = useState(false);
   
@@ -43,6 +45,22 @@ const CheckoutForm = () => {
     fetchDirecciones();
   }, []);
 
+  // Cargar métodos de pago al montar
+  useEffect(() => {
+    const fetchMetodosPago = async () => {
+      try {
+        const data = await pedidosService.getMetodosPago();
+        setMetodosPago(data);
+        if (data.length > 0) {
+          setSelectedMetodoPagoId(data[0].idMetodo);
+        }
+      } catch (err) {
+        setError('No se pudieron cargar los métodos de pago.');
+      }
+    };
+    fetchMetodosPago();
+  }, []);
+
   const handleCreateAddress = async (data) => {
     try {
       setLoading(true);
@@ -66,12 +84,18 @@ const CheckoutForm = () => {
       return;
     }
 
+    if (!selectedMetodoPagoId) {
+      setError('Debes seleccionar un método de pago.');
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
-      
+
       const pedido = await pedidosService.checkout({
         idDireccionEntrega: parseInt(selectedDireccionId),
+        idMetodoPago: parseInt(selectedMetodoPagoId),
         requiereInstalacion
       });
 
@@ -182,23 +206,41 @@ const CheckoutForm = () => {
 
       <hr className="checkout-divider" />
 
+      {metodosPago.length > 0 && (
+        <div className="form-group">
+          <label htmlFor="metodoPagoSelect">Método de pago:</label>
+          <select
+            id="metodoPagoSelect"
+            value={selectedMetodoPagoId}
+            onChange={(e) => setSelectedMetodoPagoId(e.target.value)}
+            disabled={loading}
+          >
+            {metodosPago.map((m) => (
+              <option key={m.idMetodo} value={m.idMetodo}>
+                {m.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
+
       <div className="form-group checkbox-group">
         <label className="checkbox-label">
-          <input 
-            type="checkbox" 
-            checked={requiereInstalacion} 
-            onChange={(e) => setRequiereInstalacion(e.target.checked)} 
+          <input
+            type="checkbox"
+            checked={requiereInstalacion}
+            onChange={(e) => setRequiereInstalacion(e.target.checked)}
             disabled={loading}
           />
           Deseo que se instale en una sucursal Ectyre (Gratis)
         </label>
       </div>
 
-      <button 
-        type="button" 
+      <button
+        type="button"
         className="checkout-button"
         onClick={processCheckout}
-        disabled={loading || showNewAddressForm || !selectedDireccionId}
+        disabled={loading || showNewAddressForm || !selectedDireccionId || !selectedMetodoPagoId}
       >
         {loading ? 'Procesando...' : 'Confirmar Pedido y Pagar'}
       </button>

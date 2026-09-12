@@ -139,7 +139,9 @@ const ProductDetailsPage = () => {
           {/* Marca + nombre */}
           <p className="pdp-brand">{product.brand}</p>
           <h1 className="pdp-name">{product.name}</h1>
-          <p className="pdp-measure">{product.measure}</p>
+          {(product.model || product.measure) && (
+            <p className="pdp-measure">{[product.model, product.measure].filter(Boolean).join(" · ")}</p>
+          )}
 
           {/* Precios */}
           <div className="pdp-price-block">
@@ -217,6 +219,18 @@ const ProductDetailsPage = () => {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
               <span>Entrega estimada: 24–48 hrs</span>
             </div>
+            {product.freeShipping && (
+              <div className="pdp-benefit">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Envío gratis</span>
+              </div>
+            )}
+            {product.returns && (
+              <div className="pdp-benefit">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A1A1A" strokeWidth="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                <span>Aplica devoluciones</span>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -234,16 +248,30 @@ const ProductDetailsPage = () => {
 const ProductTabs = ({ product }) => {
   const [tab, setTab] = useState("desc");
 
-  const specs = product.specs || {};
-  const specRows = [
-    { label: "Ancho",              value: specs.width     ? `${specs.width} mm`       : null },
-    { label: "Perfil",             value: specs.height    ? `${specs.height}%`         : null },
-    { label: "Rin",                value: specs.rim       ? `${specs.rim}"`            : null },
-    { label: "Índice de Carga",    value: specs.loadIndex || null },
-    { label: "Índice de Velocidad",value: specs.speedIndex || null },
-    { label: "Tipo de Terreno",    value: specs.terrain   || null },
-    { label: "Categoría",          value: specs.category  || null },
-  ].filter((r) => r.value);
+  // Producto real: medidas, modelo y especificaciones técnicas (lo que no aplica se oculta)
+  const specRows = Array.isArray(product.specs)
+    ? [
+        { label: "Tipo de producto",  value: product.category || null },
+        { label: "Modelo",            value: product.model || null },
+        { label: "Tipo de uso",       value: product.modelUse ? `${product.modelUse.codigo} — ${product.modelUse.descripcion}` : null },
+        { label: "Ancho",             value: product.width  != null ? `${product.width} mm` : null },
+        { label: "Alto",              value: product.height != null ? `${product.height}%` : null },
+        { label: "Aro",               value: product.rim    != null ? `${product.rim}"` : null },
+        ...product.specs.map((spec) => ({ label: spec.name, value: spec.value, icon: spec.icon })),
+        { label: "Garantía",          value: product.warranty ? "Sí" : null },
+      ].filter((r) => r.value)
+    : (() => {
+        const specs = product.specs || {};
+        return [
+          { label: "Ancho",              value: specs.width     ? `${specs.width} mm`       : null },
+          { label: "Perfil",             value: specs.height    ? `${specs.height}%`         : null },
+          { label: "Rin",                value: specs.rim       ? `${specs.rim}"`            : null },
+          { label: "Índice de Carga",    value: specs.loadIndex || null },
+          { label: "Índice de Velocidad",value: specs.speedIndex || null },
+          { label: "Tipo de Terreno",    value: specs.terrain   || null },
+          { label: "Categoría",          value: specs.category  || null },
+        ].filter((r) => r.value);
+      })();
 
   return (
     <div className="pdp-tabs">
@@ -265,7 +293,12 @@ const ProductTabs = ({ product }) => {
               <tbody>
                 {specRows.map((row) => (
                   <tr key={row.label}>
-                    <td>{row.label}</td>
+                    <td>
+                      {row.icon && (
+                        <img src={row.icon} alt="" style={{ width: 14, height: 14, objectFit: "contain", marginRight: 6, verticalAlign: "middle" }} />
+                      )}
+                      {row.label}
+                    </td>
                     <td>{row.value}</td>
                   </tr>
                 ))}

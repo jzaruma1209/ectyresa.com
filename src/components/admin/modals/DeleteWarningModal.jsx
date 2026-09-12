@@ -7,6 +7,7 @@ export function DeleteWarningModal({
   title,
   message,
   warningText,
+  confirmText = "Eliminar Definitivamente",
 }) {
   if (!isOpen) return null;
 
@@ -52,7 +53,7 @@ export function DeleteWarningModal({
             className="inline-flex items-center gap-1.5 rounded-md bg-destructive px-4 py-2 text-xs font-medium text-destructive-foreground shadow-xs hover:bg-destructive/90 transition-colors"
           >
             <Trash2 className="size-3.5" />
-            Eliminar Definitivamente
+            {confirmText}
           </button>
         </div>
       </div>

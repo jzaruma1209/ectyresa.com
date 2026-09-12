@@ -21,7 +21,9 @@ const getOrCreateSesionId = () => {
   return sesionId;
 };
 
-// Agrega el sesionId como query param si el usuario NO está logueado
+// Agrega el sesionId como query param si el usuario NO está logueado.
+// El backend lee sesionId de req.query en TODAS las rutas del carrito
+// (incluida /agregar), así que siempre debe viajar por query, nunca por body.
 const buildParams = () => {
   const token = localStorage.getItem(STORAGE_KEYS.TOKEN);
   if (token) return {}; // el JWT se inyecta automáticamente por el interceptor
@@ -29,33 +31,38 @@ const buildParams = () => {
 };
 
 // ── Mapeo de la respuesta del backend al formato que usa el frontend ──────────
-// El backend devuelve items con { idItem, idLlanta, cantidad, llanta: {...}, precioUnitario }
-// El frontend espera items con { productId, quantity, product: { id, name, price, ... } }
+// El backend devuelve GET/POST/PUT/DELETE de carrito como:
+//   { data: { carrito: { idCarrito, items: [...] }, resumen: {...} } }
+// Cada item trae: { idItem, idProducto, cantidad, precioUnitario,
+//   producto: { idProducto, nombre, precio, precioAnterior, stock, activo,
+//               imagenes: [...], marca: { nombre }, modelo, medidas: { texto } } }
+// El frontend espera items con { cartItemId, productId, quantity, product: {...} }
 
-const mapItemFromBackend = (item) => ({
-  // El ID interno del item en el carrito (para actualizar/eliminar)
-  cartItemId: item.idItem,
-  // productId = idLlanta (Regla RG-6)
-  productId: item.idLlanta ?? item.llanta?.idLlanta,
-  quantity: item.cantidad,
-  product: {
-    id: item.idLlanta ?? item.llanta?.idLlanta,
-    name: item.llanta?.modelo || 'Llanta',
-    brand: item.llanta?.marca?.nombre || '',
-    measure: item.llanta
-      ? `${item.llanta.ancho}/${item.llanta.perfil}R${item.llanta.rin}`
-      : '',
-    price: parseFloat(item.precioUnitario || item.llanta?.precio || 0),
-    finalPrice: parseFloat(item.precioUnitario || item.llanta?.precioOferta || item.llanta?.precio || 0),
-    image: item.llanta?.imagenes?.[0]?.urlImagen || null,
-    stock: item.llanta?.stock || 0,
-    inStock: (item.llanta?.stock || 0) > 0,
-  },
-});
+const mapItemFromBackend = (item) => {
+  const producto = item.producto || {};
+  return {
+    // El ID interno del item en el carrito (para actualizar/eliminar)
+    cartItemId: item.idItem,
+    productId: item.idProducto ?? producto.idProducto,
+    quantity: item.cantidad,
+    product: {
+      id: item.idProducto ?? producto.idProducto,
+      name: producto.nombre || 'Producto',
+      brand: producto.marca?.nombre || '',
+      measure: producto.medidas?.texto || '',
+      price: parseFloat(item.precioUnitario ?? producto.precio ?? 0),
+      finalPrice: parseFloat(item.precioUnitario ?? producto.precio ?? 0),
+      image: producto.imagenes?.[0]?.urlImagen || null,
+      stock: producto.stock ?? 0,
+      inStock: (producto.stock ?? 0) > 0,
+    },
+  };
+};
 
 const mapCartFromBackend = (data) => {
-  const items = (data.items || []).map(mapItemFromBackend);
-  const resumen = data.resumen || {};
+  // El backend anida los items en data.carrito.items, no en data.items directamente.
+  const items = (data?.carrito?.items || data?.items || []).map(mapItemFromBackend);
+  const resumen = data?.resumen || {};
   return {
     items,
     // Totales vienen del backend (Regla 4.6)
@@ -80,13 +87,14 @@ export const carritoService = {
 
   /**
    * Agrega un item al carrito.
-   * POST /carrito/agregar  — body: { idLlanta, cantidad }
-   * El campo que el backend espera es 'idLlanta', no 'productId' (Regla 4.3).
+   * POST /carrito/agregar?sesionId=...  — body: { idProducto, cantidad }
+   * El backend espera 'idProducto' (id de la fila en la tabla productos,
+   * NO el idLlanta) y el sesionId siempre por query string.
    */
-  agregarItem: async (idLlanta, cantidad = 1) => {
+  agregarItem: async (idProducto, cantidad = 1) => {
     const response = await api.post(
       '/carrito/agregar',
-      { idLlanta, cantidad },
+      { idProducto, cantidad },
       { params: buildParams() }
     );
     return mapCartFromBackend(response.data.data);
@@ -95,7 +103,7 @@ export const carritoService = {
   /**
    * Actualiza la cantidad de un item del carrito.
    * PUT /carrito/actualizar/:id  — body: { cantidad }
-   * El :id es el idItem del item en el carrito (no el idLlanta).
+   * El :id es el idItem del item en el carrito (no el idProducto).
    */
   actualizarItem: async (idItem, cantidad) => {
     const response = await api.put(
