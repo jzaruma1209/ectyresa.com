@@ -32,20 +32,8 @@ const BrandSection = ({ brand, products }) => {
 
         {/* ── GRID DE CARDS ── */}
         <div className="brand-cards-scroll">
-          {products.map((product, i) => (
-            <TireCard
-              key={i}
-              product={{
-                ...product,
-                id: product.id,           // ← ID para el enlace a la PDP
-                name: product.title,
-                price: product.price,
-                image: product.image
-              }}
-              brandLogoSrc={brand.logo}
-              sashSrc={null}
-              pvp={product.originalPrice || undefined}
-            />
+          {products.map((product) => (
+            <TireCard key={product.id} product={product} brandLogoSrc={brand.logo} />
           ))}
         </div>
       </div>
@@ -62,15 +50,13 @@ BrandSection.propTypes = {
   }).isRequired,
   products: PropTypes.arrayOf(
     PropTypes.shape({
-      image: PropTypes.string.isRequired,
-      title: PropTypes.string.isRequired,
+      id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+      image: PropTypes.string,
+      name: PropTypes.string,
       model: PropTypes.string,
       measure: PropTypes.string,
       description: PropTypes.string,
-      price: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
-        .isRequired,
-      originalPrice: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-      badge: PropTypes.string,
+      price: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     })
   ).isRequired,
 };

@@ -59,6 +59,7 @@ const nivelesService = {
   eliminarTipoProducto: (id) => api.delete(`/catalogos/tipos-producto/${id}`).then(datos),
 
   // ─── Marcas (logo y banner opcionales como archivo) ─────────
+  listarMarcas: (params = {}) => api.get('/catalogos/marcas', { params }).then(datos),
   crearMarca: (data, { logo, banner } = {}) => enviar('post', '/catalogos/marcas', data, { logo, banner }),
   actualizarMarca: (id, data, { logo, banner } = {}) =>
     enviar('put', `/catalogos/marcas/${id}`, data, { logo, banner }),

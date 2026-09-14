@@ -7,8 +7,26 @@ import HeroSearchOptions from "../../components/products/HeroSearchOptions";
 import MainSearchBox from "../../components/products/MainSearchBox";
 import HeroRightColumn from "../../components/products/HeroRightColumn";
 import BrandSection from "../../components/products/BrandSection";
-import { BRAND_SECTIONS } from "../../data/brandsMockData";
+import productsService from "../../services/products.service";
 import "../styles/HomePage.css";
+
+// Agrupa el catálogo real por marca. Solo se muestran marcas con logo
+// (las que lo requieren, ej. Llantas) para que la sección se vea igual
+// que el diseño original.
+const agruparPorMarca = (productos) => {
+  const grupos = new Map();
+  productos.forEach((producto) => {
+    if (!producto.brand || !producto.brandLogo) return;
+    if (!grupos.has(producto.brand)) {
+      grupos.set(producto.brand, {
+        brand: { name: producto.brand, tagline: "", logo: producto.brandLogo },
+        products: [],
+      });
+    }
+    grupos.get(producto.brand).products.push(producto);
+  });
+  return Array.from(grupos.values());
+};
 
 const heroBgColors = {
   auto: "#FFFFFF",
@@ -30,6 +48,22 @@ const HomePage = () => {
   const [welcomeToast, setWelcomeToast] = useState(
     location.state?.welcomeMessage || null
   );
+  const [brandSections, setBrandSections] = useState([]);
+
+  useEffect(() => {
+    let cancelado = false;
+    productsService
+      .getAllProducts()
+      .then((productos) => {
+        if (!cancelado) setBrandSections(agruparPorMarca(productos));
+      })
+      .catch(() => {
+        if (!cancelado) setBrandSections([]);
+      });
+    return () => {
+      cancelado = true;
+    };
+  }, []);
 
   const heroBg = heroBgColors[activeVehicle] ?? "#FFFFFF";
   const heroAccent = heroAccentColors[activeVehicle] ?? "#E60000";
@@ -117,9 +151,9 @@ const HomePage = () => {
 
       {/* ── SECCIONES POR MARCA ── */}
       <div className="brands-sections-wrapper">
-        {BRAND_SECTIONS.map((section, idx) => (
+        {brandSections.map((section) => (
           <BrandSection
-            key={idx}
+            key={section.brand.name}
             brand={section.brand}
             products={section.products}
           />

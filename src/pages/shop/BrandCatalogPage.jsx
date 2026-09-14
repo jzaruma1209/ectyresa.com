@@ -1,16 +1,49 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useParams, Navigate } from 'react-router-dom';
-import { BRAND_SECTIONS } from '../../data/brandsMockData';
 import TireCard from '../../components/products/TireCard';
+import nivelesService from '../../services/niveles.service';
+import productsService from '../../services/products.service';
 import './BrandCatalogPage.css';
 
 const BrandCatalogPage = () => {
   const { brandId } = useParams();
 
-  // Buscar la marca en los datos mockeados
-  const sectionData = BRAND_SECTIONS.find(
-    (sec) => sec.brand.name.toLowerCase() === brandId.toLowerCase()
-  );
+  const [marca, setMarca] = useState(null);
+  const [productos, setProductos] = useState([]);
+  const [cargando, setCargando] = useState(true);
+  const [noEncontrada, setNoEncontrada] = useState(false);
+
+  // Buscar la marca real por nombre (slug de la URL) y traer sus productos
+  useEffect(() => {
+    let cancelado = false;
+    setCargando(true);
+    setNoEncontrada(false);
+
+    (async () => {
+      try {
+        const marcas = await nivelesService.listarMarcas();
+        const encontrada = (marcas || []).find(
+          (m) => m.nombre.toLowerCase() === brandId.toLowerCase()
+        );
+        if (!encontrada) {
+          if (!cancelado) setNoEncontrada(true);
+          return;
+        }
+        if (cancelado) return;
+        setMarca(encontrada);
+        const productosMarca = await productsService.getAllProducts({ idMarca: encontrada.idMarca });
+        if (!cancelado) setProductos(productosMarca);
+      } catch {
+        if (!cancelado) setNoEncontrada(true);
+      } finally {
+        if (!cancelado) setCargando(false);
+      }
+    })();
+
+    return () => {
+      cancelado = true;
+    };
+  }, [brandId]);
 
   // Estados de los filtros
   const [filters, setFilters] = useState({
@@ -28,59 +61,35 @@ const BrandCatalogPage = () => {
     }));
   };
 
-  // Filtrado reactivo de productos
+  // Filtrado reactivo de productos (usa los campos numéricos ya mapeados por la API)
   const filteredProducts = useMemo(() => {
-    if (!sectionData) return [];
-    
-    return sectionData.products.filter(product => {
-      // Precio Max
-      if (filters.precioMax && parseFloat(product.price) > parseFloat(filters.precioMax)) {
+    return productos.filter((product) => {
+      if (filters.precioMax && (product.finalPrice ?? 0) > parseFloat(filters.precioMax)) {
         return false;
       }
-      
-      // Parsear medida "205/55R16" o similar -> ancho, alto, aro
-      // Este regex básico asume formato NNN/NN(R/D)NN 
-      const measureRegex = /(\d+)\/(\d+)[A-Za-z]+(\d+\.?\d*)/;
-      const match = product.measure.match(measureRegex);
-      
-      let pAncho = "", pAlto = "", pAro = "";
-      
-      if (match) {
-        pAncho = match[1];
-        pAlto = match[2];
-        pAro = match[3];
-      } else {
-        // Fallback básico para formatos no estándar buscando strings
-        pAncho = product.measure;
-        pAlto = product.measure;
-        pAro = product.measure;
-      }
-
-      // Filtro Ancho
-      if (filters.ancho && !pAncho.includes(filters.ancho)) {
+      if (filters.ancho && !String(product.width ?? '').includes(filters.ancho)) {
         return false;
       }
-      
-      // Filtro Alto
-      if (filters.alto && !pAlto.includes(filters.alto)) {
+      if (filters.alto && !String(product.height ?? '').includes(filters.alto)) {
         return false;
       }
-      
-      // Filtro Aro
-      if (filters.aro && !pAro.includes(filters.aro)) {
+      if (filters.aro && !String(product.rim ?? '').includes(filters.aro)) {
         return false;
       }
-
       return true;
     });
-  }, [sectionData, filters]);
+  }, [productos, filters]);
 
-  // Si no se encuentra la marca, redirigir al inicio o a 404
-  if (!sectionData) {
+  if (cargando) {
+    return <div className="brand-catalog-page">Cargando...</div>;
+  }
+
+  // Si no se encuentra la marca, redirigir a 404
+  if (noEncontrada || !marca) {
     return <Navigate to="/not-found" />;
   }
 
-  const { brand } = sectionData;
+  const brand = { name: marca.nombre, tagline: marca.paisOrigen ? `Origen: ${marca.paisOrigen}` : '', logo: marca.logoUrl };
 
   return (
     <div className="brand-catalog-page">
@@ -154,19 +163,7 @@ const BrandCatalogPage = () => {
         <div className="brand-catalog-grid">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <TireCard
-                key={product.id}
-                product={{
-                  ...product,
-                  id: product.id,
-                  name: product.title,
-                  price: product.price,
-                  image: product.image
-                }}
-                brandLogoSrc={brand.logo}
-                sashSrc={null}
-                pvp={product.originalPrice || undefined}
-              />
+              <TireCard key={product.id} product={product} brandLogoSrc={brand.logo} />
             ))
           ) : (
             <div className="no-results">
