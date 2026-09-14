@@ -1,9 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useProducts } from "../../hooks/useProducts";
 import ProductGrid from "../../components/products/ProductGrid";
+import SearchFilters from "../../components/products/SearchFilters";
+import "../../components/products/SearchFilters.css";
 import { SkeletonGrid } from "../../components/shared/SkeletonCard";
 import "../styles/SearchResultsPage.css";
+
+const DEFAULT_FILTERS = { brand: "all", category: "all", maxPrice: null };
+
+const applyFilters = (products, filters) => {
+  return products.filter((p) => {
+    if (filters.brand !== "all" && p.brand !== filters.brand) return false;
+    if (filters.category !== "all" && p.category !== filters.category) return false;
+    if (filters.maxPrice !== null && (p.finalPrice ?? p.price ?? 0) > filters.maxPrice) return false;
+    return true;
+  });
+};
 
 const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
@@ -13,6 +26,7 @@ const SearchResultsPage = () => {
   const [resultados, setResultados] = useState([]);
   const [recomendaciones, setRecomendaciones] = useState([]);
   const [hasSearched, setHasSearched] = useState(false);
+  const [filters, setFilters] = useState(DEFAULT_FILTERS);
 
   useEffect(() => {
     let isMounted = true;
@@ -32,6 +46,7 @@ const SearchResultsPage = () => {
         setResultados(data?.resultados || []);
         setRecomendaciones(data?.recomendaciones || []);
         setHasSearched(true);
+        setFilters(DEFAULT_FILTERS);
       }
     };
 
@@ -41,6 +56,11 @@ const SearchResultsPage = () => {
       isMounted = false;
     };
   }, [query, buscarGeneral]);
+
+  const resultadosFiltrados = useMemo(
+    () => applyFilters(resultados, filters),
+    [resultados, filters]
+  );
 
   return (
     <div className="search-results-page">
@@ -56,7 +76,11 @@ const SearchResultsPage = () => {
             <h2>Resultados Encontrados</h2>
             <div className="search-results-info">
               {resultados.length > 0 ? (
-                <p>Se encontraron {resultados.length} productos que coinciden con tu búsqueda.</p>
+                <p>
+                  Se encontraron {resultados.length} productos que coinciden con tu búsqueda
+                  {resultadosFiltrados.length !== resultados.length &&
+                    ` (${resultadosFiltrados.length} con los filtros aplicados)`}.
+                </p>
               ) : (
                 <div className="no-results-banner">
                   <span className="no-results-icon">🔍</span>
@@ -65,9 +89,21 @@ const SearchResultsPage = () => {
                 </div>
               )}
             </div>
-            
+
             {resultados.length > 0 && (
-              <ProductGrid products={resultados} />
+              <div className="search-results-layout">
+                <SearchFilters
+                  products={resultados}
+                  filters={filters}
+                  onChange={setFilters}
+                  onClear={() => setFilters(DEFAULT_FILTERS)}
+                />
+                {resultadosFiltrados.length > 0 ? (
+                  <ProductGrid products={resultadosFiltrados} />
+                ) : (
+                  <p className="search-filters-empty">Ningún producto coincide con los filtros seleccionados.</p>
+                )}
+              </div>
             )}
           </div>
 

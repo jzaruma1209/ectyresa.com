@@ -10,6 +10,7 @@ import ScrollToTop from "../components/shared/ScrollToTop";
 import AuthModal from "../components/Auth/AuthModal";
 import CartToast from "../components/cart/CartToast";
 import AdminRoute from "../components/shared/AdminRoute";
+import FloatingContactButtons from "../components/shared/FloatingContactButtons";
 
 // ── Shop pages — lazy loaded ──
 const HomePage           = lazy(() => import("../pages/shop/HomePage"));
@@ -44,6 +45,7 @@ function PublicLayout() {
         </Suspense>
       </main>
       <Footer />
+      <FloatingContactButtons />
     </div>
   );
 }
