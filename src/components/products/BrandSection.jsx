@@ -12,15 +12,20 @@ const BrandSection = ({ brand, products }) => {
       <div className="brand-section-inner">
         {/* ── HEADER IZQUIERDO ── */}
         <div className="brand-section-header">
-          <div className="brand-logo-wrapper">
-            <img
-              src={brand.logo}
-              alt={brand.name}
-              className="brand-logo-img"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
+          {brand.logo && (
+            <div className="brand-logo-wrapper">
+              <img
+                src={brand.logo}
+                alt={brand.name}
+                className="brand-logo-img"
+                loading="lazy"
+                decoding="async"
+                onError={(e) => {
+                  e.target.style.display = "none";
+                }}
+              />
+            </div>
+          )}
           <div className="brand-meta">
             <h2 className="brand-section-title">{brand.name}</h2>
             <p className="brand-section-tagline">{brand.tagline}</p>

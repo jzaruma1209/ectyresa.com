@@ -10,13 +10,12 @@ import BrandSection from "../../components/products/BrandSection";
 import productsService from "../../services/products.service";
 import "../styles/HomePage.css";
 
-// Agrupa el catálogo real por marca. Solo se muestran marcas con logo
-// (las que lo requieren, ej. Llantas) para que la sección se vea igual
-// que el diseño original.
+// Agrupa el catálogo real por marca. Si la marca no tiene logo configurado
+// se muestra igual (sin logo) para no ocultar productos por ese motivo.
 const agruparPorMarca = (productos) => {
   const grupos = new Map();
   productos.forEach((producto) => {
-    if (!producto.brand || !producto.brandLogo) return;
+    if (!producto.brand) return;
     if (!grupos.has(producto.brand)) {
       grupos.set(producto.brand, {
         brand: { name: producto.brand, tagline: "", logo: producto.brandLogo },
