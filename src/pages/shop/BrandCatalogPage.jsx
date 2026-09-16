@@ -89,13 +89,13 @@ const BrandCatalogPage = () => {
     return <Navigate to="/not-found" />;
   }
 
-  const brand = { name: marca.nombre, tagline: marca.paisOrigen ? `Origen: ${marca.paisOrigen}` : '', logo: marca.logoUrl };
+  const brand = { name: marca.nombre, tagline: marca.paisOrigen ? `Origen: ${marca.paisOrigen}` : '', logo: marca.logoUrl, banner: marca.bannerUrl };
 
   return (
     <div className="brand-catalog-page">
       <div className="brand-catalog-header">
         <img 
-          src={brand.logo} 
+          src={brand.logo || brand.banner} 
           alt={brand.name} 
           className="brand-catalog-logo" 
         />
@@ -163,7 +163,7 @@ const BrandCatalogPage = () => {
         <div className="brand-catalog-grid">
           {filteredProducts.length > 0 ? (
             filteredProducts.map((product) => (
-              <TireCard key={product.id} product={product} brandLogoSrc={brand.logo} />
+              <TireCard key={product.id} product={product} brandLogoSrc={brand.logo} brandBannerSrc={brand.banner} />
             ))
           ) : (
             <div className="no-results">

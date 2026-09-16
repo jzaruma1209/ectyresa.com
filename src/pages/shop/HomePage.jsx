@@ -18,7 +18,7 @@ const agruparPorMarca = (productos) => {
     if (!producto.brand) return;
     if (!grupos.has(producto.brand)) {
       grupos.set(producto.brand, {
-        brand: { name: producto.brand, tagline: "", logo: producto.brandLogo },
+        brand: { name: producto.brand, tagline: "", logo: producto.brandLogo, banner: producto.brandBanner },
         products: [],
       });
     }

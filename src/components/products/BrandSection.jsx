@@ -12,10 +12,10 @@ const BrandSection = ({ brand, products }) => {
       <div className="brand-section-inner">
         {/* ── HEADER IZQUIERDO ── */}
         <div className="brand-section-header">
-          {brand.logo && (
+          {(brand.logo || brand.banner) && (
             <div className="brand-logo-wrapper">
               <img
-                src={brand.logo}
+                src={brand.logo || brand.banner}
                 alt={brand.name}
                 className="brand-logo-img"
                 loading="lazy"
@@ -29,7 +29,7 @@ const BrandSection = ({ brand, products }) => {
           <div className="brand-meta">
             <h2 className="brand-section-title">{brand.name}</h2>
             <p className="brand-section-tagline">{brand.tagline}</p>
-            <Link to={`/brand/${brand.name.toLowerCase()}`} className="brand-see-all-btn">
+            <Link to={`/brand/${(brand?.name || '').toLowerCase()}`} className="brand-see-all-btn">
               Ver todos →
             </Link>
           </div>
@@ -38,7 +38,12 @@ const BrandSection = ({ brand, products }) => {
         {/* ── GRID DE CARDS ── */}
         <div className="brand-cards-scroll">
           {products.map((product) => (
-            <TireCard key={product.id} product={product} brandLogoSrc={brand.logo} />
+            <TireCard
+              key={product.id}
+              product={product}
+              brandLogoSrc={brand.logo}
+              brandBannerSrc={brand.banner}
+            />
           ))}
         </div>
       </div>

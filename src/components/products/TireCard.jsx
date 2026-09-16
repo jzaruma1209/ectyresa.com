@@ -10,6 +10,7 @@ const TireCard = ({
   product,         // Objeto principal de la tarjeta actual (Tire)
   sashSrc,         // Banner promocional top (Opcional)
   brandLogoSrc,    // Logo de la marca (Opcional)
+  brandBannerSrc,  // Banner de la marca (Opcional)
   tireSrc,         // Foto específica (Opcional, hace fallback a product.image)
   terrainType,     // "AT", "MT", "LT" (Opcional)
   specs,           // { wet: 0, dry: 0, noise: "109S" } (Opcional)
@@ -27,7 +28,9 @@ const TireCard = ({
   // ----------------------------------------------------
   const altImage = (product?.name?.length || 0) % 2 === 0 ? "/llanta1.png" : "/llanta2.png";
   const finalTireSrc = tireSrc || product?.image || altImage;
+  const finalBrandBanner = brandBannerSrc || product?.brandBanner || null;
   const finalBrandLogo = brandLogoSrc || product?.brandLogo || null;
+  const finalBrandDisplay = finalBrandBanner || finalBrandLogo;
   const finalSash = sashSrc ?? product?.sash ?? null;
 
   // 2. Especificaciones de Terreno y Físicas
@@ -170,10 +173,10 @@ const TireCard = ({
         <img src={finalSash} alt="Promoción" className="block h-9 w-full object-cover" loading="lazy" decoding="async" />
       )}
 
-      {/* --- LOGO DE MARCA --- */}
+      {/* --- BANNER / LOGO DE MARCA --- */}
       <div className="flex justify-center px-3 pb-1.5 pt-3">
-        {finalBrandLogo ? (
-          <img src={finalBrandLogo} alt={product?.brand || "Marca"} className="h-7 object-contain" loading="lazy" decoding="async" />
+        {finalBrandDisplay ? (
+          <img src={finalBrandDisplay} alt={product?.brand || "Marca"} className="h-8 max-w-[90%] object-contain" loading="lazy" decoding="async" />
         ) : (
           <span className="text-[11px] font-black uppercase tracking-wide text-gray-500">
             {product?.brand || "MARCA C.A."}

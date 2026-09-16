@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { X, Plus, Pencil, Trash2, Upload, ImageIcon, AlertTriangle } from "lucide-react";
+import { X, Plus, Pencil, Trash2, Upload, ImageIcon, AlertTriangle, Eye } from "lucide-react";
 
 /* Piezas visuales compartidas por las secciones de Niveles de Inventario.
    Usan las mismas clases (colores, tipografía, bordes) del resto del panel admin. */
@@ -47,9 +47,20 @@ export function Codigo({ children }) {
   );
 }
 
-export function AccionesTarjeta({ onEditar, onEliminar }) {
+export function AccionesTarjeta({ onEditar, onEliminar, onVer }) {
   return (
     <div className="mt-4 flex items-center justify-end gap-1.5 border-t border-border/50 pt-2.5">
+      {onVer && (
+        <button
+          type="button"
+          onClick={onVer}
+          className="inline-flex items-center gap-1 rounded-md border border-border bg-muted/40 px-2 py-1 text-[11px] font-medium text-foreground hover:bg-muted transition-colors cursor-pointer"
+          title="Ver imágenes y copiar URLs"
+        >
+          <Eye className="size-3 text-sky-400" />
+          <span>Ver</span>
+        </button>
+      )}
       <button
         type="button"
         onClick={onEditar}

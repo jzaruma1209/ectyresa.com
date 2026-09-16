@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { AlertTriangle, Globe, Layers } from "lucide-react";
+import { AlertTriangle, Globe, Layers, Copy, Check, ExternalLink, X } from "lucide-react";
 import nivelesService, { mensajeError } from "@/services/niveles.service";
 import {
   AccionesTarjeta,
@@ -24,6 +24,28 @@ export function MarcasPanel({ marcas, tipos, recargar, notificar }) {
   const [banner, setBanner] = useState(SIN_IMAGEN);
   const [guardando, setGuardando] = useState(false);
   const [error, setError] = useState(null);
+  const [verMarca, setVerMarca] = useState(null);
+  const [copiedKey, setCopiedKey] = useState(null);
+
+  const handleCopiar = async (url, key) => {
+    if (!url) return;
+    try {
+      if (navigator?.clipboard?.writeText) {
+        await navigator.clipboard.writeText(url);
+      } else {
+        const tempInput = document.createElement("textarea");
+        tempInput.value = url;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand("copy");
+        document.body.removeChild(tempInput);
+      }
+      setCopiedKey(key);
+      setTimeout(() => setCopiedKey(null), 2000);
+    } catch (err) {
+      console.error("Error copiando URL:", err);
+    }
+  };
 
   const tipoPorId = useMemo(() => new Map(tipos.map((t) => [t.idTipoProducto, t])), [tipos]);
   const filtradas = filtroTipo === "TODOS" ? marcas : marcas.filter((m) => m.idTipoProducto === Number(filtroTipo));
@@ -185,7 +207,7 @@ export function MarcasPanel({ marcas, tipos, recargar, notificar }) {
                     </p>
                   )}
                 </div>
-                <AccionesTarjeta onEditar={() => abrir(marca)} onEliminar={() => eliminar(marca)} />
+                <AccionesTarjeta onVer={() => setVerMarca(marca)} onEditar={() => abrir(marca)} onEliminar={() => eliminar(marca)} />
               </div>
             );
           })}
@@ -265,6 +287,180 @@ export function MarcasPanel({ marcas, tipos, recargar, notificar }) {
           Activa (disponible al crear productos)
         </Interruptor>
       </ModalNivel>
+
+      {/* ── Modal Ver Imágenes y Copiar URLs ── */}
+      {verMarca && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xs animate-in fade-in"
+          onClick={() => setVerMarca(null)}
+        >
+          <div
+            className="relative w-full max-w-xl bg-card rounded-2xl border border-border p-6 shadow-2xl overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between pb-4 border-b border-border">
+              <div className="flex items-center gap-2.5">
+                <div className="flex size-9 items-center justify-center rounded-lg bg-sky-500/10 text-sky-400 border border-sky-500/20 font-bold text-xs uppercase">
+                  {verMarca.nombre.slice(0, 2)}
+                </div>
+                <div>
+                  <h3 className="text-base font-bold text-foreground">Imágenes de {verMarca.nombre}</h3>
+                  <p className="text-xs text-muted-foreground">Visualiza y copia las URLs de los recursos multimedia de la marca</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setVerMarca(null)}
+                className="size-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors cursor-pointer"
+                title="Cerrar"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
+
+            {/* Contenido de imágenes */}
+            <div className="mt-5 space-y-5">
+              {/* 1. LOGO */}
+              <div className="rounded-xl border border-border/70 bg-muted/20 p-4">
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-xs font-bold text-foreground uppercase tracking-wide">Logo de la marca</span>
+                  {verMarca.logoUrl && (
+                    <a
+                      href={verMarca.logoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] font-medium text-sky-400 hover:underline"
+                    >
+                      <ExternalLink className="size-3" />
+                      <span>Abrir original</span>
+                    </a>
+                  )}
+                </div>
+
+                {verMarca.logoUrl ? (
+                  <>
+                    <div className="flex h-20 w-full items-center justify-center rounded-lg bg-black/30 p-2 border border-border/40 mb-3">
+                      <img
+                        src={verMarca.logoUrl}
+                        alt={`Logo ${verMarca.nombre}`}
+                        className="max-h-16 max-w-full object-contain"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        readOnly
+                        value={verMarca.logoUrl}
+                        className="h-8 flex-1 rounded-lg border border-border bg-background px-2.5 text-[11px] font-mono text-muted-foreground select-all focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleCopiar(verMarca.logoUrl, "logo")}
+                        className={`h-8 px-3 rounded-lg flex items-center gap-1.5 text-xs font-semibold transition-all cursor-pointer ${
+                          copiedKey === "logo"
+                            ? "bg-emerald-500 text-white shadow-xs"
+                            : "border border-border bg-muted/60 hover:bg-muted text-foreground"
+                        }`}
+                      >
+                        {copiedKey === "logo" ? (
+                          <>
+                            <Check className="size-3.5" />
+                            <span>¡Copiado!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="size-3.5 text-muted-foreground" />
+                            <span>Copiar URL</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-xs text-amber-400/90 italic flex items-center gap-1.5 py-2">
+                    <AlertTriangle className="size-3.5" /> Esta marca no tiene logo asignado.
+                  </p>
+                )}
+              </div>
+
+              {/* 2. BANNER */}
+              <div className="rounded-xl border border-border/70 bg-muted/20 p-4">
+                <div className="flex items-center justify-between mb-2.5">
+                  <span className="text-xs font-bold text-foreground uppercase tracking-wide">Banner de la marca</span>
+                  {verMarca.bannerUrl && (
+                    <a
+                      href={verMarca.bannerUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[11px] font-medium text-sky-400 hover:underline"
+                    >
+                      <ExternalLink className="size-3" />
+                      <span>Abrir original</span>
+                    </a>
+                  )}
+                </div>
+
+                {verMarca.bannerUrl ? (
+                  <>
+                    <div className="h-16 w-full overflow-hidden rounded-lg border border-border/40 mb-3 bg-black/30 flex items-center justify-center">
+                      <img
+                        src={verMarca.bannerUrl}
+                        alt={`Banner ${verMarca.nombre}`}
+                        className="h-full w-full object-cover"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <input
+                        type="text"
+                        readOnly
+                        value={verMarca.bannerUrl}
+                        className="h-8 flex-1 rounded-lg border border-border bg-background px-2.5 text-[11px] font-mono text-muted-foreground select-all focus:outline-none"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => handleCopiar(verMarca.bannerUrl, "banner")}
+                        className={`h-8 px-3 rounded-lg flex items-center gap-1.5 text-xs font-semibold transition-all cursor-pointer ${
+                          copiedKey === "banner"
+                            ? "bg-emerald-500 text-white shadow-xs"
+                            : "border border-border bg-muted/60 hover:bg-muted text-foreground"
+                        }`}
+                      >
+                        {copiedKey === "banner" ? (
+                          <>
+                            <Check className="size-3.5" />
+                            <span>¡Copiado!</span>
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="size-3.5 text-muted-foreground" />
+                            <span>Copiar URL</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-xs text-amber-400/90 italic flex items-center gap-1.5 py-2">
+                    <AlertTriangle className="size-3.5" /> Esta marca no tiene banner asignado.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="mt-6 flex justify-end">
+              <button
+                type="button"
+                onClick={() => setVerMarca(null)}
+                className="h-9 px-4 rounded-lg bg-muted text-foreground text-xs font-semibold hover:bg-muted/80 transition-colors cursor-pointer"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
