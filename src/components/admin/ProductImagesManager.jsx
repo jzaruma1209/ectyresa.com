@@ -11,6 +11,59 @@ const nuevaClave = () => `nueva-${Date.now()}-${contador++}`;
  * imagenes: [{ clave, idImagen?, url, archivo? }]  — con archivo = foto nueva aún no subida
  * principal: clave de la foto principal (si es null, la primera se toma como principal)
  */
+// Comprime y optimiza imágenes grandes en el navegador para evitar exceder el límite de Vercel (4.5MB)
+const comprimirImagen = async (archivo, maxDim = 1600, calidad = 0.85) => {
+  if (!archivo.type.startsWith("image/") || archivo.type === "image/svg+xml" || archivo.type === "image/gif") {
+    return archivo;
+  }
+  // Si pesa menos de 800 KB no es necesario comprimir
+  if (archivo.size <= 800 * 1024) {
+    return archivo;
+  }
+  return new Promise((resolve) => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(archivo);
+    img.onload = () => {
+      URL.revokeObjectURL(objectUrl);
+      let { width, height } = img;
+      if (width > maxDim || height > maxDim) {
+        if (width > height) {
+          height = Math.round((height * maxDim) / width);
+          width = maxDim;
+        } else {
+          width = Math.round((width * maxDim) / height);
+          height = maxDim;
+        }
+      }
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, width, height);
+      canvas.toBlob(
+        (blob) => {
+          if (!blob || blob.size >= archivo.size) {
+            resolve(archivo);
+          } else {
+            const nuevoArchivo = new File([blob], archivo.name.replace(/\.[^.]+$/, ".webp"), {
+              type: "image/webp",
+              lastModified: Date.now(),
+            });
+            resolve(nuevoArchivo);
+          }
+        },
+        "image/webp",
+        calidad
+      );
+    };
+    img.onerror = () => {
+      URL.revokeObjectURL(objectUrl);
+      resolve(archivo);
+    };
+    img.src = objectUrl;
+  });
+};
+
 export default function ProductImagesManager({ imagenes, principal, onChange, disabled = false }) {
   const [arrastrando, setArrastrando] = useState(false);
   const [aviso, setAviso] = useState(null);
@@ -18,7 +71,7 @@ export default function ProductImagesManager({ imagenes, principal, onChange, di
   const principalEfectiva = imagenes.some((img) => img.clave === principal) ? principal : imagenes[0]?.clave;
   const disponibles = MAX_IMAGENES - imagenes.length;
 
-  const agregar = (lista) => {
+  const agregar = async (lista) => {
     const archivos = Array.from(lista || []).filter((f) => f.type.startsWith("image/"));
     if (archivos.length === 0) return;
     if (archivos.length > disponibles) {
@@ -26,7 +79,10 @@ export default function ProductImagesManager({ imagenes, principal, onChange, di
     } else {
       setAviso(null);
     }
-    const nuevas = archivos.slice(0, Math.max(0, disponibles)).map((archivo) => ({
+    const archivosSeleccionados = archivos.slice(0, Math.max(0, disponibles));
+    const archivosOptimizados = await Promise.all(archivosSeleccionados.map((f) => comprimirImagen(f)));
+
+    const nuevas = archivosOptimizados.map((archivo) => ({
       clave: nuevaClave(),
       url: URL.createObjectURL(archivo),
       archivo,

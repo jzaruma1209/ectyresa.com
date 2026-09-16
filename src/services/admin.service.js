@@ -78,7 +78,10 @@ const adminService = {
     const formData = new FormData();
     formData.append('datos', JSON.stringify(datos));
     imagenes.forEach((archivo) => formData.append('imagenes', archivo));
-    const config = { headers: { 'Content-Type': undefined }, timeout: 90000 };
+    const config = {
+      headers: { 'Content-Type': 'multipart/form-data' },
+      timeout: 90000,
+    };
     const response = id
       ? await api.put(`/admin/productos/${id}`, formData, config)
       : await api.post('/admin/productos', formData, config);
