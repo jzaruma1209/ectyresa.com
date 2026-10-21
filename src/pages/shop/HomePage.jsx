@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import CategoryBar from "../../components/products/CategoryBar";
@@ -8,6 +8,8 @@ import MainSearchBox from "../../components/products/MainSearchBox";
 import HeroRightColumn from "../../components/products/HeroRightColumn";
 import BrandSection from "../../components/products/BrandSection";
 import productsService from "../../services/products.service";
+import AppLoader from "../../components/shared/AppLoader";
+import useHomeReadiness from "../../hooks/useHomeReadiness";
 import "../styles/HomePage.css";
 
 // Agrupa el catálogo real por marca. Si la marca no tiene logo configurado
@@ -48,21 +50,44 @@ const HomePage = () => {
     location.state?.welcomeMessage || null
   );
   const [brandSections, setBrandSections] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [catalogLoading, setCatalogLoading] = useState(true);
+  const [catalogError, setCatalogError] = useState(false);
+  const [loadAttempt, setLoadAttempt] = useState(0);
+  const [searchReady, setSearchReady] = useState(false);
+  const heroRef = useRef(null);
+  const handleSearchReady = useCallback(() => setSearchReady(true), []);
+  const showLoader = useHomeReadiness(!catalogLoading && searchReady, heroRef);
 
   useEffect(() => {
     let cancelado = false;
     productsService
       .getAllProducts()
       .then((productos) => {
-        if (!cancelado) setBrandSections(agruparPorMarca(productos));
+        if (!cancelado) {
+          setProducts(productos);
+          setBrandSections(agruparPorMarca(productos));
+        }
       })
       .catch(() => {
-        if (!cancelado) setBrandSections([]);
+        if (!cancelado) {
+          setCatalogError(true);
+          setBrandSections([]);
+        }
+      })
+      .finally(() => {
+        if (!cancelado) setCatalogLoading(false);
       });
     return () => {
       cancelado = true;
     };
-  }, []);
+  }, [loadAttempt]);
+
+  const retryCatalog = () => {
+    setCatalogError(false);
+    setCatalogLoading(true);
+    setLoadAttempt((attempt) => attempt + 1);
+  };
 
   const heroBg = heroBgColors[activeVehicle] ?? "#FFFFFF";
   const heroAccent = heroAccentColors[activeVehicle] ?? "#E60000";
@@ -84,7 +109,9 @@ const HomePage = () => {
   }, [heroBg]);
 
   return (
-    <div className="home-page">
+    <>
+    {showLoader && <AppLoader />}
+    <div className="home-page" inert={showLoader} aria-busy={showLoader}>
       {/* Toast de bienvenida tras registro exitoso */}
       {welcomeToast && (
         <div
@@ -121,6 +148,7 @@ const HomePage = () => {
       {/* Hero Section with Banner */}
 
       <section
+        ref={heroRef}
         className="hero-section"
         style={{
           backgroundColor: heroBg,
@@ -137,10 +165,10 @@ const HomePage = () => {
             </div>
           */}
 
-            <HeroSearchOptions />
+            <HeroSearchOptions productsList={products} loading={catalogLoading} error={catalogError} onRetry={retryCatalog} />
 
             {/* Main Search Box */}
-            <MainSearchBox activeVehicle={activeVehicle} onVehicleChange={setActiveVehicle} />
+            <MainSearchBox activeVehicle={activeVehicle} onVehicleChange={setActiveVehicle} onReady={handleSearchReady} />
 
 
           </div>
@@ -162,6 +190,7 @@ const HomePage = () => {
 
 
     </div>
+    </>
   );
 };
 

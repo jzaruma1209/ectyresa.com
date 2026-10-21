@@ -9,7 +9,7 @@ T-03 — Ajustar la altura de las tarjetas de productos destacados.
 - Causa: buildFeaturedGroups seleccionaba solo featured; enOferta se mapea a onSale y no participaba en la selección.
 - Corrección publicada: productos activos con featured o onSale forman la base; se conservan grupos de cuatro y relleno aleatorio.
 - La casilla de destacado manual sigue funcionando independientemente de En oferta.
-- Ajuste local solicitado: solo el grid de destacados reduce la proporción del área de imagen de 16/10 a 2/1; conserva textos, controles y las tarjetas de otras secciones.
+- Ajuste publicado: solo el grid de destacados reduce la proporción del área de imagen de 16/10 a 2/1; conserva textos, controles y las tarjetas de otras secciones.
 
 ## Validación
 - Pruebas Node correctas: oferta sin destacado, destacados manuales, inactivos, vacíos, grupos de 1/2/3/4/5/7/8/9 productos, sin mutaciones.
@@ -24,4 +24,4 @@ T-03 — Ajustar la altura de las tarjetas de productos destacados.
 - Corrección de ofertas publicada: commit 57461eb en main y Vercel dpl_CxLvtaAswUQT8w71rFZmstMFeWrt Ready en Production, con alias www.ectyre.com. HTTP 200 comprobado. Backend sin modificaciones.
 
 ## Próxima acción
-Publicar el ajuste de altura cuando el usuario lo solicite y comprobarlo visualmente. Cambio visual y memoria sin commit ni push.
+Comprobar visualmente las tarjetas de destacados publicadas. Ajuste de altura subido en e70b6e5; despliegue dpl_H6fA6dX2dFZ27foe1WxVngxuMW1K Ready en Production, www.ectyre.com responde HTTP 200. Esta actualización de memoria queda local sin commit.

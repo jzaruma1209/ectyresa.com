@@ -14,7 +14,7 @@ const STEP_LABELS = {
 const MAX_VISIBLE = 14; // 2 filas × 7 columnas
 
 /* ─── Componente principal ───────────────────────────────── */
-const TireSearcher = () => {
+const TireSearcher = ({ onReady }) => {
   const navigate  = useNavigate();
 
   const [step,       setStep]       = useState(0);
@@ -34,11 +34,14 @@ const TireSearcher = () => {
         if (activo) {
           setMedidas({ anchos: tireDimensions.anchos, altos: tireDimensions.perfiles, aros: tireDimensions.rines });
         }
+      })
+      .finally(() => {
+        if (activo) onReady?.();
       });
     return () => {
       activo = false;
     };
-  }, []);
+  }, [onReady]);
 
   const measureLabel = `${ancho ?? '---'} / ${perfil ?? '--'} R${rin ?? '--'}`;
 

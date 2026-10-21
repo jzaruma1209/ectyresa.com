@@ -1,40 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import ProductCard from "./ProductCard";
-import productsService from "../../services/products.service";
 
 import { buildFeaturedGroups } from "../../utils/featuredGroups";
 
 const INTERVAL_MS = 5000;
 
-const HeroSearchOptions = () => {
-  const [productsList, setProductsList] = useState([]);
-  const [loading, setLoading] = useState(true);
+const HeroSearchOptions = ({ productsList, loading, error, onRetry }) => {
   const [groupIndex, setGroupIndex] = useState(0);
   const [paused, setPaused] = useState(false);
   const gridRef = useRef(null);
   const isAnimating = useRef(false);
-
-  // Cargar el catálogo real para seleccionar destacados y completar los grupos.
-  useEffect(() => {
-    let isMounted = true;
-    const loadFeatured = async () => {
-      try {
-        const data = await productsService.getAllProducts();
-        if (isMounted) setProductsList(data || []);
-      } catch (err) {
-        console.error("Error cargando productos destacados:", err);
-        if (isMounted) setProductsList([]);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    loadFeatured();
-    return () => {
-      isMounted = false;
-    };
-  }, []);
 
   // El sorteo ocurre solo al cambiar el catálogo, no en cada render o transición.
   const groups = useMemo(() => buildFeaturedGroups(productsList), [productsList]);
@@ -181,10 +157,24 @@ const HeroSearchOptions = () => {
       {/* ── Grid con ventana deslizante ── */}
       <div style={{ flex: 1, perspective: "1200px" }}>
         {loading ? (
-          <div className="grid grid-cols-2 gap-2 h-full items-center justify-center">
-            <div className="col-span-2 text-center text-white/50 text-xs py-10 animate-pulse">
-              Cargando productos destacados...
-            </div>
+          <div className="grid grid-cols-2 gap-2 content-center h-full" role="status" aria-label="Cargando productos destacados">
+            {Array.from({ length: 4 }, (_, index) => (
+              <div key={index} className="rounded-xl bg-white p-2 motion-safe:animate-pulse" aria-hidden="true">
+                <div className="mx-auto mb-2 h-4 w-1/2 rounded bg-gray-200" />
+                <div className="aspect-[2/1] rounded-lg bg-gray-100" />
+                <div className="mt-3 h-5 w-1/2 rounded bg-gray-200" />
+                <div className="mt-2 h-3 rounded bg-gray-100" />
+                <div className="mt-1 h-3 w-3/4 rounded bg-gray-100" />
+                <div className="mt-3 h-7 rounded-lg bg-gray-200" />
+              </div>
+            ))}
+          </div>
+        ) : error ? (
+          <div className="flex h-full flex-col items-center justify-center gap-3 px-4 text-center text-sm text-white" role="status">
+            <p>No pudimos cargar los productos.</p>
+            <button type="button" onClick={onRetry} className="rounded-lg bg-white px-4 py-2 font-semibold text-gray-900">
+              Reintentar
+            </button>
           </div>
         ) : totalSteps === 0 ? (
           <div className="flex h-full items-center justify-center py-10 text-center text-xs text-white/60">
