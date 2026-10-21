@@ -5,12 +5,12 @@ _Modo: **ligero** · Estado: **propuesta**, pendiente de aprobación del usuario
 ## Repositorios
 | Carpeta desde ectyre.com/ | Rama actual | Remoto origin |
 |---|---|---|
-| frontend/ectyrepage | main, sigue origin/main | https://github.com/ectyresainfo-svg/ectyre.git |
-| backend/apiectyre | main, sigue origin/main | https://github.com/ectyresainfo-svg/api-ectyre.git |
+| frontend/ectyrepage | main, sigue origin/main | https://github.com/jzaruma1209/ectyresa.com.git |
+| backend/apiectyre | main, sigue origin/main | https://github.com/jzaruma1209/ectyre-backend.git |
 
 - La raíz ectyre.com no tiene repositorio Git. No se ha ejecutado git init.
 - Rama base remota: por confirmar; refs/remotes/origin/HEAD no está configurado en ninguno. No confundir la rama actual con la rama base.
-- Ambos repositorios ya tenían cambios sin commit al iniciar esta tarea.
+- El 2026-10-21 se cambiaron los remotos y se subieron los commits existentes por petición del usuario; frontend b0c7251 y backend d5dc8d1 quedaron sincronizados con main remoto.
 - La memoria vive en el repositorio frontend. Los enlaces de raíz quedan fuera de Git; el backend contiene una referencia relativa que requiere la estructura de carpetas actual.
 
 ## Modo ligero propuesto

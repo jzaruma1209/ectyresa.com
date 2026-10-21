@@ -15,7 +15,8 @@ export function buildFeaturedGroups(products, random = Math.random) {
     products.filter((product) => product.active !== false)
       .map((product) => [String(product.id), product])
   ).values()];
-  const featured = catalog.filter((product) => product.featured);
+  // Las ofertas también aparecen en destacados sin exigir una segunda casilla.
+  const featured = catalog.filter((product) => product.featured || product.onSale);
   const groups = [];
 
   for (let index = 0; index < featured.length; index += GROUP_SIZE) {

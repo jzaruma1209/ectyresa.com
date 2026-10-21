@@ -1,23 +1,26 @@
 # Estado actual
 
-_Última actualización: 2026-10-16 (America/Guayaquil) · por: Codex_
+_Última actualización: 2026-10-21 (America/Guayaquil) · por: Codex_
 
 ## Tarea activa
-T-03 — Conectar productos destacados de la página principal.
+T-03 — Incluir ofertas en productos destacados de la página principal.
 
 ## Avance comprobado
-- Casilla existente destacado renombrada a Mostrar en productos destacados; API ya la guarda.
-- HeroSearchOptions usa solo featured como base, grupos de cuatro y relleno aleatorio del catálogo activo.
-- Se conserva ProductCard → TireCard con compact y animación GSAP.
-- Guardar un producto invalida caché del catálogo/destacados/detalle.
+- Causa: buildFeaturedGroups seleccionaba solo featured; enOferta se mapea a onSale y no participaba en la selección.
+- Corrección local: productos activos con featured o onSale forman la base; se conservan grupos de cuatro y relleno aleatorio.
+- La casilla de destacado manual sigue funcionando independientemente de En oferta.
 
 ## Validación
-- Pruebas de agrupación ejecutadas con Node: vacíos, 1/2/3/4/5/7/8/9 destacados, inactivos, deduplicación y catálogo sin mutaciones: correctas.
-- Build y ESLint de archivos modificados en curso.
+- Pruebas Node correctas: oferta sin destacado, destacados manuales, inactivos, vacíos, grupos de 1/2/3/4/5/7/8/9 productos, sin mutaciones.
+- ESLint de featuredGroups.js y npm run build correctos.
+- Auditoría de memoria: 0 errores; aviso opcional de integración con Gemini.
 
 ## Estado Git y producción
-Cambios locales sin commit ni push; frontend y backend en main con otros cambios previos del usuario.
-Producción conserva T-02: dpl_B6L4C7Zsvd7et1mhaDXhEpErbw8L, basado en b591ebf6eb6cfad93fdfad4572fdc05c49380c36 más MarcasPanel corregido. T-03 aún no publicada.
+- Remotos cambiados por petición del usuario: jzaruma1209/ectyresa.com y jzaruma1209/ectyre-backend.
+- Frontend b0c7251 y backend d5dc8d1 subidos y verificados contra main remoto.
+- Capturas del usuario muestran ambos commits Ready en Production; no se realizó comprobación funcional en vivo.
+- Corrección de ofertas y actualización de memoria locales, sin commit ni push. Backend sin modificaciones locales.
 
 ## Próxima acción
-Completar las validaciones de T-03 y registrar sus resultados.
+Publicar la corrección cuando el usuario solicite la subida; después comprobar una oferta real en el inicio.
+

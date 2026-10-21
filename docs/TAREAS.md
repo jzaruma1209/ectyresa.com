@@ -1,11 +1,11 @@
 # Tareas del proyecto
 
-_Última actualización: 2026-10-16_
+_Última actualización: 2026-10-21_
 
 Releer antes de numerar. No reutilizar IDs ni borrar historial.
 
 ## En curso
-- **T-03** · Conectar productos destacados del inicio — criterio: casilla clara, solo destacados como base, grupos de cuatro con relleno aleatorio real, tarjeta compartida compacta y animación conservada. Pruebas de selección correctas; compilación y lint en curso.
+- **T-03** · Conectar productos destacados del inicio — criterio actualizado por el usuario el 2026-10-21: incluir productos activos en oferta o marcados como destacados, grupos de cuatro con relleno aleatorio real, tarjeta compartida compacta y animación conservada. Versión anterior b0c7251 subida; corrección local de selección validada con pruebas Node, ESLint y build; pendiente de publicación y comprobación visual.
 
 ## Pendientes
 Sin nuevas tareas de producto solicitadas. Los pendientes del historial de septiembre necesitan revisión antes de incorporarse.
@@ -22,3 +22,4 @@ Ninguna registrada.
 
 ## Descartadas
 Ninguna.
+
