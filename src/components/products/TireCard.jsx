@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
+import { optimizeImage } from "../../utils/cloudinaryImage";
+
 /**
  * TireCard — Tarjeta de producto premium (rediseño visual).
  * La lógica de negocio se mantiene intacta: precio, PVP, IVA, cantidad
@@ -27,12 +29,13 @@ const TireCard = ({
   // ----------------------------------------------------
   // PLACEHOLDERS & REGULARIZACIÓN DE PROPS DESDE LA BD
   // ----------------------------------------------------
-  const altImage = (product?.name?.length || 0) % 2 === 0 ? "/llanta1.png" : "/llanta2.png";
-  const finalTireSrc = tireSrc || product?.image || altImage;
+  const altImage = (product?.name?.length || 0) % 2 === 0 ? "/llanta1.webp" : "/llanta2.webp";
+  // Anchos a ~2x del tamaño mostrado para pantallas de alta densidad.
+  const finalTireSrc = optimizeImage(tireSrc || product?.image || altImage, 480);
   const finalBrandBanner = brandBannerSrc || product?.brandBanner || null;
   const finalBrandLogo = brandLogoSrc || product?.brandLogo || null;
-  const finalBrandDisplay = finalBrandBanner || finalBrandLogo;
-  const finalSash = sashSrc ?? product?.sash ?? null;
+  const finalBrandDisplay = optimizeImage(finalBrandBanner || finalBrandLogo, 300);
+  const finalSash = optimizeImage(sashSrc ?? product?.sash ?? null, 600);
 
   // 2. Especificaciones de Terreno y Físicas
   const finalSpecs = specs || { wet: 0, dry: 0, noise: "109S" };
@@ -229,7 +232,7 @@ const TireCard = ({
           className={`h-full w-full object-contain ${sz.imgPad} transition-transform duration-300 group-hover:scale-[1.04]`}
           loading="lazy"
           decoding="async"
-          onError={(e) => { e.target.src = '/llanta1.png'; }}
+          onError={(e) => { e.target.src = '/llanta1.webp'; }}
         />
 
         <div className="absolute left-2 top-2 flex flex-col gap-1">
@@ -277,7 +280,7 @@ const TireCard = ({
         </div>
         {show247 && !compact && (
           <img
-            src="/1.png"
+            src="/1.webp"
             alt="Promoción"
             className="hidden h-7 w-7 shrink-0 rounded-full border border-black/10 object-cover shadow-sm min-[440px]:block"
             onError={(e) => { e.target.style.display = 'none'; }}

@@ -6,14 +6,15 @@ import { useCart } from "../../hooks/useCart";
 import { openAuthModal } from "../../store/slices/authModal.slice";
 import ProductCard from "../../components/products/ProductCard";
 import productsService from "../../services/products.service";
+import { optimizeImage } from "../../utils/cloudinaryImage";
 import "../styles/ProductDetailsPage.css";
 
 /* ── Imágenes de respaldo ── */
 const PLACEHOLDER_GALLERY = [
-  "/llanta1.png",
-  "/llanta2.png",
-  "/llanta1.png",
-  "/llanta2.png",
+  "/llanta1.webp",
+  "/llanta2.webp",
+  "/llanta1.webp",
+  "/llanta2.webp",
 ];
 
 const ProductDetailsPage = () => {
@@ -203,9 +204,9 @@ const ProductDetailsPage = () => {
                   title={`Ver imagen 0${i + 1}`}
                 >
                   <img
-                    src={src}
+                    src={optimizeImage(src, 200)}
                     alt={`Miniatura 0${i + 1}`}
-                    onError={(e) => (e.target.src = "/llanta1.png")}
+                    onError={(e) => (e.target.src = "/llanta1.webp")}
                   />
                   <span className="pdp-thumb-index">0{i + 1}</span>
                 </button>
@@ -218,10 +219,10 @@ const ProductDetailsPage = () => {
                 <span className="pdp-badge-discount">-{product.discount}% OFF</span>
               )}
               <img
-                src={gallery[mainImg]}
+                src={optimizeImage(gallery[mainImg], 1000)}
                 alt={product.name}
                 className="pdp-hero-img"
-                onError={(e) => (e.target.src = "/llanta1.png")}
+                onError={(e) => (e.target.src = "/llanta1.webp")}
               />
             </div>
           </div>

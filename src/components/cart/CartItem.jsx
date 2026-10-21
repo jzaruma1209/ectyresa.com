@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useCart } from '../../hooks/useCart';
+import { optimizeImage } from '../../utils/cloudinaryImage';
 import '../../features/cart/styles/CartItem.css';
 
 const CartItem = ({ item }) => {
@@ -25,7 +26,7 @@ const CartItem = ({ item }) => {
     <div className={`cart-item ${loading ? 'loading' : ''}`}>
       <div className="cart-item-image">
         <img
-          src={item.product.image || '/placeholder-tire.png'}
+          src={optimizeImage(item.product.image, 240) || '/placeholder-tire.png'}
           alt={item.product.name}
           onError={(e) => {
             e.target.src = '/placeholder-tire.png';

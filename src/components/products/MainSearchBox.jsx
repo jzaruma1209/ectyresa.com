@@ -2,7 +2,7 @@ import { useState } from "react";
 import TireSearcher from "./TireSearcher";
 import VehicleSearcher from "./VehicleSearcher";
 
-const MainSearchBox = ({ activeVehicle, onVehicleChange, onReady }) => {
+const MainSearchBox = ({ activeVehicle, onVehicleChange }) => {
   const [searchMode, setSearchMode] = useState("dimension");
 
   const vehicles = [
@@ -108,7 +108,7 @@ const MainSearchBox = ({ activeVehicle, onVehicleChange, onReady }) => {
             style={{ position: 'relative', zIndex: 10 }}
           >
             {searchMode === "dimension" ? (
-              <TireSearcher onReady={onReady} />
+              <TireSearcher />
             ) : (
               <VehicleSearcher />
             )}

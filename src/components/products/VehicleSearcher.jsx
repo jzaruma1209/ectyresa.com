@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import vehicleData from '../../data/vehicle-data.json';
 import productsService from '../../services/products.service';
 import ExpandableValuesButton from './ExpandableValuesButton';
+import { optimizeImage } from '../../utils/cloudinaryImage';
 import './VehicleSearcher.css';
 
 const STEPS = ['marca', 'anio', 'modelo'];
@@ -241,10 +242,10 @@ const VehicleSearcher = () => {
                   return (
                     <div key={producto.id} className="vs-result-card">
                       {producto.brandLogo && (
-                        <img src={producto.brandLogo} alt={producto.brand} className="vs-card-logo" />
+                        <img src={optimizeImage(producto.brandLogo, 300)} alt={producto.brand} className="vs-card-logo" />
                       )}
                       <img
-                        src={producto.image}
+                        src={optimizeImage(producto.image, 480)}
                         alt={producto.name}
                         className="vs-card-img"
                         onError={(e) => { e.target.src = '/placeholder-tire.png'; }}

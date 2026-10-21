@@ -147,7 +147,7 @@ const Header = () => {
 
           {/* Logo */}
           <Link to="/" className="header-logo-link">
-            <img src="/2.png" alt="ECTYRE S.A." className="header-logo-img" />
+            <img src="/2.webp" alt="ECTYRE S.A." className="header-logo-img" width="160" height="42" />
           </Link>
 
           {/* Search bar */}

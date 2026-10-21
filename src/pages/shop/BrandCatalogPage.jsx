@@ -3,6 +3,7 @@ import { useParams, Navigate } from 'react-router-dom';
 import TireCard from '../../components/products/TireCard';
 import nivelesService from '../../services/niveles.service';
 import productsService from '../../services/products.service';
+import { optimizeImage } from '../../utils/cloudinaryImage';
 import './BrandCatalogPage.css';
 
 const BrandCatalogPage = () => {
@@ -95,7 +96,7 @@ const BrandCatalogPage = () => {
     <div className="brand-catalog-page">
       <div className="brand-catalog-header">
         <img 
-          src={brand.logo || brand.banner} 
+          src={optimizeImage(brand.logo || brand.banner, 400)}
           alt={brand.name} 
           className="brand-catalog-logo" 
         />

@@ -58,7 +58,7 @@ function UserFooter({ user, onLogout }) {
         >
           {/* Avatar */}
           <img
-            src="/1.png"
+            src="/1.webp"
             alt={user?.nombre || 'Administrador'}
             style={{
               width: 30, height: 30, minWidth: 30, borderRadius: '50%',
@@ -148,7 +148,7 @@ export function AppSidebar({ pedidosPendientes = 0, ...props }) {
               <div>
                 {/* Logo icon — visible siempre */}
                 <img
-                  src="/2.png"
+                  src="/2.webp"
                   alt="Ectyre"
                   style={{
                     width: 30, height: 30, minWidth: 30, borderRadius: 8,

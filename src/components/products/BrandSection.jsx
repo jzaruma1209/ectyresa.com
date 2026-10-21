@@ -2,6 +2,8 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import TireCard from "./TireCard";
 
+import { optimizeImage } from "../../utils/cloudinaryImage";
+
 /**
  * BrandSection — Sección de marca con header a la izquierda (logo + nombre)
  * y un grid horizontal de tarjetas de productos.
@@ -15,7 +17,7 @@ const BrandSection = ({ brand, products }) => {
           {brand.logo || brand.banner ? (
             <div className="brand-logo-wrapper">
               <img
-                src={brand.logo || brand.banner}
+                src={optimizeImage(brand.logo || brand.banner, 300)}
                 alt={brand.name}
                 className="brand-logo-img"
                 loading="lazy"

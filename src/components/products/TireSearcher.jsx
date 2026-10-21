@@ -14,7 +14,7 @@ const STEP_LABELS = {
 const MAX_VISIBLE = 14; // 2 filas × 7 columnas
 
 /* ─── Componente principal ───────────────────────────────── */
-const TireSearcher = ({ onReady }) => {
+const TireSearcher = () => {
   const navigate  = useNavigate();
 
   const [step,       setStep]       = useState(0);
@@ -34,14 +34,11 @@ const TireSearcher = ({ onReady }) => {
         if (activo) {
           setMedidas({ anchos: tireDimensions.anchos, altos: tireDimensions.perfiles, aros: tireDimensions.rines });
         }
-      })
-      .finally(() => {
-        if (activo) onReady?.();
       });
     return () => {
       activo = false;
     };
-  }, [onReady]);
+  }, []);
 
   const measureLabel = `${ancho ?? '---'} / ${perfil ?? '--'} R${rin ?? '--'}`;
 
@@ -136,7 +133,7 @@ const TireSearcher = ({ onReady }) => {
               </text>
             </svg>
           </div>
-          <img src="/infollanta.png" alt="Llanta" className="ts-tire-img" />
+          <img src="/infollanta.webp" alt="Llanta" className="ts-tire-img" width="160" height="90" />
         </div>
 
         {/* Grid de opciones (solo MAX_VISIBLE) */}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { optimizeImage } from '../../utils/cloudinaryImage';
 import '../../features/product/styles/ProductGallery.css';
 
 const ProductGallery = ({ product }) => {
@@ -18,7 +19,7 @@ const ProductGallery = ({ product }) => {
     <div className="product-gallery">
       <div className="product-gallery-main">
         <img
-          src={images[selectedImage]}
+          src={optimizeImage(images[selectedImage], 1000)}
           alt={product.name}
           onError={(e) => {
             e.target.src = '/placeholder-tire.png';
@@ -34,7 +35,7 @@ const ProductGallery = ({ product }) => {
               onClick={() => setSelectedImage(index)}
             >
               <img
-                src={image}
+                src={optimizeImage(image, 200)}
                 alt={`${product.name} ${index + 1}`}
                 onError={(e) => {
                   e.target.src = '/placeholder-tire.png';

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 
 import CategoryBar from "../../components/products/CategoryBar";
@@ -8,8 +8,6 @@ import MainSearchBox from "../../components/products/MainSearchBox";
 import HeroRightColumn from "../../components/products/HeroRightColumn";
 import BrandSection from "../../components/products/BrandSection";
 import productsService from "../../services/products.service";
-import AppLoader from "../../components/shared/AppLoader";
-import useHomeReadiness from "../../hooks/useHomeReadiness";
 import "../styles/HomePage.css";
 
 // Agrupa el catálogo real por marca. Si la marca no tiene logo configurado
@@ -54,10 +52,6 @@ const HomePage = () => {
   const [catalogLoading, setCatalogLoading] = useState(true);
   const [catalogError, setCatalogError] = useState(false);
   const [loadAttempt, setLoadAttempt] = useState(0);
-  const [searchReady, setSearchReady] = useState(false);
-  const heroRef = useRef(null);
-  const handleSearchReady = useCallback(() => setSearchReady(true), []);
-  const showLoader = useHomeReadiness(!catalogLoading && searchReady, heroRef);
 
   useEffect(() => {
     let cancelado = false;
@@ -109,9 +103,7 @@ const HomePage = () => {
   }, [heroBg]);
 
   return (
-    <>
-    {showLoader && <AppLoader />}
-    <div className="home-page" inert={showLoader} aria-busy={showLoader}>
+    <div className="home-page">
       {/* Toast de bienvenida tras registro exitoso */}
       {welcomeToast && (
         <div
@@ -148,7 +140,6 @@ const HomePage = () => {
       {/* Hero Section with Banner */}
 
       <section
-        ref={heroRef}
         className="hero-section"
         style={{
           backgroundColor: heroBg,
@@ -168,7 +159,7 @@ const HomePage = () => {
             <HeroSearchOptions productsList={products} loading={catalogLoading} error={catalogError} onRetry={retryCatalog} />
 
             {/* Main Search Box */}
-            <MainSearchBox activeVehicle={activeVehicle} onVehicleChange={setActiveVehicle} onReady={handleSearchReady} />
+            <MainSearchBox activeVehicle={activeVehicle} onVehicleChange={setActiveVehicle} />
 
 
           </div>
@@ -190,7 +181,6 @@ const HomePage = () => {
 
 
     </div>
-    </>
   );
 };
 

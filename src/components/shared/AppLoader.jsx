@@ -28,7 +28,7 @@ const AppLoader = () => {
     <div ref={loaderRef} className="app-loader" role="status" aria-label="Cargando Ectyre…" tabIndex={-1}
       onKeyDown={(event) => { if (event.key === 'Tab') event.preventDefault(); }}>
       <div className="app-loader__content">
-        <img src="/2.png" alt="Ectyre Loader" className="app-loader__img" />
+        <img src="/2.webp" alt="Ectyre Loader" className="app-loader__img" />
         <p className="app-loader__text">Cargando…</p>
       </div>
     </div>
