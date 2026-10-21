@@ -193,7 +193,7 @@ const HeroSearchOptions = () => {
         ) : (
           <div
             ref={gridRef}
-            className="grid grid-cols-2 content-center gap-2 h-full relative z-10"
+            className="grid grid-cols-2 content-center gap-2 h-full relative z-10 [&_.tire-card>a]:aspect-[2/1]"
             style={{ transformStyle: "preserve-3d" }}
           >
             {visibleProducts.map((product, index) => (
