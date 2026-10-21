@@ -8,7 +8,9 @@ Releer antes de numerar. No reutilizar IDs ni borrar historial.
 - **T-03** · Conectar productos destacados del inicio — criterio actualizado por el usuario el 2026-10-21: incluir productos activos en oferta o marcados como destacados, grupos de cuatro con relleno aleatorio real, tarjeta compartida compacta y animación conservada. Versión anterior b0c7251 subida; corrección local de selección validada con pruebas Node, ESLint y build; pendiente de publicación y comprobación visual.
 
 ## Pendientes
-Sin nuevas tareas de producto solicitadas. Los pendientes del historial de septiembre necesitan revisión antes de incorporarse.
+- **T-04** · Porcentaje dinámico en la banda promocional de las tarjetas — prioridad: media · registrada el 2026-10-21 a pedido del usuario. Hoy la banda superior de las tarjetas (logo de marca con el descuento) es una imagen estática (`imagenPromocion` → `sash` en TireCard.jsx) con el porcentaje dibujado, que no coincide con el descuento real: Nankang muestra "-15%" en la imagen y -7% real ($75 → $70). Criterio de finalización: la banda muestra el porcentaje calculado del descuento real del producto (descuentoPorcentaje, o precio anterior frente a precio) y cambia al editarlo en el panel; sin descuento no muestra porcentaje; conserva el logo de marca y el diseño en tarjetas compactas y normales; ESLint y build correctos; verificado en el navegador.
+
+Los pendientes del historial de septiembre necesitan revisión antes de incorporarse.
 
 ## Bloqueadas
 Ninguna.

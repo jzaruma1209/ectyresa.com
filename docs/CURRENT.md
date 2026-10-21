@@ -23,6 +23,13 @@ Vender por WhatsApp: medición, un solo botón de pedido y SEO básico.
 - Backend f7dc7a6 y frontend 5e97016 y 0f3ae5d subidos, más la corrección de la ficha (ver git log).
 - Producción: /sitemap.xml responde 200 con 10 URLs (desde la caché del CDN), robots.txt y og-image.jpg responden 200, la ficha arma bien el mensaje de WhatsApp y el Header ya no muestra el carrito. GA4 sigue inactivo hasta cargar el ID.
 
+## Ficha de producto con datos reales (publicado a pedido del usuario)
+- ProductDetailsPage: se quitó la calificación fija (★ 4.8, 214 opiniones) y el "8 disponibles en este lote"; ahora muestra el stock real ("N en stock") solo si es mayor que 0. La etiqueta "USO MIXTO · ON/OFF ROAD" se reemplazó por el tipo de uso real del modelo (oculta si no hay).
+- Bloque de confianza armado con datos: siempre "Envíos a todo Ecuador"; "Instalación incluida" solo en llantas; garantía, devoluciones y envío gratis solo si están marcados en el panel (hoy ningún producto los tiene).
+- Probado en local contra la API de producción: llanta (5), aditivo (4) y agotado (3). Subido a main (ver git log).
+- Nueva tarea pendiente T-04: porcentaje dinámico en la banda promocional de las tarjetas (ver TAREAS.md).
+- Dato a corregir en el panel: el producto 3 se llama "185/60R14", pero su medida registrada es 185/65R14.
+
 ## Próxima acción
 Usuario: crear la propiedad GA4, cargar VITE_GA_MEASUREMENT_ID en Vercel y volver a desplegar; marcar whatsapp_click como evento clave; dar de alta el sitio en Google Search Console y enviar el sitemap; crear el Perfil de Empresa en Google.
 Revisar con el usuario: la ficha muestra calificación 4.8 (214 opiniones) fija y "IVA incluido", mientras las tarjetas dicen "+ IVA".

@@ -149,6 +149,21 @@ const ProductDetailsPage = () => {
 
   const product = selectedProduct;
 
+  // Garantías y servicios: el envío nacional y la instalación de llantas son ofertas de la tienda
+  // (barra superior y banner); garantía, devoluciones y envío gratis dependen de lo marcado en el panel.
+  const isTire = (product.category || "").toLowerCase().includes("llanta");
+  const trustItems = [
+    {
+      label: "Entrega",
+      desc: product.freeShipping
+        ? "Envío gratis a todo Ecuador. Coordinamos la entrega por WhatsApp."
+        : "Envíos a todo Ecuador. Coordinamos la entrega por WhatsApp.",
+    },
+    isTire && { label: "Instalación", desc: "Instalación incluida sin costo adicional." },
+    product.warranty && { label: "Garantía", desc: "Producto con garantía. Te explicamos las condiciones por WhatsApp." },
+    product.returns && { label: "Devoluciones", desc: "Acepta devoluciones. Te explicamos las condiciones por WhatsApp." },
+  ].filter(Boolean);
+
   const finalPrice = product.finalPrice || product.price;
   const hasDiscount = product.discount && product.discount > 0;
   const [intPart, decPart] = Number(finalPrice).toFixed(2).split(".");
@@ -242,7 +257,9 @@ const ProductDetailsPage = () => {
           {/* Header de Marca y Nombre */}
           <div className="pdp-brand-bar">
             <span className="pdp-brand-tag">{product.brand || "ECTYRE PERFORMANCE"}</span>
-            <span className="pdp-tech-tag">USO MIXTO · ON/OFF ROAD</span>
+            {product.modelUse?.descripcion && (
+              <span className="pdp-tech-tag">{product.modelUse.descripcion}</span>
+            )}
           </div>
 
           <h1 className="pdp-title">{product.name}</h1>
@@ -251,20 +268,15 @@ const ProductDetailsPage = () => {
             {product.description?.slice(0, 130) || "Neumático de alta resistencia diseñado para máxima tracción y agarre en carretera y todoterreno."}...
           </p>
 
-          {/* Valoración y Urgencia */}
-          <div className="pdp-meta-row">
-            <div className="pdp-rating-stars">
-              <span className="pdp-stars">★★★★☆</span>
-              <span className="pdp-rating-num">{product.rating || "4.8"}</span>
-              <span className="pdp-rating-count">({product.reviewsCount || 214} opiniones)</span>
-            </div>
-            {product.inStock && (
+          {/* Stock real (sin valoraciones: la tienda aún no tiene opiniones de clientes) */}
+          {product.inStock && product.stock > 0 && (
+            <div className="pdp-meta-row">
               <div className="pdp-stock-urgency">
                 <span className="pdp-urgency-dot" />
-                <span>{product.stock || 8} disponibles en este lote</span>
+                <span>{product.stock} en stock</span>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
           {/* Bloque de Precio */}
           <div className="pdp-price-section">
@@ -339,20 +351,14 @@ const ProductDetailsPage = () => {
             </button>
           </div>
 
-          {/* Bloque de Confianza / Envíos y Devoluciones Ras */}
+          {/* Bloque de Confianza: solo lo que ofrece la tienda o lo marcado en el producto desde el panel */}
           <div className="pdp-shipping-box">
-            <div className="pdp-shipping-item">
-              <div className="pdp-shipping-label">Entrega</div>
-              <div className="pdp-shipping-desc">
-                Despacho nacional directo · Llega en 24 a 48 horas hábiles.
+            {trustItems.map((item) => (
+              <div key={item.label} className="pdp-shipping-item">
+                <div className="pdp-shipping-label">{item.label}</div>
+                <div className="pdp-shipping-desc">{item.desc}</div>
               </div>
-            </div>
-            <div className="pdp-shipping-item">
-              <div className="pdp-shipping-label">Garantía</div>
-              <div className="pdp-shipping-desc">
-                Garantía oficial Ectyre contra defectos de fabricación y soporte directo.
-              </div>
-            </div>
+            ))}
           </div>
         </section>
       </main>
