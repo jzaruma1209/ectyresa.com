@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { optimizeImage } from "../../utils/cloudinaryImage";
+import { buildProductMessage, openWhatsApp } from "../../utils/whatsapp";
 
 /**
  * TireCard — Tarjeta de producto premium (rediseño visual).
@@ -174,17 +175,18 @@ const TireCard = ({
     },
   ];
 
-  // 5. Lógica de Redirección temporal a WhatsApp (sin cambios)
+  // 5. Pedido por WhatsApp con medida, precio, cantidad y enlace al producto
   const handleBuy = (e) => {
     e.preventDefault();
     e.stopPropagation();
     if (agotado) return;
 
-    const phoneNumber = "593999601748";
-    const message = `Hola, estoy interesado en el producto: ${name} y la cantidad: ${qty} por ahora.`;
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-
-    window.open(whatsappUrl, '_blank');
+    openWhatsApp({
+      message: buildProductMessage({ ...product, name, finalPrice: tempPrice }, { qty }),
+      source: compact ? "tarjeta_destacados" : "tarjeta",
+      product: { ...product, name, finalPrice: tempPrice },
+      qty,
+    });
   };
 
   const handleDecrement = (e) => {
@@ -349,13 +351,13 @@ const TireCard = ({
           className={`flex ${sz.btn} flex-1 items-center justify-center gap-1 rounded-[10px] border-none bg-[#e83a2b] p-0 font-bold text-white transition-colors hover:bg-[#d0281b] active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-gray-300`}
           onClick={handleBuy}
           disabled={agotado}
+          title={agotado ? "Producto agotado" : "Pedir por WhatsApp"}
+          aria-label={agotado ? "Producto agotado" : `Pedir ${name} por WhatsApp`}
         >
-          <svg className={compact ? "hidden" : "hidden min-[440px]:block"} width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="9" cy="21" r="1" />
-            <circle cx="20" cy="21" r="1" />
-            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+          <svg className={`shrink-0 ${agotado ? "hidden" : "block"}`} width={compact ? 12 : 14} height={compact ? 12 : 14} viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+            <path d="M16.01 2.667c-7.364 0-13.343 5.98-13.343 13.343 0 2.357.617 4.57 1.7 6.494L2.667 29.333l6.99-1.833a13.28 13.28 0 0 0 6.353 1.617h.006c7.364 0 13.343-5.98 13.343-13.343S23.374 2.667 16.01 2.667zm0 24.42a11.02 11.02 0 0 1-5.617-1.54l-.403-.24-4.15 1.088 1.108-4.045-.263-.417a11.02 11.02 0 0 1-1.687-5.883c0-6.106 4.97-11.076 11.086-11.076 2.96 0 5.744 1.154 7.836 3.246a11 11 0 0 1 3.246 7.836c0 6.117-4.97 11.086-11.09 11.086z" />
           </svg>
-          {agotado ? "Agotado" : "Agregar"}
+          {agotado ? "Agotado" : "Pedir"}
         </button>
       </div>
     </div>

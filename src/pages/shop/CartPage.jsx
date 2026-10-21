@@ -4,9 +4,11 @@ import CartItem from "../../components/cart/CartItem";
 import CartSummary from "../../components/cart/CartSummary";
 import { useNavigate } from "react-router-dom";
 import { openAuthModal } from "../../store/slices/authModal.slice";
+import { usePageMeta } from "../../hooks/usePageMeta";
 import "../styles/CartPage.css";
 
 const CartPage = () => {
+  usePageMeta({ title: "Carrito", noindex: true });
   const { items, itemCount, loading, error, clearError } = useCart();
   const { isAuthenticated } = useSelector((state) => state.auth);
   const dispatch = useDispatch();

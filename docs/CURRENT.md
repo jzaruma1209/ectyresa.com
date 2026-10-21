@@ -3,24 +3,25 @@
 _Última actualización: 2026-10-21 (America/Guayaquil) · por: Claude Code_
 
 ## Tarea activa
-Optimización de carga (prioridad alta de la auditoría del 2026-10-21): imágenes, loader de la home y caché.
+Vender por WhatsApp: medición, un solo botón de pedido y SEO básico.
 
 ## Avance comprobado
-- Imágenes Cloudinary: utils/cloudinaryImage.js agrega f_auto,q_auto,c_limit,w_N; se usa en tarjetas, marcas, buscador por vehículo, carrito, catálogo de marca y ficha de producto. Llanta 165 KB → 39 KB; logo de marca 26 KB → 4 KB.
-- /public: WebP redimensionados (fondo_auto 1.66 MB → 45 KB, logo 2 287 KB → 8 KB, infollanta 284 KB → 12 KB, 1.webp 3 KB, llanta1/2) y favicon.png de 3 KB. Los PNG originales se conservan.
-- Home sin loader bloqueante: se quitaron useHomeReadiness y el AppLoader de HomePage; quedan los skeletons y el botón Reintentar. AppLoader sigue como fallback de Suspense y de AdminRoute.
-- Caché: vercel.json del frontend con /assets inmutable (1 año) e imágenes 1 día + SWR; la reescritura SPA ya no cubre /assets. Backend: middleware cachePublica (s-maxage=60, SWR 300, solo GET 200) en /productos y /promociones.
-- T-03 (altura de destacados) sigue pendiente de revisión visual por el usuario.
+- WhatsApp centralizado en constants (WHATSAPP_NUMBER = 593999601748, SITE_URL). utils/whatsapp.js arma el mensaje (nombre, marca, medida, precio web, cantidad, enlace) y registra el clic.
+- Botón "Pedir" con ícono de WhatsApp en tarjetas; "Pedir por WhatsApp · $total" en la ficha de producto. El carrito ya no se enlaza en el Header (desktop y móvil); /cart y /checkout siguen existiendo.
+- Botón flotante y "Cotiza por WhatsApp" (búsqueda sin resultados) con mensaje propio y medición.
+- lib/analytics.js: GA4 solo si existe VITE_GA_MEASUREMENT_ID; page_view por ruta de la tienda (PublicLayout, sin admin) y evento whatsapp_click (source, item_id, item_name, value en USD).
+- hooks/usePageMeta.js: título, descripción, robots, canonical y og:* por página. Ficha de producto con datos reales; búsqueda y páginas de cuenta con noindex.
+- index.html: Open Graph y Twitter estáticos con /og-image.jpg (1200×630); preconnect corregido a ectyre-backend.vercel.app.
+- robots.txt y sitemap dinámico: backend GET /api/v1/seo/sitemap.xml (productos activos y marcas, caché 1 h) publicado en /sitemap.xml por un rewrite de vercel.json.
 
 ## Validación
-- ESLint sin errores nuevos (quedan dos avisos previos: AppSidebar `Icon` sin uso y dependencias de useEffect en ProductDetailsPage). npm run build correcto. El backend carga app.js; middleware probado: GET 200 con caché, 500 y POST sin caché.
-- Vista previa local contra la API de producción (1280×720): imágenes de la home ~200 KB frente a 3.3 MB, sin imágenes rotas, ficha de producto correcta. El CLS (~0.13) ya existía en producción (0.148): lo causa el pie de página al montar la ruta.
+- Vista previa local con API de producción y GA falso: mensajes correctos en tarjeta, ficha y botón flotante; eventos page_view (también al navegar dentro de la SPA) y whatsapp_click; títulos y canonical correctos; robots.txt y og-image servidos; móvil revisado.
+- ESLint sin errores nuevos (siguen los previos: AppSidebar `Icon`, `err` sin uso en OrdersPage y OrderDetailPage, y el aviso de dependencias en ProductDetailsPage). Build correcto. Sitemap probado con datos simulados.
 
 ## Estado Git y producción
-- Backend 4344bae y frontend ea177bc subidos a main y desplegados.
-- Producción comprobada: /productos pasa de MISS a HIT en el CDN (1.8 s → 0.46 s); Vary: Origin respetado (www, sin www y vercel.app reciben su propio CORS); /carrito sin caché. /assets inmutable, imágenes 1 día, HTML sin caché, /product/5 sirve la SPA y un asset inexistente da 404.
-- Home publicada: 273 KB de imágenes (antes 3.3 MB), sin PNG/JPG originales, sin loader y 0 imágenes rotas.
+- Backend f7dc7a6 subido. Frontend: commit de esta tarea subido a main.
 
 ## Próxima acción
-El usuario decide si se implementa la parte técnica para vender por WhatsApp: medición (Analytics y clics a WhatsApp), un solo botón "Pedir por WhatsApp" con medida, precio y enlace, número centralizado y SEO básico (sitemap, robots, títulos por página, Open Graph). WhatsApp actual en código: +593 99 960 1748; el campo del panel (SettingsTab) es simulado. El checkout con registro no avisa al vendedor de los pedidos.
-Pendientes de prioridad media: re-render del Header en cada scroll, Leaflet en main.jsx, preconnect a onrender.com y /placeholder-tire.png inexistente.
+Usuario: crear la propiedad GA4, cargar VITE_GA_MEASUREMENT_ID en Vercel y volver a desplegar; marcar whatsapp_click como evento clave; dar de alta el sitio en Google Search Console y enviar el sitemap; crear el Perfil de Empresa en Google.
+Revisar con el usuario: la ficha muestra calificación 4.8 (214 opiniones) fija y "IVA incluido", mientras las tarjetas dicen "+ IVA".
+Pendientes de prioridad media: re-render del Header en cada scroll, Leaflet en main.jsx y /placeholder-tire.png inexistente.

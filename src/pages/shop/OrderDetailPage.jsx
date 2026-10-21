@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import pedidosService from '../../services/pedidos.service';
+import { usePageMeta } from '../../hooks/usePageMeta';
 import '../styles/OrderDetailPage.css';
 
 const OrderDetailPage = () => {
+  usePageMeta({ title: 'Detalle del pedido', noindex: true });
   const { id } = useParams();
   const [pedido, setPedido] = useState(null);
   const [tracking, setTracking] = useState([]);

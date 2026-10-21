@@ -1,6 +1,7 @@
+import { buildWhatsAppUrl, trackWhatsAppClick } from "../../utils/whatsapp";
 import "./FloatingContactButtons.css";
 
-const WHATSAPP_NUMBER = "593999601748"; // +593 99 960 1748, formato internacional sin '+' para wa.me
+const WHATSAPP_MESSAGE = "Hola ECTYRE, vengo de la página web y quiero información sobre llantas.";
 const FACEBOOK_URL = "https://www.facebook.com/share/1Eb6kGbPA3/?mibextid=wwXIfr";
 // TikTok: aún no habilitado, se agrega la URL cuando el cliente confirme el usuario oficial.
 const TIKTOK_URL = null;
@@ -9,9 +10,10 @@ const FloatingContactButtons = () => {
   return (
     <div className="floating-contact-buttons">
       <a
-        href={`https://wa.me/${WHATSAPP_NUMBER}`}
+        href={buildWhatsAppUrl(WHATSAPP_MESSAGE)}
         target="_blank"
         rel="noopener noreferrer"
+        onClick={() => trackWhatsAppClick("boton_flotante")}
         className="floating-contact-btn floating-contact-btn--whatsapp"
         aria-label="Escríbenos por WhatsApp"
         title="WhatsApp"

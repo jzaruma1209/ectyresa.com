@@ -1,6 +1,5 @@
 import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { useAuth } from "../../hooks/useAuth";
 import PromoBanner from "../../features/shared/PromoBanner";
 import SearchMegaMenu from "../ui/SearchMegaMenu";
@@ -41,8 +40,6 @@ const searchMegaMenuItems = [
 ];
 
 const Header = () => {
-  const cartItemCount = useSelector((state) => state.cart.itemCount);
-  const cartTotal = useSelector((state) => state.cart.total);
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [isHidden, setIsHidden] = useState(false);
@@ -216,23 +213,7 @@ const Header = () => {
               </Link>
             )}
 
-            {/* Carrito */}
-            <Link to="/cart" className="action-cart">
-              <div className="cart-icon-wrap">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="action-svg cart-svg">
-                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <path d="M16 10a4 4 0 0 1-8 0" />
-                </svg>
-                {cartItemCount > 0 && (
-                  <span className="cart-badge">{cartItemCount}</span>
-                )}
-              </div>
-              <div className="account-text-block">
-                <span className="account-label">CARRITO</span>
-                <span className="account-sub">${(cartTotal || 0).toFixed(2)}</span>
-              </div>
-            </Link>
+            {/* El carrito no se enlaza: las compras se hacen por WhatsApp (botón "Pedir" en cada producto). */}
 
             {/* Mobile hamburger */}
             <button
@@ -279,9 +260,6 @@ const Header = () => {
           ) : (
             <Link to="/login" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Iniciar Sesión</Link>
           )}
-          <Link to="/cart" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>
-            Carrito {cartItemCount > 0 && `(${cartItemCount})`}
-          </Link>
           <a href="/ubicacion" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Sucursales</a>
           <a href="#" className="mobile-nav-link" onClick={() => setMenuOpen(false)}>Seguimiento de pedido</a>
         </nav>

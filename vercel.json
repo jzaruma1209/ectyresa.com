@@ -14,6 +14,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/sitemap.xml", "destination": "https://ectyre-backend.vercel.app/api/v1/seo/sitemap.xml" },
     { "source": "/((?!assets/).*)", "destination": "/index.html" }
   ]
 }

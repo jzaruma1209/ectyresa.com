@@ -4,10 +4,12 @@ import TireCard from '../../components/products/TireCard';
 import nivelesService from '../../services/niveles.service';
 import productsService from '../../services/products.service';
 import { optimizeImage } from '../../utils/cloudinaryImage';
+import { usePageMeta } from '../../hooks/usePageMeta';
 import './BrandCatalogPage.css';
 
 const BrandCatalogPage = () => {
   const { brandId } = useParams();
+  usePageMeta({ title: `Productos ${brandId.toUpperCase()}`, description: `Catálogo ${brandId.toUpperCase()} en ECTYRE S.A.: precios, medidas y pedido por WhatsApp. Envíos a todo Ecuador.` });
 
   const [marca, setMarca] = useState(null);
   const [productos, setProductos] = useState([]);

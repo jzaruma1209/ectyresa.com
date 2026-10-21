@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import { usePageMeta } from '../../hooks/usePageMeta';
 import '../styles/ProfilePage.css';
 
 const ProfilePage = () => {
+  usePageMeta({ title: 'Mi perfil', noindex: true });
   const { user, loading, error, loadProfile, updateProfile } = useAuth();
   const [editing, setEditing] = useState(false);
   const [formData, setFormData] = useState({ nombres: '', apellidos: '', telefono: '' });

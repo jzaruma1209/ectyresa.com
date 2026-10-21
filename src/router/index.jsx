@@ -1,6 +1,7 @@
-import { lazy, Suspense } from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate, Outlet } from "react-router-dom";
+import { lazy, Suspense, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Navigate, Outlet, useLocation } from "react-router-dom";
 import AppLoader from "../components/shared/AppLoader";
+import { trackPageView } from "../lib/analytics";
 
 // ── Layout (siempre presente) — NO lazy ──
 import Header from "../components/layout/Header";
@@ -36,6 +37,13 @@ const AdminLayout = lazy(() => import("../components/admin/AdminLayout"));
  * Se usa para todas las rutas de la tienda.
  */
 function PublicLayout() {
+  const { pathname, search } = useLocation();
+
+  // Una vista de página por cada ruta de la tienda (el panel admin no se mide).
+  useEffect(() => {
+    trackPageView(`${pathname}${search}`);
+  }, [pathname, search]);
+
   return (
     <div className="app">
       <Header />

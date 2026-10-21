@@ -15,8 +15,10 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCredentials } from '../../store/slices/auth.slice';
 import { STORAGE_KEYS } from '../../constants';
+import { usePageMeta } from '../../hooks/usePageMeta';
 
 const AuthCallback = () => {
+  usePageMeta({ title: 'Ingresando', noindex: true });
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [status, setStatus] = useState('loading'); // 'loading' | 'error'

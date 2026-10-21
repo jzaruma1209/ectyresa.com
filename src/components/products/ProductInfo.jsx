@@ -1,9 +1,7 @@
-import { useCart } from '../../hooks/useCart';
+import { buildProductMessage, openWhatsApp } from '../../utils/whatsapp';
 import '../../features/product/styles/ProductInfo.css';
 
 const ProductInfo = ({ product }) => {
-  const { addToCart } = useCart();
-
   if (!product) {
     return <div>Cargando producto...</div>;
   }
@@ -12,11 +10,7 @@ const ProductInfo = ({ product }) => {
   const hasDiscount = product.discount && product.discount > 0;
 
   const handleAddToCart = () => {
-    const phoneNumber = "593999601748";
-    const message = `Hola, estoy interesado en el producto: ${product.name} y la cantidad: 1 por ahora.`;
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    
-    window.open(whatsappUrl, '_blank');
+    openWhatsApp({ message: buildProductMessage(product), source: 'product_info', product });
   };
 
   return (

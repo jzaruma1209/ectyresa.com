@@ -8,6 +8,7 @@ import MainSearchBox from "../../components/products/MainSearchBox";
 import HeroRightColumn from "../../components/products/HeroRightColumn";
 import BrandSection from "../../components/products/BrandSection";
 import productsService from "../../services/products.service";
+import { usePageMeta } from "../../hooks/usePageMeta";
 import "../styles/HomePage.css";
 
 // Agrupa el catálogo real por marca. Si la marca no tiene logo configurado
@@ -42,6 +43,7 @@ const heroAccentColors = {
 };
 
 const HomePage = () => {
+  usePageMeta({ path: "/" });
   const location = useLocation();
   const [activeVehicle, setActiveVehicle] = useState("auto");
   const [welcomeToast, setWelcomeToast] = useState(

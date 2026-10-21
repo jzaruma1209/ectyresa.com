@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /cart
+Disallow: /checkout
+Disallow: /perfil
+Disallow: /mis-pedidos
+Disallow: /auth/
+Disallow: /busqueda
+
+Sitemap: https://www.ectyre.com/sitemap.xml

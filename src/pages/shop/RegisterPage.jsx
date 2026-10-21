@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
 import RegisterForm from '../../components/Auth/RegisterForm';
+import { usePageMeta } from '../../hooks/usePageMeta';
 import '../styles/AuthPages.css';
 
 const RegisterPage = () => {
+  usePageMeta({ title: 'Crear cuenta', noindex: true });
   const navigate = useNavigate();
 
   const handleSuccess = (result) => {

@@ -7,10 +7,11 @@ import "../../components/products/SearchFilters.css";
 import { SkeletonGrid } from "../../components/shared/SkeletonCard";
 import productsService from "../../services/products.service";
 import nivelesService from "../../services/niveles.service";
+import { usePageMeta } from "../../hooks/usePageMeta";
+import { buildWhatsAppUrl, trackWhatsAppClick } from "../../utils/whatsapp";
 import "../styles/SearchResultsPage.css";
 
 const DEFAULT_FILTERS = { brand: "all", category: "all", maxPrice: null };
-const WHATSAPP_NUMBER = "593999601748";
 
 const applyFilters = (products, filters) => {
   return products.filter((p) => {
@@ -53,6 +54,8 @@ const buscarAlternativas = async (medida) => {
 const SearchResultsPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("q") || "";
+  // Los resultados de búsqueda no se indexan: Google debe llegar a las fichas de producto.
+  usePageMeta({ title: query ? `Búsqueda: ${query}` : "Búsqueda", noindex: true });
 
   const { loading, buscarGeneral } = useProducts();
   const [resultados, setResultados] = useState([]);
@@ -96,9 +99,9 @@ const SearchResultsPage = () => {
     [resultados, filters]
   );
 
-  const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
-    `Hola, quiero cotizar: ${query}`
-  )}`;
+  const whatsappUrl = buildWhatsAppUrl(
+    `Hola ECTYRE, busqué "${query}" en la página web y no lo encontré. ¿Me pueden cotizar?`
+  );
 
   return (
     <div className="search-results-page">
@@ -129,6 +132,7 @@ const SearchResultsPage = () => {
                     href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
+                    onClick={() => trackWhatsAppClick("busqueda_sin_resultados")}
                     className="no-results-whatsapp"
                   >
                     Cotiza por WhatsApp

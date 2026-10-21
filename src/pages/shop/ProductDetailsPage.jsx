@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 import { useProducts } from "../../hooks/useProducts";
-import { useCart } from "../../hooks/useCart";
-import { openAuthModal } from "../../store/slices/authModal.slice";
+import { usePageMeta } from "../../hooks/usePageMeta";
 import ProductCard from "../../components/products/ProductCard";
 import productsService from "../../services/products.service";
 import { optimizeImage } from "../../utils/cloudinaryImage";
+import { buildProductMessage, openWhatsApp } from "../../utils/whatsapp";
 import "../styles/ProductDetailsPage.css";
 
 /* ── Imágenes de respaldo ── */
@@ -19,15 +18,30 @@ const PLACEHOLDER_GALLERY = [
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
-  const dispatch = useDispatch();
   const { selectedProduct, loading, loadProductById } = useProducts();
-  const { addToCart } = useCart();
-  const { isAuthenticated } = useSelector((state) => state.auth);
 
   const [mainImg, setMainImg] = useState(0);
   const [qty, setQty] = useState(1);
-  const [added, setAdded] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState(0);
+
+  // Título y descripción para Google con los datos reales (solo cuando el producto cargó).
+  // Marca y medida se agregan solo si el nombre no las trae ya.
+  const metaName = selectedProduct?.name || "";
+  const nameIncludes = (part) =>
+    Boolean(part) && metaName.replace(/\s/g, "").toLowerCase().includes(part.replace(/\s/g, "").toLowerCase());
+  const metaMeasure = selectedProduct?.measure && !nameIncludes(selectedProduct.measure) ? selectedProduct.measure : "";
+  const metaBrand = selectedProduct?.brand && !nameIncludes(selectedProduct.brand) ? selectedProduct.brand : "";
+  const metaPrice = selectedProduct ? Number(selectedProduct.finalPrice || selectedProduct.price || 0).toFixed(2) : null;
+  usePageMeta(
+    selectedProduct
+      ? {
+          title: [metaBrand, metaName, metaMeasure].filter(Boolean).join(" "),
+          description: `${[metaBrand, metaName, metaMeasure].filter(Boolean).join(" ")}. Precio: $${metaPrice}. Pide por WhatsApp a ECTYRE S.A., envíos a todo Ecuador.`,
+          image: optimizeImage(selectedProduct.image, 1200),
+          path: `/product/${id}`,
+        }
+      : { path: `/product/${id}` }
+  );
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [relatedType, setRelatedType] = useState("medida"); // 'medida' | 'marca' | 'disponibles'
 
@@ -99,18 +113,16 @@ const ProductDetailsPage = () => {
       ? [selectedProduct.image, ...PLACEHOLDER_GALLERY.slice(1)]
       : PLACEHOLDER_GALLERY;
 
-  const handleAddToCart = () => {
-    if (!selectedProduct && !product) return;
-    const targetProduct = selectedProduct || product;
-
-    if (!isAuthenticated) {
-      dispatch(openAuthModal({ type: 'ADD_TO_CART', payload: targetProduct, quantity: qty }));
-      return;
-    }
-
-    addToCart(targetProduct, qty);
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+  // Pedido por WhatsApp: el único camino de compra de la tienda
+  const handleWhatsAppOrder = () => {
+    if (!selectedProduct) return;
+    const variant = selectedVariant > 0 ? variants[selectedVariant]?.label : undefined;
+    openWhatsApp({
+      message: buildProductMessage(selectedProduct, { qty, variant }),
+      source: "ficha_producto",
+      product: selectedProduct,
+      qty,
+    });
   };
 
   /* ── Estados de carga ── */
@@ -328,18 +340,14 @@ const ProductDetailsPage = () => {
 
             <button
               type="button"
-              className={`pdp-cta-add ${added ? "added" : ""}`}
-              onClick={handleAddToCart}
+              className="pdp-cta-add"
+              onClick={handleWhatsAppOrder}
               disabled={!product.inStock}
             >
-              {added ? (
-                <>
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-                  <span>AGREGADO AL CARRITO</span>
-                </>
-              ) : (
-                <span>AGREGAR AL CARRITO · ${(finalPrice * qty).toFixed(2)}</span>
-              )}
+              <svg width="18" height="18" viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
+                <path d="M16.01 2.667c-7.364 0-13.343 5.98-13.343 13.343 0 2.357.617 4.57 1.7 6.494L2.667 29.333l6.99-1.833a13.28 13.28 0 0 0 6.353 1.617h.006c7.364 0 13.343-5.98 13.343-13.343S23.374 2.667 16.01 2.667zm0 24.42a11.02 11.02 0 0 1-5.617-1.54l-.403-.24-4.15 1.088 1.108-4.045-.263-.417a11.02 11.02 0 0 1-1.687-5.883c0-6.106 4.97-11.076 11.086-11.076 2.96 0 5.744 1.154 7.836 3.246a11 11 0 0 1 3.246 7.836c0 6.117-4.97 11.086-11.09 11.086z" />
+              </svg>
+              <span>{product.inStock ? `PEDIR POR WHATSAPP · $${(finalPrice * qty).toFixed(2)}` : "AGOTADO"}</span>
             </button>
           </div>
 

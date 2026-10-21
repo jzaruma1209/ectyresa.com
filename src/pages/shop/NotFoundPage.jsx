@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { usePageMeta } from "../../hooks/usePageMeta";
 import "../styles/NotFoundPage.css";
 
 const NotFoundPage = () => {
+  usePageMeta({ title: "Página no encontrada", noindex: true });
   const navigate = useNavigate();
 
   return (

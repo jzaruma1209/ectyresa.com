@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import pedidosService from '../../services/pedidos.service';
+import { usePageMeta } from '../../hooks/usePageMeta';
 import '../styles/OrdersPage.css';
 
 const OrdersPage = () => {
+  usePageMeta({ title: 'Mis pedidos', noindex: true });
   const [pedidos, setPedidos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

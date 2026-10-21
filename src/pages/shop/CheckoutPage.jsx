@@ -2,9 +2,11 @@ import { useCart } from "../../hooks/useCart";
 import { useNavigate } from "react-router-dom";
 import CartSummary from "../../components/cart/CartSummary";
 import CheckoutForm from "../../components/cart/CheckoutForm";
+import { usePageMeta } from "../../hooks/usePageMeta";
 import "../../features/cart/styles/CheckoutPage.css";
 
 const CheckoutPage = () => {
+  usePageMeta({ title: "Checkout", noindex: true });
   const { itemCount } = useCart();
   const navigate = useNavigate();
 

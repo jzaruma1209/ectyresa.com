@@ -6,6 +6,9 @@ import './index.css'
 import './responsive.css'
 import App from './App.jsx'
 import AppLoader from './components/shared/AppLoader.jsx'
+import { initAnalytics } from './lib/analytics'
+
+initAnalytics()
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>

@@ -1,5 +1,10 @@
 // Constantes de la aplicación ECTYRE
 
+// Sitio y contacto (único lugar donde se define el WhatsApp de pedidos)
+export const SITE_URL = 'https://www.ectyre.com';
+export const SITE_NAME = 'ECTYRE S.A.';
+export const WHATSAPP_NUMBER = '593999601748'; // +593 99 960 1748, formato internacional sin '+' para wa.me
+
 // Impuestos
 export const IVA_RATE = 0.15; // 15% IVA Ecuador
 
