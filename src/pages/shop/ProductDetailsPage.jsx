@@ -18,7 +18,9 @@ const PLACEHOLDER_GALLERY = [
 
 const ProductDetailsPage = () => {
   const { id } = useParams();
-  const { selectedProduct, loading, loadProductById } = useProducts();
+  const { selectedProduct: storedProduct, loading, error, loadProductById } = useProducts();
+  // Solo vale el producto del id de la URL: evita mostrar el anterior mientras carga el nuevo.
+  const selectedProduct = storedProduct && String(storedProduct.id) === String(id) ? storedProduct : null;
 
   const [mainImg, setMainImg] = useState(0);
   const [qty, setQty] = useState(1);
@@ -58,8 +60,8 @@ const ProductDetailsPage = () => {
         if (!isMounted || !Array.isArray(all)) return;
 
         const currentId = id;
-        const currentMeasure = selectedProduct?.measure || product.measure;
-        const currentBrand = selectedProduct?.brand || product.brand;
+        const currentMeasure = selectedProduct?.measure;
+        const currentBrand = selectedProduct?.brand;
 
         // 1. Filtrar los que no sean el producto actual
         const pool = all.filter((p) => String(p.id) !== String(currentId));
@@ -126,40 +128,26 @@ const ProductDetailsPage = () => {
   };
 
   /* ── Estados de carga ── */
-  if (loading) {
+  // No se muestra ningún producto de ejemplo: precio y nombre deben ser siempre los reales.
+  if (!selectedProduct) {
     return (
       <div className="pdp-loading">
-        <div className="pdp-spinner" />
-        <p>Cargando producto…</p>
+        {error && !loading ? (
+          <>
+            <p>Este producto no está disponible.</p>
+            <Link to="/">Ver catálogo</Link>
+          </>
+        ) : (
+          <>
+            <div className="pdp-spinner" />
+            <p>Cargando producto…</p>
+          </>
+        )}
       </div>
     );
   }
 
-  /* Producto fallback si no carga por ID */
-  const product = selectedProduct || {
-    id,
-    name: "Llanta Todo Terreno 265/70R16",
-    brand: "Trazano",
-    measure: "265/70R16",
-    price: 179.98,
-    finalPrice: 89.99,
-    discount: 50,
-    inStock: true,
-    stock: 12,
-    rating: 4.8,
-    reviewsCount: 214,
-    description:
-      "Llanta de alto rendimiento diseñada para todo tipo de terreno. Perfecta para camionetas y SUVs que necesitan agarre superior y tracción certificada. Construida con compuesto de caucho reforzado para máxima vida útil.",
-    specs: {
-      width: "265",
-      height: "70",
-      rim: "16",
-      loadIndex: "112",
-      speedIndex: "S",
-      terrain: "Todo Terreno",
-      category: "4x4 / SUV",
-    },
-  };
+  const product = selectedProduct;
 
   const finalPrice = product.finalPrice || product.price;
   const hasDiscount = product.discount && product.discount > 0;
