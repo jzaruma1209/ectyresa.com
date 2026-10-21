@@ -17,8 +17,10 @@ Optimización de carga (prioridad alta de la auditoría del 2026-10-21): imágen
 - Vista previa local contra la API de producción (1280×720): imágenes de la home ~200 KB frente a 3.3 MB, sin imágenes rotas, ficha de producto correcta. El CLS (~0.13) ya existía en producción (0.148): lo causa el pie de página al montar la ruta.
 
 ## Estado Git y producción
-- Backend 4344bae subido a main.
-- Frontend: commit de esta tarea subido a main (ver git log).
+- Backend 4344bae y frontend ea177bc subidos a main y desplegados.
+- Producción comprobada: /productos pasa de MISS a HIT en el CDN (1.8 s → 0.46 s); Vary: Origin respetado (www, sin www y vercel.app reciben su propio CORS); /carrito sin caché. /assets inmutable, imágenes 1 día, HTML sin caché, /product/5 sirve la SPA y un asset inexistente da 404.
+- Home publicada: 273 KB de imágenes (antes 3.3 MB), sin PNG/JPG originales, sin loader y 0 imágenes rotas.
 
 ## Próxima acción
-Verificar en producción: cabeceras de caché (x-vercel-cache HIT en /productos y Vary: Origin para ectyre.com y www) y la carga de la home. Pendientes de prioridad media: re-render del Header en cada scroll, Leaflet en main.jsx, preconnect a onrender.com y /placeholder-tire.png inexistente.
+El usuario decide si se implementa la parte técnica para vender por WhatsApp: medición (Analytics y clics a WhatsApp), un solo botón "Pedir por WhatsApp" con medida, precio y enlace, número centralizado y SEO básico (sitemap, robots, títulos por página, Open Graph). WhatsApp actual en código: +593 99 960 1748; el campo del panel (SettingsTab) es simulado. El checkout con registro no avisa al vendedor de los pedidos.
+Pendientes de prioridad media: re-render del Header en cada scroll, Leaflet en main.jsx, preconnect a onrender.com y /placeholder-tire.png inexistente.
