@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { SITE_NAME, SITE_URL } from '../constants';
 
 // Valores por defecto: los mismos que index.html (lo que ven WhatsApp y Facebook al compartir).
-export const DEFAULT_TITLE = 'ECTYRE S.A. - Importadores y Distribuidores de Llantas';
+export const DEFAULT_TITLE = 'ECTYRE S.A. | Llantas en La Troncal y envíos a todo Ecuador';
 export const DEFAULT_DESCRIPTION =
-  'ECTYRE S.A. – Importadores y distribuidores autorizados de llantas en Ecuador. Encuentra llantas para auto, camión, maquinaria y más. Envíos a nivel nacional.';
+  'ECTYRE S.A., llantas para auto, camioneta, camión y maquinaria en La Troncal, Cañar, con instalación y envíos a todo Ecuador.';
 const DEFAULT_IMAGE = `${SITE_URL}/og-image.jpg`;
 
 function setMeta(attribute, key, content) {
