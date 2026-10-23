@@ -270,7 +270,7 @@ const TireCard = ({
           <div className="flex items-baseline gap-0.5">
             <span className={`${sz.price} font-bold leading-none text-[#e83a2b]`}>${int}</span>
             <sup className="text-[11px] font-bold text-[#e83a2b]">.{dec}</sup>
-            <span className="ml-0.5 text-[10px] font-medium text-gray-400">+ IVA</span>
+            <span className="ml-0.5 text-[10px] font-medium text-gray-400">IVA incluido</span>
           </div>
           {originalPrice ? (
             <span className="text-[10px] text-gray-400 line-through">
