@@ -354,9 +354,7 @@ const TireCard = ({
           title={agotado ? "Producto agotado" : "Pedir por WhatsApp"}
           aria-label={agotado ? "Producto agotado" : `Pedir ${name} por WhatsApp`}
         >
-          <svg className={`shrink-0 ${agotado ? "hidden" : "block"}`} width={compact ? 12 : 14} height={compact ? 12 : 14} viewBox="0 0 32 32" fill="currentColor" aria-hidden="true">
-            <path d="M16.01 2.667c-7.364 0-13.343 5.98-13.343 13.343 0 2.357.617 4.57 1.7 6.494L2.667 29.333l6.99-1.833a13.28 13.28 0 0 0 6.353 1.617h.006c7.364 0 13.343-5.98 13.343-13.343S23.374 2.667 16.01 2.667zm0 24.42a11.02 11.02 0 0 1-5.617-1.54l-.403-.24-4.15 1.088 1.108-4.045-.263-.417a11.02 11.02 0 0 1-1.687-5.883c0-6.106 4.97-11.076 11.086-11.076 2.96 0 5.744 1.154 7.836 3.246a11 11 0 0 1 3.246 7.836c0 6.117-4.97 11.086-11.09 11.086z" />
-          </svg>
+          <img src="/iconowhassap-128.webp" alt="" aria-hidden="true" className={`shrink-0 rounded-[3px] ${agotado ? "hidden" : "block"}`} width={compact ? 12 : 14} height={compact ? 12 : 14} />
           {agotado ? "Agotado" : "Pedir"}
         </button>
       </div>
