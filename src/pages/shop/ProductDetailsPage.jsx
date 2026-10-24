@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 import { useProducts } from "../../hooks/useProducts";
 import { usePageMeta } from "../../hooks/usePageMeta";
 import ProductCard from "../../components/products/ProductCard";
+import AppLoader from "../../components/shared/AppLoader";
 import productsService from "../../services/products.service";
 import { optimizeImage } from "../../utils/cloudinaryImage";
 import { buildProductMessage, openWhatsApp } from "../../utils/whatsapp";
@@ -25,6 +26,25 @@ const ProductDetailsPage = () => {
   const [mainImg, setMainImg] = useState(0);
   const [qty, setQty] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(0);
+  const [isZoomOpen, setIsZoomOpen] = useState(false);
+  const [zoomLevel, setZoomLevel] = useState(1);
+
+  useEffect(() => {
+    if (!isZoomOpen) return undefined;
+
+    const previousOverflow = document.body.style.overflow;
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setIsZoomOpen(false);
+    };
+
+    document.body.style.overflow = "hidden";
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isZoomOpen]);
 
   // Título y descripción para Google con los datos reales (solo cuando el producto cargó).
   // Marca y medida se agregan solo si el nombre no las trae ya.
@@ -127,22 +147,31 @@ const ProductDetailsPage = () => {
     });
   };
 
+  const handleImagePointerMove = (event) => {
+    if (event.pointerType !== "mouse") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = ((event.clientX - bounds.left) / bounds.width) * 100;
+    const y = ((event.clientY - bounds.top) / bounds.height) * 100;
+    event.currentTarget.style.setProperty("--zoom-x", `${x}%`);
+    event.currentTarget.style.setProperty("--zoom-y", `${y}%`);
+  };
+
+  const openImageZoom = () => {
+    setZoomLevel(1);
+    setIsZoomOpen(true);
+  };
+
   /* ── Estados de carga ── */
   // No se muestra ningún producto de ejemplo: precio y nombre deben ser siempre los reales.
   if (!selectedProduct) {
+    if (!error || loading) {
+      return <AppLoader />;
+    }
+
     return (
       <div className="pdp-loading">
-        {error && !loading ? (
-          <>
-            <p>Este producto no está disponible.</p>
-            <Link to="/">Ver catálogo</Link>
-          </>
-        ) : (
-          <>
-            <div className="pdp-spinner" />
-            <p>Cargando producto…</p>
-          </>
-        )}
+        <p>Este producto no está disponible.</p>
+        <Link to="/">Ver catálogo</Link>
       </div>
     );
   }
@@ -229,7 +258,24 @@ const ProductDetailsPage = () => {
             </div>
 
             {/* Imagen principal */}
-            <div className="pdp-main-image-wrap">
+            <div
+              className="pdp-main-image-wrap"
+              role="button"
+              tabIndex={0}
+              aria-label={`Ampliar imagen de ${product.name}`}
+              onPointerMove={handleImagePointerMove}
+              onPointerLeave={(event) => {
+                event.currentTarget.style.removeProperty("--zoom-x");
+                event.currentTarget.style.removeProperty("--zoom-y");
+              }}
+              onClick={openImageZoom}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                  event.preventDefault();
+                  openImageZoom();
+                }
+              }}
+            >
               {hasDiscount && (
                 <span className="pdp-badge-discount">-{product.discount}% OFF</span>
               )}
@@ -239,6 +285,8 @@ const ProductDetailsPage = () => {
                 className="pdp-hero-img"
                 onError={(e) => (e.target.src = "/llanta1.webp")}
               />
+              <span className="pdp-zoom-hint pdp-zoom-hint--desktop">Pasa el cursor para ampliar</span>
+              <span className="pdp-zoom-hint pdp-zoom-hint--mobile">Toca para ampliar</span>
             </div>
           </div>
 
@@ -396,6 +444,58 @@ const ProductDetailsPage = () => {
             ))}
           </div>
         </section>
+      )}
+
+      {isZoomOpen && (
+        <div
+          className="pdp-zoom-modal"
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Vista ampliada de ${product.name}`}
+          onClick={(event) => {
+            if (event.target === event.currentTarget) setIsZoomOpen(false);
+          }}
+        >
+          <div className="pdp-zoom-dialog">
+            <div className="pdp-zoom-header">
+              <span>{product.name}</span>
+              <button type="button" onClick={() => setIsZoomOpen(false)} aria-label="Cerrar vista ampliada">
+                ×
+              </button>
+            </div>
+
+            <div className="pdp-zoom-viewport">
+              <div className="pdp-zoom-canvas" style={{ width: `${zoomLevel * 100}%` }}>
+                <img
+                  src={optimizeImage(gallery[mainImg], 1600)}
+                  alt={`Vista ampliada de ${product.name}`}
+                  draggable="false"
+                  onError={(e) => (e.target.src = "/llanta1.webp")}
+                />
+              </div>
+            </div>
+
+            <div className="pdp-zoom-controls" aria-label="Controles de zoom">
+              <button
+                type="button"
+                onClick={() => setZoomLevel((level) => Math.max(1, level - 0.5))}
+                disabled={zoomLevel <= 1}
+                aria-label="Alejar imagen"
+              >
+                −
+              </button>
+              <span>{Math.round(zoomLevel * 100)}%</span>
+              <button
+                type="button"
+                onClick={() => setZoomLevel((level) => Math.min(3, level + 0.5))}
+                disabled={zoomLevel >= 3}
+                aria-label="Acercar imagen"
+              >
+                +
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

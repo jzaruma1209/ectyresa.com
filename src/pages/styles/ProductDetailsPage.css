@@ -15,31 +15,18 @@
   padding-bottom: 6rem;
 }
 
-/* ── Spinner / Loading ── */
+/* ── Estado de producto no disponible ── */
 .pdp-loading {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 60vh;
-  gap: 1.25rem;
+  gap: 1rem;
   color: #666666;
   font-size: 0.9rem;
   letter-spacing: 0.05em;
   text-transform: uppercase;
-}
-
-.pdp-spinner {
-  width: 36px;
-  height: 36px;
-  border: 2px solid #E5E5E5;
-  border-top-color: #111111;
-  border-radius: 0;
-  animation: pdp-spin 0.7s linear infinite;
-}
-
-@keyframes pdp-spin {
-  to { transform: rotate(360deg); }
 }
 
 /* ── Breadcrumb Minimalista Ras ── */
@@ -133,6 +120,8 @@
 }
 
 .pdp-main-image-wrap {
+  --zoom-x: 50%;
+  --zoom-y: 50%;
   position: relative;
   background: #FFFFFF;
   border: 1px solid #E5E5E5;
@@ -144,17 +133,28 @@
   justify-content: center;
   padding: 2.5rem;
   overflow: hidden;
+  cursor: zoom-in;
+  outline: none;
+}
+
+.pdp-main-image-wrap:focus-visible {
+  outline: 2px solid #E60000;
+  outline-offset: 3px;
 }
 
 .pdp-hero-img {
   max-width: 100%;
   max-height: 440px;
   object-fit: contain;
-  transition: transform 0.4s ease;
+  pointer-events: none;
+  transform-origin: var(--zoom-x) var(--zoom-y);
+  transition: transform 0.18s ease-out;
 }
 
-.pdp-hero-img:hover {
-  transform: scale(1.03);
+@media (hover: hover) and (pointer: fine) {
+  .pdp-main-image-wrap:hover .pdp-hero-img {
+    transform: scale(2.15);
+  }
 }
 
 .pdp-badge-discount {
@@ -169,6 +169,125 @@
   padding: 0.35rem 0.65rem;
   border-radius: 0;
   z-index: 2;
+}
+
+.pdp-zoom-hint {
+  position: absolute;
+  right: 0.85rem;
+  bottom: 0.85rem;
+  z-index: 3;
+  padding: 0.5rem 0.7rem;
+  background: rgba(17, 17, 17, 0.86);
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+}
+
+.pdp-zoom-hint--mobile {
+  display: none;
+}
+
+/* Visor ampliado para clic y pantallas táctiles */
+.pdp-zoom-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  background: rgba(0, 0, 0, 0.82);
+}
+
+.pdp-zoom-dialog {
+  width: min(1100px, 100%);
+  height: min(88vh, 820px);
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  background: #FFFFFF;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.35);
+}
+
+.pdp-zoom-header {
+  min-height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #E5E5E5;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.pdp-zoom-header button,
+.pdp-zoom-controls button {
+  border: 1px solid #111111;
+  background: #FFFFFF;
+  color: #111111;
+  cursor: pointer;
+}
+
+.pdp-zoom-header button {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.pdp-zoom-viewport {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  background: #FAFAFA;
+  touch-action: pan-x pan-y pinch-zoom;
+}
+
+.pdp-zoom-canvas {
+  min-width: 100%;
+  min-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  transition: width 0.2s ease;
+}
+
+.pdp-zoom-canvas img {
+  width: 100%;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  user-select: none;
+}
+
+.pdp-zoom-controls {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 0.65rem 1rem;
+  border-top: 1px solid #E5E5E5;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 700;
+}
+
+.pdp-zoom-controls button {
+  width: 40px;
+  height: 36px;
+  font-size: 1.2rem;
+}
+
+.pdp-zoom-controls button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
 }
 
 .pdp-gallery-caption {
@@ -777,5 +896,25 @@
   .pdp-thumb-btn {
     height: 75px;
     min-width: 75px;
+  }
+  .pdp-main-image-wrap {
+    min-height: 380px;
+    padding: 1.5rem;
+  }
+  .pdp-zoom-hint--desktop {
+    display: none;
+  }
+  .pdp-zoom-hint--mobile {
+    display: inline-block;
+  }
+  .pdp-zoom-modal {
+    padding: 0;
+  }
+  .pdp-zoom-dialog {
+    width: 100%;
+    height: 100dvh;
+  }
+  .pdp-zoom-canvas {
+    padding: 1rem;
   }
 }
