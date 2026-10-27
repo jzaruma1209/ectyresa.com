@@ -5,6 +5,7 @@ import vehicleData from '../../data/vehicle-data.json';
 import productsService from '../../services/products.service';
 import ExpandableValuesButton from './ExpandableValuesButton';
 import { optimizeImage } from '../../utils/cloudinaryImage';
+import { productPath } from '../../utils/productSlug';
 import './VehicleSearcher.css';
 
 const STEPS = ['marca', 'anio', 'modelo'];
@@ -265,7 +266,7 @@ const VehicleSearcher = () => {
                       <button
                         data-slot="vs-card-btn"
                         className="vs-card-btn"
-                        onClick={() => navigate(`/product/${producto.id}`)}
+                        onClick={() => navigate(productPath(producto))}
                       >
                         Ver Detalle
                       </button>

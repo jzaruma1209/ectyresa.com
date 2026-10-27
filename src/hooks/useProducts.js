@@ -11,7 +11,11 @@ import productsService from '../services/products.service';
 /**
  * Extrae el mensaje de error legible del backend o del error genérico
  */
+// Mensaje del backend cuando el producto no existe o está desactivado (404/410)
+export const PRODUCT_NOT_FOUND = 'Producto no encontrado';
+
 const getErrorMessage = (err) => {
+  if (err.response?.status === 404 || err.response?.status === 410) return PRODUCT_NOT_FOUND;
   return err.response?.data?.message || err.message || 'Error desconocido';
 };
 

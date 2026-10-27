@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
-import { useProducts } from "../../hooks/useProducts";
+import { useParams, useNavigate, useLocation, Link } from "react-router-dom";
+import { useProducts, PRODUCT_NOT_FOUND } from "../../hooks/useProducts";
 import { usePageMeta } from "../../hooks/usePageMeta";
 import ProductCard from "../../components/products/ProductCard";
 import AppLoader from "../../components/shared/AppLoader";
 import productsService from "../../services/products.service";
 import { optimizeImage } from "../../utils/cloudinaryImage";
+import { productPath, parseProductId } from "../../utils/productSlug";
 import { buildProductMessage, openWhatsApp } from "../../utils/whatsapp";
 import "../styles/ProductDetailsPage.css";
 
@@ -18,7 +19,11 @@ const PLACEHOLDER_GALLERY = [
 ];
 
 const ProductDetailsPage = () => {
-  const { id } = useParams();
+  // La URL es /product/8-nombre-del-producto; también se acepta /product/8 y se redirige a la canónica.
+  const { id: idParam } = useParams();
+  const id = parseProductId(idParam);
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
   const { selectedProduct: storedProduct, loading, error, loadProductById } = useProducts();
   // Solo vale el producto del id de la URL: evita mostrar el anterior mientras carga el nuevo.
   const selectedProduct = storedProduct && String(storedProduct.id) === String(id) ? storedProduct : null;
@@ -51,19 +56,40 @@ const ProductDetailsPage = () => {
   const metaName = selectedProduct?.name || "";
   const nameIncludes = (part) =>
     Boolean(part) && metaName.replace(/\s/g, "").toLowerCase().includes(part.replace(/\s/g, "").toLowerCase());
-  const metaMeasure = selectedProduct?.measure && !nameIncludes(selectedProduct.measure) ? selectedProduct.measure : "";
+  // Si el nombre trae una medida distinta a la registrada (dato por corregir en el panel) no se usa ninguna en los metadatos.
+  const measureKey = (text) => {
+    const m = /(\d{3})\s*\/\s*(\d{2})\s*[Rr]\s*(\d{2})/.exec(text || "");
+    return m ? `${Number(m[1])}/${Number(m[2])}R${Number(m[3])}` : null;
+  };
+  const measureConflict =
+    Boolean(measureKey(metaName) && measureKey(selectedProduct?.measure)) &&
+    measureKey(metaName) !== measureKey(selectedProduct?.measure);
+  const metaMeasure =
+    selectedProduct?.measure && !measureConflict && !nameIncludes(selectedProduct.measure) ? selectedProduct.measure : "";
   const metaBrand = selectedProduct?.brand && !nameIncludes(selectedProduct.brand) ? selectedProduct.brand : "";
   const metaPrice = selectedProduct ? Number(selectedProduct.finalPrice || selectedProduct.price || 0).toFixed(2) : null;
   usePageMeta(
     selectedProduct
       ? {
           title: [metaBrand, metaName, metaMeasure].filter(Boolean).join(" "),
-          description: `${[metaBrand, metaName, metaMeasure].filter(Boolean).join(" ")}. Precio: $${metaPrice}. Pide por WhatsApp a ECTYRE S.A., envíos a todo Ecuador.`,
+          // Las llantas mencionan la ubicación real del local; el resto de productos no la fuerza
+          description: `${[metaBrand, metaName, metaMeasure].filter(Boolean).join(" ")}. Precio: $${metaPrice}. ${
+            (selectedProduct.category || "").toLowerCase().includes("llanta")
+              ? "Consulta disponibilidad en ECTYRE S.A., La Troncal, Cañar, y pide por WhatsApp."
+              : "Pide por WhatsApp a ECTYRE S.A., envíos a todo Ecuador."
+          }`,
           image: optimizeImage(selectedProduct.image, 1200),
-          path: `/product/${id}`,
+          path: productPath(selectedProduct),
         }
-      : { path: `/product/${id}` }
+      // Producto inexistente o desactivado: no debe indexarse (soft 404). Un fallo temporal de la API no lo marca.
+      : { path: pathname, noindex: error === PRODUCT_NOT_FOUND }
   );
+
+  // Respaldo en el navegador: el servidor ya redirige con 308; esto cubre la navegación interna de la SPA.
+  const canonicalPath = selectedProduct ? productPath(selectedProduct) : null;
+  useEffect(() => {
+    if (canonicalPath && pathname !== canonicalPath) navigate(canonicalPath, { replace: true });
+  }, [canonicalPath, pathname, navigate]);
   const [relatedProducts, setRelatedProducts] = useState([]);
   const [relatedType, setRelatedType] = useState("medida"); // 'medida' | 'marca' | 'disponibles'
 
@@ -166,6 +192,17 @@ const ProductDetailsPage = () => {
   if (!selectedProduct) {
     if (!error || loading) {
       return <AppLoader />;
+    }
+
+    // Producto inexistente o desactivado vs. fallo temporal de conexión: mensajes distintos
+    if (error !== PRODUCT_NOT_FOUND) {
+      return (
+        <div className="pdp-loading">
+          <p>No pudimos cargar el producto. Revisa tu conexión e inténtalo de nuevo.</p>
+          <button type="button" onClick={() => loadProductById(id)}>Reintentar</button>
+          <Link to="/">Ver catálogo</Link>
+        </div>
+      );
     }
 
     return (

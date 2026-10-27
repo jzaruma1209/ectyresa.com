@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 import { optimizeImage } from "../../utils/cloudinaryImage";
+import { productPath } from "../../utils/productSlug";
 import { buildProductMessage, openWhatsApp } from "../../utils/whatsapp";
 
 /**
@@ -221,7 +222,7 @@ const TireCard = ({
 
       {/* --- IMAGEN HERO + BADGES --- */}
       <Link
-        to={`/product/${product?.id || "#"}`}
+        to={product?.id ? productPath(product) : "#"}
         className={`group relative ${sz.img} flex items-center justify-center overflow-hidden rounded-lg bg-white`}
         style={{ textDecoration: "none" }}
         title={`Ver detalles de ${name}`}

@@ -30,6 +30,10 @@ Vender por WhatsApp: medición, un solo botón de pedido y SEO básico.
 - Nueva tarea pendiente T-04: porcentaje dinámico en la banda promocional de las tarjetas (ver TAREAS.md).
 - Dato a corregir en el panel: el producto 3 se llama "185/60R14", pero su medida registrada es 185/65R14.
 
+## Orden 04 — URLs SEO de productos (2026-10-27, sin commit ni despliegue)
+- Implementado y probado en local en la rama `seo/orden-04-urls` (backend y frontend): slug estable en BD, `/product/{id}-{slug}`, 308 real vía función de Vercel, 404/410/503, sitemap canónico. Detalle y procedimiento de publicación: `docs/SEO_ORDEN_04_DESPLIEGUE.md`. Respaldo: `_respaldo_2026-10-27_seo-orden-04/`.
+- Esperando decisión del propietario para publicar. Producto 3 corregido por el propietario a 185/65R14 (verificado por GET en producción).
+
 ## Próxima acción
 Usuario: crear la propiedad GA4, cargar VITE_GA_MEASUREMENT_ID en Vercel y volver a desplegar; marcar whatsapp_click como evento clave; dar de alta el sitio en Google Search Console y enviar el sitemap; crear el Perfil de Empresa en Google.
 Revisar con el usuario: la ficha muestra calificación 4.8 (214 opiniones) fija y "IVA incluido", mientras las tarjetas dicen "+ IVA".

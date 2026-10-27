@@ -29,6 +29,9 @@ const mapProducto = (p) => {
     // id del producto — se usa en /product/:id y en el carrito
     id: p.idProducto,
     productId: p.idProducto,
+    // URL pública canónica (/product/{id}-{slug}) calculada por el backend
+    slug: p.slug || null,
+    path: p.ruta || `/product/${p.idProducto}`,
     name: p.nombre || 'Sin nombre',
     description: p.descripcion || '',
     category: p.tipoProducto?.nombre || '',

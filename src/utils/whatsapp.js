@@ -1,5 +1,6 @@
 import { SITE_URL, WHATSAPP_NUMBER } from '../constants';
 import { trackEvent } from '../lib/analytics';
+import { productPath } from './productSlug';
 
 const formatMoney = (value) => `$${(Number(value) || 0).toFixed(2)}`;
 
@@ -23,7 +24,7 @@ export function buildProductMessage(product, { qty = 1, variant } = {}) {
     variant && `• Opción: ${variant}`,
     unitPrice != null && `• Precio web: ${formatMoney(unitPrice)} c/u`,
     `• Cantidad: ${qty}`,
-    product?.id != null && `• Enlace: ${SITE_URL}/product/${product.id}`,
+    product?.id != null && `• Enlace: ${SITE_URL}${productPath(product)}`,
   ];
   return lines.filter(Boolean).join('\n');
 }
