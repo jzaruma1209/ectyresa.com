@@ -25,18 +25,19 @@
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.3);
 }
 
+/* El ícono de WhatsApp es un cuadrado redondeado: se muestra completo, sin recortarlo en círculo */
 .floating-contact-btn--whatsapp {
-  background-color: #25d366;
+  background-color: transparent;
   padding: 0;
-  overflow: hidden;
+  border-radius: 22%;
 }
 
-/* Icono oficial de WhatsApp: llena el círculo del botón */
 .floating-contact-btn__img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
+  border-radius: 22%;
 }
 
 .floating-contact-btn--facebook {
