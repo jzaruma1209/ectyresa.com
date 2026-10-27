@@ -1,8 +1,11 @@
 import { useState, useEffect, useCallback } from "react";
 import { Search, Users, Eye, X, RotateCw, UserCheck, UserX, KeyRound } from "lucide-react";
 import adminService from "@/services/admin.service";
+import { useAuth } from "@/hooks/useAuth";
 
 export function UsersTab() {
+  const { user } = useAuth();
+  const miId = user?.idCliente ?? user?.id;
   const [clientes, setClientes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -205,6 +208,7 @@ export function UsersTab() {
                   const id = cliente.id || cliente.idCliente;
                   const nombre = `${cliente.nombres || cliente.nombre || "Usuario"} ${cliente.apellidos || ""}`.trim();
                   const activo = cliente.activo !== false;
+                  const esMiCuenta = Number(id) === Number(miId);
                   const fecha = cliente.createdAt || cliente.fechaRegistro || "-";
 
                   return (
@@ -258,14 +262,20 @@ export function UsersTab() {
                           </button>
                           <button
                             type="button"
-                            disabled={togglingId === id}
+                            disabled={togglingId === id || esMiCuenta}
                             onClick={() => handleToggle(id)}
                             className={`inline-flex h-8 items-center gap-1 rounded-md border px-2 text-xs font-medium transition-colors ${
                               activo
                                 ? "border-rose-500/30 bg-rose-500/10 text-rose-400 hover:bg-rose-500/20"
                                 : "border-emerald-500/30 bg-emerald-500/10 text-emerald-400 hover:bg-emerald-500/20"
                             }`}
-                            title={activo ? "Suspender acceso" : "Reactivar acceso"}
+                            title={
+                              esMiCuenta
+                                ? "No puedes suspender tu propia cuenta"
+                                : activo
+                                  ? "Suspender acceso"
+                                  : "Reactivar acceso"
+                            }
                           >
                             {activo ? (
                               <>
