@@ -29,6 +29,10 @@
       "destination": "/api/product"
     },
     {
+      "source": "/product/:p/",
+      "destination": "/api/product"
+    },
+    {
       "source": "/((?!assets/|api/).*)",
       "destination": "/index.html"
     }
