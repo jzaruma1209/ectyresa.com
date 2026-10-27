@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import GoogleLoginButton from './GoogleLoginButton';
 import './styles/AuthForms.css';
@@ -7,6 +7,7 @@ import './styles/GoogleLoginButton.css';
 
 const LoginForm = ({ onSuccess }) => {
   const { login, loading, error, clearError } = useAuth();
+  const location = useLocation();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -30,6 +31,12 @@ const LoginForm = ({ onSuccess }) => {
           <h2>Iniciar Sesión</h2>
           <p>Ingresa a tu cuenta Ectyre</p>
         </div>
+
+        {location.state?.passwordRestablecida && (
+          <div className="auth-notice">
+            <span>Contraseña actualizada. Ya puedes iniciar sesión.</span>
+          </div>
+        )}
 
         {error && (
           <div className="auth-error">

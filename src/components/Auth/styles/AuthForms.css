@@ -232,3 +232,101 @@
     flex: 1;
   }
 }
+
+/* ─── Recuperar / restablecer contraseña ─── */
+.auth-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: #FDECEC;
+  color: #E60000;
+}
+
+.auth-icon--ok {
+  background: #E8F7EE;
+  color: #1E9E4F;
+}
+
+.auth-notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  margin-bottom: 18px;
+  border-radius: 8px;
+  background: #E8F7EE;
+  border: 1px solid #BFE8CE;
+  color: #176B38;
+  font-size: 0.9rem;
+}
+
+.auth-lead {
+  margin: 0 0 18px;
+  text-align: center;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #4A4A4A;
+}
+
+.auth-lead strong {
+  color: #1A1A1A;
+  word-break: break-all;
+}
+
+.auth-tips {
+  margin: 0 0 22px;
+  padding: 14px 16px;
+  list-style: none;
+  border-radius: 8px;
+  background: #F5F5F5;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #4A4A4A;
+}
+
+.auth-tips li + li {
+  margin-top: 6px;
+}
+
+.auth-hint {
+  margin: 4px 0 0;
+  font-size: 0.8rem;
+  color: #808080;
+}
+
+.auth-btn-link {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 8px;
+  background: #E60000;
+  color: #FFFFFF;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.auth-btn-link:hover {
+  background: #C40000;
+}
+
+.auth-btn-text {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 8px;
+  border: 0;
+  background: none;
+  color: #E60000;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.auth-btn-text:hover {
+  text-decoration: underline;
+}

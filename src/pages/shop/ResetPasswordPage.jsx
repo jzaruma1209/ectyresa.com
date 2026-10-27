@@ -39,16 +39,22 @@ const ResetPasswordPage = () => {
     <div className="auth-page">
       <div className="auth-form-container">
         <div className="auth-form-card">
+          <div className="auth-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="30" height="30" aria-hidden="true">
+              <rect x="4" y="11" width="16" height="10" rx="2" />
+              <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+            </svg>
+          </div>
           <div className="auth-form-header">
-            <h2>Nueva contraseña</h2>
-            <p>Mínimo 10 caracteres, con letras y números</p>
+            <h2>Crea tu contraseña nueva</h2>
+            <p>Mínimo 10 caracteres, con letras y números.</p>
           </div>
 
           {!token ? (
             <div className="auth-form">
-              <p>El enlace no es válido.</p>
+              <p className="auth-lead">El enlace no es válido o ya venció.</p>
               <div className="auth-footer">
-                <Link to="/olvide-contrasena" className="auth-link">Solicitar un enlace nuevo</Link>
+                <Link to="/olvide-contrasena" className="auth-btn-link">Solicitar un enlace nuevo</Link>
               </div>
             </div>
           ) : (
