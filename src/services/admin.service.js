@@ -57,6 +57,12 @@ const adminService = {
     return response.data;
   },
 
+  // Restablece la contraseña de un cliente; pide la contraseña del administrador como confirmación
+  resetClientePassword: async (id, passwordAdmin, passwordNueva) => {
+    const response = await api.patch(`/admin/clientes/${id}/password`, { passwordAdmin, passwordNueva });
+    return response.data;
+  },
+
   // ──────────────────────────────────────────
   // PRODUCTOS (todos los tipos: llantas, baterías, accesorios…)
   // ──────────────────────────────────────────

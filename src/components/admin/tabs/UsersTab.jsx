@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { Search, Users, Eye, X, RotateCw, UserCheck, UserX } from "lucide-react";
+import { Search, Users, Eye, X, RotateCw, UserCheck, UserX, KeyRound } from "lucide-react";
 import adminService from "@/services/admin.service";
 
 export function UsersTab() {
@@ -13,6 +13,15 @@ export function UsersTab() {
   const [selectedCliente, setSelectedCliente] = useState(null);
   const [clientePedidos, setClientePedidos] = useState([]);
   const [togglingId, setTogglingId] = useState(null);
+
+  // Restablecer contraseña
+  const [passwordCliente, setPasswordCliente] = useState(null);
+  const [passwordAdmin, setPasswordAdmin] = useState("");
+  const [passwordNueva, setPasswordNueva] = useState("");
+  const [passwordConfirma, setPasswordConfirma] = useState("");
+  const [guardandoPassword, setGuardandoPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState("");
+  const [passwordOk, setPasswordOk] = useState("");
 
   const fetchClientes = useCallback(async () => {
     try {
@@ -57,6 +66,47 @@ export function UsersTab() {
       alert("Error al cambiar estado del cliente: " + (err.response?.data?.message || err.message));
     } finally {
       setTogglingId(null);
+    }
+  };
+
+  const abrirPassword = (cliente) => {
+    setPasswordCliente(cliente);
+    setPasswordAdmin("");
+    setPasswordNueva("");
+    setPasswordConfirma("");
+    setPasswordError("");
+    setPasswordOk("");
+  };
+
+  const cerrarPassword = () => {
+    setPasswordCliente(null);
+    setPasswordAdmin("");
+    setPasswordNueva("");
+    setPasswordConfirma("");
+  };
+
+  const handleGuardarPassword = async (e) => {
+    e.preventDefault();
+    setPasswordError("");
+    if (passwordNueva.length < 10 || !/[A-Za-z]/.test(passwordNueva) || !/\d/.test(passwordNueva)) {
+      setPasswordError("La contraseña nueva debe tener al menos 10 caracteres, con letras y números.");
+      return;
+    }
+    if (passwordNueva !== passwordConfirma) {
+      setPasswordError("La confirmación no coincide con la contraseña nueva.");
+      return;
+    }
+    try {
+      setGuardandoPassword(true);
+      const id = passwordCliente.id || passwordCliente.idCliente;
+      await adminService.resetClientePassword(id, passwordAdmin, passwordNueva);
+      setPasswordOk(`Contraseña de ${passwordCliente.email} actualizada.`);
+      cerrarPassword();
+    } catch (err) {
+      const detalle = err.response?.data?.errors?.[0]?.msg;
+      setPasswordError(detalle || err.response?.data?.message || "No se pudo cambiar la contraseña.");
+    } finally {
+      setGuardandoPassword(false);
     }
   };
 
@@ -106,6 +156,15 @@ export function UsersTab() {
       {error && (
         <div className="rounded-lg border border-rose-500/30 bg-rose-500/10 p-3 text-xs text-rose-400">
           {error}
+        </div>
+      )}
+
+      {passwordOk && (
+        <div className="flex items-center justify-between rounded-lg border border-emerald-500/30 bg-emerald-500/10 p-3 text-xs text-emerald-400">
+          <span>{passwordOk}</span>
+          <button type="button" onClick={() => setPasswordOk("")} className="ml-3 hover:text-emerald-300" aria-label="Cerrar aviso">
+            <X className="size-4" />
+          </button>
         </div>
       )}
 
@@ -190,6 +249,15 @@ export function UsersTab() {
                           </button>
                           <button
                             type="button"
+                            onClick={() => abrirPassword(cliente)}
+                            className="inline-flex size-8 items-center justify-center rounded-md border border-border hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+                            title="Cambiar contraseña"
+                            aria-label={`Cambiar contraseña de ${cliente.email}`}
+                          >
+                            <KeyRound className="size-4" />
+                          </button>
+                          <button
+                            type="button"
                             disabled={togglingId === id}
                             onClick={() => handleToggle(id)}
                             className={`inline-flex h-8 items-center gap-1 rounded-md border px-2 text-xs font-medium transition-colors ${
@@ -248,6 +316,84 @@ export function UsersTab() {
           </div>
         )}
       </div>
+
+      {/* Modal para cambiar la contraseña de un cliente */}
+      {passwordCliente && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4 backdrop-blur-xs"
+          onClick={cerrarPassword}
+        >
+          <form
+            onSubmit={handleGuardarPassword}
+            autoComplete="off"
+            className="relative w-full max-w-md rounded-xl border border-border bg-card p-6 text-card-foreground shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-start justify-between border-b border-border pb-3">
+              <div>
+                <h3 className="text-lg font-semibold text-foreground">Cambiar contraseña</h3>
+                <p className="text-xs text-muted-foreground">{passwordCliente.email}</p>
+              </div>
+              <button
+                type="button"
+                onClick={cerrarPassword}
+                className="rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+                aria-label="Cerrar"
+              >
+                <X className="size-5" />
+              </button>
+            </div>
+
+            <div className="mt-4 space-y-3">
+              {[
+                { id: "pw-admin", label: "Tu contraseña de administrador", value: passwordAdmin, set: setPasswordAdmin, auto: "current-password" },
+                { id: "pw-nueva", label: "Contraseña nueva del cliente", value: passwordNueva, set: setPasswordNueva, auto: "new-password" },
+                { id: "pw-confirma", label: "Repite la contraseña nueva", value: passwordConfirma, set: setPasswordConfirma, auto: "new-password" },
+              ].map((campo) => (
+                <div key={campo.id}>
+                  <label htmlFor={campo.id} className="mb-1 block text-xs font-medium text-muted-foreground">
+                    {campo.label}
+                  </label>
+                  <input
+                    id={campo.id}
+                    type="password"
+                    required
+                    value={campo.value}
+                    onChange={(e) => campo.set(e.target.value)}
+                    autoComplete={campo.auto}
+                    className="h-9 w-full rounded-md border border-input bg-background px-3 text-sm text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
+                  />
+                </div>
+              ))}
+              <p className="text-[11px] text-muted-foreground">
+                Mínimo 10 caracteres, con letras y números. El cliente deberá usar la nueva contraseña la próxima vez que inicie sesión.
+              </p>
+              {passwordError && (
+                <div className="rounded-lg border border-rose-500/30 bg-rose-500/10 p-2 text-xs text-rose-400" role="alert">
+                  {passwordError}
+                </div>
+              )}
+            </div>
+
+            <div className="mt-5 flex justify-end gap-2">
+              <button
+                type="button"
+                onClick={cerrarPassword}
+                className="rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors"
+              >
+                Cancelar
+              </button>
+              <button
+                type="submit"
+                disabled={guardandoPassword}
+                className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground hover:opacity-90 disabled:opacity-50 transition-opacity"
+              >
+                {guardandoPassword ? "Guardando…" : "Guardar contraseña"}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
 
       {/* Modal de Detalle del Cliente */}
       {selectedCliente && (
