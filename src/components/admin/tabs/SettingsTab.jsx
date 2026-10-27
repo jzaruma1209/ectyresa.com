@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { Save } from "lucide-react";
+import { useSelector } from "react-redux";
+import { MiCuentaCard } from "./MiCuentaCard";
 
 export function SettingsTab({ settings, onSaveSettings }) {
+  const emailActual = useSelector((state) => state.auth?.user?.email);
   const [form, setForm] = useState(
     settings || {
       storeName: "ECTYRE Llantas & Servicios",
@@ -29,6 +32,8 @@ export function SettingsTab({ settings, onSaveSettings }) {
           Parámetros comerciales, facturación y canales de despacho de ECTYRE
         </p>
       </div>
+
+      <MiCuentaCard emailActual={emailActual} />
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Información Comercial */}

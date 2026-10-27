@@ -54,6 +54,24 @@ export const authService = {
     const response = await api.put('/clientes/perfil', profileData);
     return response.data;
   },
+
+  /**
+   * Cambiar la contraseña de mi cuenta
+   * PUT /clientes/perfil/password
+   */
+  changePassword: async (passwordActual, passwordNueva) => {
+    const response = await api.put('/clientes/perfil/password', { passwordActual, passwordNueva });
+    return response.data;
+  },
+
+  /**
+   * Cambiar el correo de mi cuenta
+   * PUT /clientes/perfil/email
+   */
+  changeEmail: async (passwordActual, email) => {
+    const response = await api.put('/clientes/perfil/email', { passwordActual, email });
+    return response.data;
+  },
 };
 
 export default authService;
