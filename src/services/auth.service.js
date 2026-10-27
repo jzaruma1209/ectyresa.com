@@ -15,6 +15,24 @@ export const authService = {
   },
 
   /**
+   * Pedir el enlace para restablecer la contraseña
+   * POST /clientes/olvide-password
+   */
+  olvidePassword: async (email) => {
+    const response = await api.post('/clientes/olvide-password', { email });
+    return response.data;
+  },
+
+  /**
+   * Definir la contraseña nueva con el token recibido por correo
+   * POST /clientes/restablecer-password
+   */
+  restablecerPassword: async (token, passwordNueva) => {
+    const response = await api.post('/clientes/restablecer-password', { token, passwordNueva });
+    return response.data;
+  },
+
+  /**
    * Registrar nuevo usuario
    * POST /clientes/registro
    * Campos requeridos: tipoIdentificacion, numeroIdentificacion, nombres,

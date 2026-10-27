@@ -90,6 +90,10 @@ const LoginForm = ({ onSuccess }) => {
             </div>
           </div>
 
+          <p style={{ textAlign: 'right', margin: 0 }}>
+            <Link to="/olvide-contrasena" className="auth-link">¿Olvidaste tu contraseña?</Link>
+          </p>
+
           <button type="submit" className="auth-submit-btn" disabled={loading}>
             {loading ? (
               <span className="auth-spinner"></span>

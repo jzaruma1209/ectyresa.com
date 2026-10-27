@@ -20,6 +20,8 @@ const CartPage           = lazy(() => import("../pages/shop/CartPage"));
 const SearchResultsPage  = lazy(() => import("../pages/shop/SearchResultsPage"));
 const LoginPage          = lazy(() => import("../pages/shop/LoginPage"));
 const RegisterPage       = lazy(() => import("../pages/shop/RegisterPage"));
+const ForgotPasswordPage = lazy(() => import("../pages/shop/ForgotPasswordPage"));
+const ResetPasswordPage  = lazy(() => import("../pages/shop/ResetPasswordPage"));
 const ProfilePage        = lazy(() => import("../pages/shop/ProfilePage"));
 const UbicacionPage      = lazy(() => import("../pages/shop/UbicacionPage"));
 const NotFoundPage       = lazy(() => import("../pages/shop/NotFoundPage"));
@@ -109,6 +111,8 @@ export default function AppRouter() {
           <Route path="/ubicacion" element={<UbicacionPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/registro" element={<RegisterPage />} />
+          <Route path="/olvide-contrasena" element={<ForgotPasswordPage />} />
+          <Route path="/restablecer-contrasena" element={<ResetPasswordPage />} />
           <Route path="/auth/callback" element={<AuthCallback />} />
           <Route path="/brand/:brandId" element={<BrandCatalogPage />} />
           <Route
