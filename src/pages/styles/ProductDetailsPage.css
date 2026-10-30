@@ -619,9 +619,9 @@
 
 .pdp-cta-add {
   height: 52px;
-  border: 1px solid #111111;
-  border-radius: 0;
-  background: #111111;
+  border: 1px solid #25d366;
+  border-radius: 8px;
+  background: #25d366;
   color: #FFFFFF;
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.88rem;
@@ -637,8 +637,8 @@
 }
 
 .pdp-cta-add:hover:not(:disabled) {
-  background: #000000;
-  border-color: #000000;
+  background: #1ebe5b;
+  border-color: #1ebe5b;
   color: #FFFFFF;
 }
 
