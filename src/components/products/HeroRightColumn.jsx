@@ -4,7 +4,7 @@ import StaggeredMenu from "../ui/StaggeredMenu";
 
 const vehicleImages = {
   auto: { src: "/fondo_auto.webp", alt: "Auto - Llanta para turismo y SUV" },
-  agricola: { src: "/agricola.webp", alt: "Agrícola - Llanta para uso agrícola" },
+  agricola: { src: "https://res.cloudinary.com/dybk0xyr7/image/upload/f_auto,q_auto/v1793394602/ectyre/media/d1qbd33jryuutd4eyd2m.png", alt: "Agrícola - Llanta para uso agrícola" },
   camion: { src: "/camiones.webp", alt: "Camión - Llanta para transporte pesado" },
   maquinaria: { src: "/maquinaria pesada.webp", alt: "Maquinaria Pesada - Llanta para construcción" },
 };
