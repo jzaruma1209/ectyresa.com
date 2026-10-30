@@ -4,9 +4,11 @@ import { useProducts, PRODUCT_NOT_FOUND } from "../../hooks/useProducts";
 import { usePageMeta } from "../../hooks/usePageMeta";
 import ProductCard from "../../components/products/ProductCard";
 import AppLoader from "../../components/shared/AppLoader";
+import MarkdownText from "../../components/shared/MarkdownText";
 import productsService from "../../services/products.service";
 import { optimizeImage } from "../../utils/cloudinaryImage";
 import { productPath, parseProductId } from "../../utils/productSlug";
+import { stripMarkdown } from "../../utils/stripMarkdown";
 import { buildProductMessage, openWhatsApp } from "../../utils/whatsapp";
 import "../styles/ProductDetailsPage.css";
 
@@ -31,25 +33,6 @@ const ProductDetailsPage = () => {
   const [mainImg, setMainImg] = useState(0);
   const [qty, setQty] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(0);
-  const [isZoomOpen, setIsZoomOpen] = useState(false);
-  const [zoomLevel, setZoomLevel] = useState(1);
-
-  useEffect(() => {
-    if (!isZoomOpen) return undefined;
-
-    const previousOverflow = document.body.style.overflow;
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") setIsZoomOpen(false);
-    };
-
-    document.body.style.overflow = "hidden";
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.body.style.overflow = previousOverflow;
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isZoomOpen]);
 
   // Título y descripción para Google con los datos reales (solo cuando el producto cargó).
   // Marca y medida se agregan solo si el nombre no las trae ya.
@@ -182,11 +165,6 @@ const ProductDetailsPage = () => {
     event.currentTarget.style.setProperty("--zoom-y", `${y}%`);
   };
 
-  const openImageZoom = () => {
-    setZoomLevel(1);
-    setIsZoomOpen(true);
-  };
-
   /* ── Estados de carga ── */
   // No se muestra ningún producto de ejemplo: precio y nombre deben ser siempre los reales.
   if (!selectedProduct) {
@@ -297,20 +275,10 @@ const ProductDetailsPage = () => {
             {/* Imagen principal */}
             <div
               className="pdp-main-image-wrap"
-              role="button"
-              tabIndex={0}
-              aria-label={`Ampliar imagen de ${product.name}`}
               onPointerMove={handleImagePointerMove}
               onPointerLeave={(event) => {
                 event.currentTarget.style.removeProperty("--zoom-x");
                 event.currentTarget.style.removeProperty("--zoom-y");
-              }}
-              onClick={openImageZoom}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" || event.key === " ") {
-                  event.preventDefault();
-                  openImageZoom();
-                }
               }}
             >
               {hasDiscount && (
@@ -323,7 +291,6 @@ const ProductDetailsPage = () => {
                 onError={(e) => (e.target.src = "/llanta1.webp")}
               />
               <span className="pdp-zoom-hint pdp-zoom-hint--desktop">Pasa el cursor para ampliar</span>
-              <span className="pdp-zoom-hint pdp-zoom-hint--mobile">Toca para ampliar</span>
             </div>
           </div>
 
@@ -350,7 +317,7 @@ const ProductDetailsPage = () => {
           <h1 className="pdp-title">{product.name}</h1>
 
           <p className="pdp-subtitle-lead">
-            {product.description?.slice(0, 130) || "Neumático de alta resistencia diseñado para máxima tracción y agarre en carretera y todoterreno."}...
+            {stripMarkdown(product.description, 130) || "Neumático de alta resistencia diseñado para máxima tracción y agarre en carretera y todoterreno."}
           </p>
 
           {/* Stock real (sin valoraciones: la tienda aún no tiene opiniones de clientes) */}
@@ -482,58 +449,6 @@ const ProductDetailsPage = () => {
           </div>
         </section>
       )}
-
-      {isZoomOpen && (
-        <div
-          className="pdp-zoom-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Vista ampliada de ${product.name}`}
-          onClick={(event) => {
-            if (event.target === event.currentTarget) setIsZoomOpen(false);
-          }}
-        >
-          <div className="pdp-zoom-dialog">
-            <div className="pdp-zoom-header">
-              <span>{product.name}</span>
-              <button type="button" onClick={() => setIsZoomOpen(false)} aria-label="Cerrar vista ampliada">
-                ×
-              </button>
-            </div>
-
-            <div className="pdp-zoom-viewport">
-              <div className="pdp-zoom-canvas" style={{ width: `${zoomLevel * 100}%` }}>
-                <img
-                  src={optimizeImage(gallery[mainImg], 1600)}
-                  alt={`Vista ampliada de ${product.name}`}
-                  draggable="false"
-                  onError={(e) => (e.target.src = "/llanta1.webp")}
-                />
-              </div>
-            </div>
-
-            <div className="pdp-zoom-controls" aria-label="Controles de zoom">
-              <button
-                type="button"
-                onClick={() => setZoomLevel((level) => Math.max(1, level - 0.5))}
-                disabled={zoomLevel <= 1}
-                aria-label="Alejar imagen"
-              >
-                −
-              </button>
-              <span>{Math.round(zoomLevel * 100)}%</span>
-              <button
-                type="button"
-                onClick={() => setZoomLevel((level) => Math.min(3, level + 0.5))}
-                disabled={zoomLevel >= 3}
-                aria-label="Acercar imagen"
-              >
-                +
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
@@ -588,9 +503,10 @@ const ProductTabs = ({ product }) => {
       <div className="pdp-tabs-body">
         {tab === "desc" && (
           <div className="pdp-tab-panel">
-            <p className="pdp-tab-text">
-              {product.description || "Descripción detallada del neumático y recomendaciones de ensamblaje en taller."}
-            </p>
+            <MarkdownText
+              className="pdp-tab-text"
+              texto={product.description || "Descripción detallada del neumático y recomendaciones de ensamblaje en taller."}
+            />
           </div>
         )}
 

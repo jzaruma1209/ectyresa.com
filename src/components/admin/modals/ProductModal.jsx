@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { X, Save, RotateCw, Ruler, Tag, Gauge, AlertTriangle, Sparkles } from "lucide-react";
+import { X, Save, RotateCw, Ruler, Tag, Gauge, AlertTriangle, Sparkles, Plus } from "lucide-react";
 import adminService from "@/services/admin.service";
 import nivelesService, { mensajeError } from "@/services/niveles.service";
 import ProductImagesManager, { MAX_IMAGENES } from "../ProductImagesManager";
@@ -78,6 +78,7 @@ export function ProductModal({ isOpen, onClose, onSaved, productToEdit }) {
   const [cargando, setCargando] = useState(false);
   const [saving, setSaving] = useState(false);
   const [errores, setErrores] = useState([]);
+  const [nuevaEspec, setNuevaEspec] = useState(null); // { nombre, creando, error } mientras se crea una especificación
 
   const idEdicion = productToEdit?.idProducto ?? null;
 
@@ -159,6 +160,23 @@ export function ProductModal({ isOpen, onClose, onSaved, productToEdit }) {
       e.tiposProducto.some((t) => String(t.idTipoProducto) === form.idTipoProducto) &&
       (e.activo !== false || valoresEspec[e.idEspecificacion])
   );
+  // Crea la especificación ya enlazada al tipo elegido y la deja lista para llenar su valor
+  const crearEspecificacion = async () => {
+    const nombre = nuevaEspec?.nombre.trim();
+    if (!nombre) return setNuevaEspec((s) => ({ ...s, error: "Escribe el nombre de la especificación" }));
+    setNuevaEspec((s) => ({ ...s, creando: true, error: null }));
+    try {
+      const creada = await nivelesService.crearEspecificacion(
+        { nombre, idsTipoProducto: [Number(form.idTipoProducto)], activo: true },
+        null
+      );
+      setNiveles((n) => ({ ...n, especificaciones: [...n.especificaciones, creada] }));
+      setNuevaEspec(null);
+    } catch (err) {
+      setNuevaEspec((s) => ({ ...s, creando: false, error: mensajeError(err, "No se pudo crear la especificación") }));
+    }
+  };
+
   const marca = niveles.marcas.find((m) => String(m.idMarca) === form.idMarca);
   const modelo = niveles.modelos.find((m) => String(m.idModelo) === form.idModelo);
   const valorMedida = (lista, pk, id) => lista.find((m) => String(m[pk]) === id)?.valor;
@@ -454,10 +472,13 @@ export function ProductModal({ isOpen, onClose, onSaved, productToEdit }) {
                 <textarea
                   value={form.descripcion}
                   onChange={(e) => cambiar("descripcion", e.target.value)}
-                  rows={2}
+                  rows={12}
                   placeholder="Características destacadas del producto…"
-                  className="w-full rounded-md border border-input bg-background p-2.5 text-xs text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
+                  className="min-h-64 w-full resize-y rounded-md border border-input bg-background p-2.5 text-xs leading-relaxed text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring [field-sizing:content] max-h-[70vh]"
                 />
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  Formato: <code>**negrita**</code>, <code>## Título</code>, <code>- viñeta</code>. Una línea en blanco separa los párrafos.
+                </p>
               </div>
 
               <div className="grid gap-4 sm:grid-cols-3">
@@ -509,14 +530,12 @@ export function ProductModal({ isOpen, onClose, onSaved, productToEdit }) {
             <Paso numero={4} titulo="Especificaciones técnicas">
               {!tipo ? (
                 <p className="text-[11px] text-muted-foreground">Selecciona el tipo de producto para ver sus especificaciones.</p>
-              ) : especificacionesDelTipo.length === 0 ? (
-                <p className="text-[11px] text-muted-foreground">
-                  {tipo.nombre} no tiene especificaciones configuradas (puedes agregarlas en Niveles de Inventario).
-                </p>
               ) : (
                 <>
                   <p className="text-[11px] text-muted-foreground">
-                    Solo se muestran las que aplican a {tipo.nombre}. Deja vacío lo que no uses.
+                    {especificacionesDelTipo.length === 0
+                      ? `${tipo.nombre} aún no tiene especificaciones. Crea la primera aquí.`
+                      : `Solo se muestran las que aplican a ${tipo.nombre}. Deja vacío lo que no uses.`}
                   </p>
                   <div className="grid gap-3 sm:grid-cols-2">
                     {especificacionesDelTipo.map((esp) => (
@@ -540,6 +559,53 @@ export function ProductModal({ isOpen, onClose, onSaved, productToEdit }) {
                       </div>
                     ))}
                   </div>
+
+                  {/* Crear una especificación nueva sin salir del producto */}
+                  {nuevaEspec === null ? (
+                    <button
+                      type="button"
+                      onClick={() => setNuevaEspec({ nombre: "", creando: false, error: null })}
+                      className="inline-flex items-center gap-1 rounded-lg border border-dashed border-primary/40 px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/10 transition-colors cursor-pointer"
+                    >
+                      <Plus className="size-3.5" /> Nueva especificación
+                    </button>
+                  ) : (
+                    <div className="space-y-1.5">
+                      <div className="flex gap-2">
+                        <input
+                          type="text"
+                          autoFocus
+                          maxLength={100}
+                          value={nuevaEspec.nombre}
+                          onChange={(e) => setNuevaEspec((s) => ({ ...s, nombre: e.target.value, error: null }))}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                              e.preventDefault();
+                              crearEspecificacion();
+                            }
+                          }}
+                          placeholder={`Nombre (ej. Peso, Garantía…) · aplica a ${tipo.nombre}`}
+                          className="h-8 w-full rounded-md border border-input bg-background px-2.5 text-xs text-foreground focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
+                        />
+                        <button
+                          type="button"
+                          disabled={nuevaEspec.creando}
+                          onClick={crearEspecificacion}
+                          className="shrink-0 rounded-md bg-primary px-3 text-xs font-semibold text-primary-foreground disabled:opacity-60 cursor-pointer"
+                        >
+                          {nuevaEspec.creando ? "Creando…" : "Crear"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => setNuevaEspec(null)}
+                          className="shrink-0 rounded-md border border-border px-3 text-xs text-muted-foreground cursor-pointer"
+                        >
+                          Cancelar
+                        </button>
+                      </div>
+                      {nuevaEspec.error && <p className="text-[11px] text-red-400">{nuevaEspec.error}</p>}
+                    </div>
+                  )}
                 </>
               )}
             </Paso>

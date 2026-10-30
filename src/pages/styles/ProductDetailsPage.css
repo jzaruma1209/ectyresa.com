@@ -744,6 +744,26 @@
   margin: 0;
 }
 
+/* Descripción con formato (Markdown básico) */
+.md-text > * + * { margin-top: 0.85rem; }
+.md-text p { margin-bottom: 0; }
+.md-text strong { color: #111111; font-weight: 700; }
+.md-text h3,
+.md-text h4 {
+  font-family: 'Space Grotesk', sans-serif;
+  color: #111111;
+  line-height: 1.3;
+  margin-bottom: 0;
+}
+.md-text h3 { font-size: 1.15rem; margin-top: 1.4rem; }
+.md-text h4 { font-size: 1rem; margin-top: 1.2rem; }
+.md-text ul,
+.md-text ol { padding-left: 1.25rem; margin-bottom: 0; }
+.md-text ul { list-style: disc; }
+.md-text ol { list-style: decimal; }
+.md-text li + li { margin-top: 0.4rem; }
+.md-text > :first-child { margin-top: 0; }
+
 /* Tabla de Ficha Técnica Ras */
 .pdp-table-ras {
   width: 100%;

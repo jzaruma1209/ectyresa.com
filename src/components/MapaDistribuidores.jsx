@@ -4,7 +4,7 @@ import L from 'leaflet';
 import { distribuidores } from '../data/distribuidores';
 
 const ECUADOR_CENTER = [-1.8312, -78.1834];
-const ZOOM_INICIAL = 6;
+const ZOOM_INICIAL = 12; // con zoom alto el mapa base no muestra nombres de países
 
 const ectyreIcon = new L.divIcon({
   className: 'custom-ectyre-pin',
@@ -46,7 +46,7 @@ export default function MapaDistribuidores() {
       {/* Sidebar */}
       <div style={{ display: 'flex', flexDirection: 'column', background: '#fff', borderRight: '1px solid #e0e0e0', overflowY: 'hidden' }}>
         <div style={{ padding: '16px', borderBottom: '1px solid #e0e0e0' }}>
-          <h3 style={{ margin: '0 0 4px', fontSize: '16px', color: '#1a1a1a' }}>Distribuidores autorizados</h3>
+          <h3 style={{ margin: '0 0 4px', fontFamily: "'Space Grotesk', sans-serif", fontSize: '16px', color: '#1a1a1a' }}>Distribuidores autorizados</h3>
           <p style={{ margin: 0, fontSize: '13px', color: '#666' }}>Encuentra el punto más cercano</p>
         </div>
 
@@ -108,14 +108,17 @@ export default function MapaDistribuidores() {
 
       {/* Mapa */}
       <MapContainer
-        center={seleccionado ? [seleccionado.lat, seleccionado.lng] : ECUADOR_CENTER}
+        center={seleccionado ? [seleccionado.lat, seleccionado.lng] : filtrados[0] ? [filtrados[0].lat, filtrados[0].lng] : ECUADOR_CENTER}
         zoom={seleccionado ? 15 : ZOOM_INICIAL}
+        minZoom={11}
         style={{ height: '100%', width: '100%', zIndex: 1 }}
         key={seleccionado?.id ?? 'default'}
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution='Tiles &copy; Esri'
+          // Mapa base gris sin etiquetas: así no trae tipografías ajenas a Inter / Space Grotesk
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+          maxZoom={16}
         />
         {filtrados.map(d => (
           <Marker
