@@ -30,15 +30,15 @@ const agruparPorMarca = (productos) => {
 
 const heroBgColors = {
   auto: "#FFFFFF",
-  agricola: "#67F876",
-  camion: "#4A77FF",
+  agricola: "#FFFFFF",
+  camion: "#FFD33F",
   maquinaria: "#FFD33F",
 };
 
 const heroAccentColors = {
   auto: "#E60000", // Rojo Ectyre original
-  agricola: "#1B5E20", // Verde oscuro
-  camion: "#0D47A1", // Azul oscuro
+  agricola: "#E60000", // Rojo Ectyre (igual que auto)
+  camion: "#E60000", // Rojo Ectyre (igual que maquinaria)
   maquinaria: "#E60000", // Regresamos al rojo original para maquinaria
 };
 
